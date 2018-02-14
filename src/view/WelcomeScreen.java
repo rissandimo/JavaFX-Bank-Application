@@ -9,7 +9,7 @@ import javafx.geometry.*;
 
 
 
-public class AccessAccount extends Application
+public class WelcomeScreen extends Application
 {
     Stage window;
     private Button createAcccount;
