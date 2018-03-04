@@ -16,18 +16,23 @@ import javafx.stage.Stage;
 
 public class WelcomeScreen extends Application
 {
-    private Button accessAccount, createAccount, deleteAccount;
     private Stage window;
+    private Button accessAccount, createAccount, deleteAccount;
 
     public static void main(String[]args)
     {
         launch(args);
     }
 
-    public void start(Stage primaryStage) throws Exception
+    public void start(Stage primaryStage)
     {
-        window = primaryStage;
-        primaryStage.setTitle("Bank");
+       window = primaryStage;
+       setDisplay();
+    }
+
+    private void setDisplay()
+    {
+        window.setTitle("Bank");
 
         HBox buttonsLayout = getButtonsLayout();
 
@@ -36,13 +41,13 @@ public class WelcomeScreen extends Application
         frame.setTop(buttonsLayout);
 
         Scene scene = new Scene(frame,400,200);
-        primaryStage.setScene(scene);
-        primaryStage.show();
+
+        window.setScene(scene);
+        window.show();
     }
 
     private HBox getButtonsLayout()
     {
-        //Buttons Layout
         HBox buttonsLayout = new HBox(10);
         buttonsLayout.setAlignment(Pos.BASELINE_CENTER);
 
@@ -90,28 +95,62 @@ public class WelcomeScreen extends Application
 
     private Scene getCreateAccountScene()
     {
-        VBox labels = new VBox();
+        VBox labels = new VBox(10);
+        labels.setPadding(new Insets(5,5,5,10));
         HBox menu = getButtonsLayout();
 
         Label labelFirstName = new Label("First Name: ");
-        Label labelLasttName = new Label("Last Name: ");
+        Label labelLastName = new Label("Last Name: ");
         Label labelSocial = new Label("Social: ");
 
-        labels.getChildren().addAll(labelFirstName,labelLasttName,labelSocial);
+        labels.getChildren().addAll(labelFirstName,labelLastName,labelSocial);
 
-        VBox textFields = new VBox();
+        VBox textFieldsPanel = new VBox(10);
+        textFieldsPanel.setPadding(new Insets(0,10,0,10));
+
 
         TextField textFirstName = new TextField();
         TextField textLastName = new TextField();
         TextField textSocial = new TextField();
 
-        textFields.getChildren().addAll(textFirstName, textLastName, textSocial);
+        textFieldsPanel.getChildren().addAll(textFirstName, textLastName, textSocial);
 
         BorderPane frame = new BorderPane();
 
         frame.setTop(menu);
         frame.setLeft(labels);
-        frame.setRight(textFields);
+        frame.setRight(textFieldsPanel);
+
+        return new Scene(frame, 400,200);
+    }
+
+    private Scene getDeleteAccountScene()
+    {
+        VBox labels = new VBox(10);
+        labels.setPadding(new Insets(5,5,5,10));
+        HBox menu = getButtonsLayout();
+
+        Label labelFirstName = new Label("First Name: ");
+        Label labelLastName = new Label("Last Name: ");
+        Label labelAccount = new Label("Account: ");
+
+        labels.getChildren().addAll(labelFirstName,labelLastName,labelAccount);
+
+        VBox textFieldsPanel = new VBox(10);
+        textFieldsPanel.setPadding(new Insets(0,10,0,10));
+
+
+        TextField textFirstName = new TextField();
+        TextField textLastName = new TextField();
+        TextField textAccount = new TextField();
+
+        textFieldsPanel.getChildren().addAll(textFirstName, textLastName, textAccount);
+
+        BorderPane frame = new BorderPane();
+
+        frame.setTop(menu);
+        frame.setLeft(labels);
+        frame.setRight(textFieldsPanel);
 
         return new Scene(frame, 400,200);
     }
@@ -123,6 +162,7 @@ public class WelcomeScreen extends Application
         {
             if(event.getSource() == accessAccount) window.setScene(getAccessAccountScene());
             if(event.getSource() == createAccount) window.setScene(getCreateAccountScene());
+            if(event.getSource() == deleteAccount) window.setScene(getDeleteAccountScene());
         }
     }
 
