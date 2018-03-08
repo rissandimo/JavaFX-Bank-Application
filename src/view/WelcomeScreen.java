@@ -3,22 +3,15 @@ package view;
 import controller.AccountListener;
 import controller.CreateClientAccount;
 import javafx.application.Application;
-import javafx.collections.ObservableList;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.geometry.*;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
-import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.VBox;
+import javafx.scene.layout.*;
 import javafx.stage.Stage;
-import model.BankConnection;
 
 public class WelcomeScreen extends Application
 {
-    public Scene acessAccountScene, createAccountScene, deleteAccountScene;
-    public Stage window;
+    private Stage window;
     public Button accessAccount, createAccount, deleteAccount;
 
     public void start(Stage primaryStage)
@@ -43,12 +36,12 @@ public class WelcomeScreen extends Application
         window.show();
     }
 
-    HBox getButtonsLayout()
+    private HBox getButtonsLayout()
     {
         HBox buttonsLayout = new HBox(10);
         buttonsLayout.setAlignment(Pos.BASELINE_CENTER);
 
-        accessAccount = createButton("Access Account");
+        accessAccount = new Button("Access Account");
         createAccount = new Button("Create Account");
         deleteAccount = new Button("Delete Account");
 
@@ -60,15 +53,6 @@ public class WelcomeScreen extends Application
         buttonsLayout.setPadding(new Insets(5,5,5,5));
 
         return buttonsLayout;
-    }
-
-    public Button createButton(String buttonName)
-    {
-        AccountListener accountListener = new AccountListener(this);
-        Button button = new Button(buttonName);
-        button.setOnAction(accountListener);
-
-        return button;
     }
 
     public void setScene(Scene sceneToSet)
@@ -100,9 +84,7 @@ public class WelcomeScreen extends Application
         frame.setTop(menu);
         frame.setCenter(logIn);
 
-        this.acessAccountScene = new Scene(frame,400,200);
-
-        return acessAccountScene;
+        return new Scene(frame,400,200);
     }
 
     public Scene getCreateAccountScene()
@@ -132,15 +114,21 @@ public class WelcomeScreen extends Application
 
         textFieldsPanel.getChildren().addAll(textFirstName, textLastName, textSocial);
 
-        Button submit = new Button("Submit");
+        VBox buttonPanel = new VBox();
+        buttonPanel.setPadding(new Insets(0,0,10,0));
+        buttonPanel.setAlignment(Pos.BASELINE_CENTER);
+        Button submitButton = new Button("Submit");
+        buttonPanel.getChildren().add(submitButton);
+
         //get largest account num and pass it to CreateClientAccount constructor
-        submit.setOnAction(new CreateClientAccount(firstName, lastName, social));
+        submitButton.setOnAction(new CreateClientAccount(firstName, lastName, social));
 
         BorderPane frame = new BorderPane();
 
         frame.setTop(menu);
         frame.setLeft(labels);
         frame.setRight(textFieldsPanel);
+        frame.setBottom(buttonPanel);
 
         return new Scene(frame, 400,200);
     }
@@ -167,13 +155,20 @@ public class WelcomeScreen extends Application
 
         textFieldsPanel.getChildren().addAll(textFirstName, textLastName, textAccount);
 
+        VBox buttonPanel = new VBox();
+        buttonPanel.setPadding(new Insets(0,0,10,0));
+        buttonPanel.setAlignment(Pos.BASELINE_CENTER);
+        Button submitButton = new Button("Submit");
+        buttonPanel.getChildren().add(submitButton);
+
         BorderPane frame = new BorderPane();
 
         frame.setTop(menu);
         frame.setLeft(labels);
         frame.setRight(textFieldsPanel);
+        frame.setBottom(buttonPanel);
 
         return new Scene(frame, 400,200);
     }
-    }
+}
 
