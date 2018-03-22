@@ -24,9 +24,13 @@ public class CreateClientAccount
 
     public CreateClientAccount(String firstName, String lastName, String social)
     {
-        this.view = view;
-        this.accountnumber = getBiggestAccountNumber();
+
         this.bankConnection = new BankConnection().createConnection();
+
+        this.view = view;
+        this.accountnumber = getBiggestAccountNumber(bankConnection);
+        this.accountnumber++; // increment account number for next client
+
         System.out.println("connection established");
 
         this.firstName = firstName;
@@ -94,7 +98,7 @@ public class CreateClientAccount
         }
     }
 
-    private int getBiggestAccountNumber()
+    private int getBiggestAccountNumber(Connection bankConnection)
     {
         System.out.println("getBiggestAccountNumber()");
 
@@ -102,13 +106,13 @@ public class CreateClientAccount
 
         try
         {
-            // Statement statement = bankConnection.createStatement();
-
             String largestAcctNum = "SELECT MAX(account_number) from clients";
 
             PreparedStatement preparedStatement = bankConnection.prepareStatement(largestAcctNum);
 
+
             ResultSet resultlargestAcctNum = preparedStatement.executeQuery();
+
 
             while(resultlargestAcctNum.next())
             {
