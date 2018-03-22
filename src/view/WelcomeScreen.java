@@ -10,12 +10,29 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.*;
 import javafx.stage.Stage;
+import model.BankConnection;
+
+import java.sql.*;
 
 public class WelcomeScreen extends Application
 {
     public Button accessAccount, createAccount, deleteAccount;
     private TextField textFirstName, textLastName, textSocial;
     public Stage window;
+    public static TextArea results;
+    private Connection bankConnection;
+    private DeleteClientAccount deleteAccountController;
+
+    public WelcomeScreen()
+    {
+        this.bankConnection = new BankConnection().createConnection();
+        this.deleteAccountController = new DeleteClientAccount();
+
+        //Results
+        results = new TextArea();
+        results.setPrefColumnCount(30);
+        results.setPrefRowCount(400);
+    }
 
     public static void main(String[] args)
     {
@@ -39,6 +56,8 @@ public class WelcomeScreen extends Application
         window.setScene(scene);
         window.show();
 
+        // load accounts
+       // displayClients();
 
     }
 
@@ -110,10 +129,10 @@ public class WelcomeScreen extends Application
         VBox labels = new VBox(10);
         labels.setPadding(new Insets(5, 0, 0, 10));
         Label labelFirstName = new Label("First Name: ");
-        Label labelLasttName = new Label("Last Name: ");
+        Label labelLastName = new Label("Last Name: ");
         Label labelSocial = new Label("Social: ");
 
-        labels.getChildren().addAll(labelFirstName, labelLasttName, labelSocial);
+        labels.getChildren().addAll(labelFirstName, labelLastName, labelSocial);
 
         HBox menu = getButtonsLayout();
 
@@ -159,14 +178,10 @@ public class WelcomeScreen extends Application
         HBox menu = getButtonsLayout();
 
         Button showAccountButton = new Button("Show Accounts");
-        showAccountButton.setOnAction(new DeleteClientAccount());
+        showAccountButton.setOnAction(e -> deleteAccountController.displayClients());
 
         menu.getChildren().add(showAccountButton); // add "show accounts button" to menu
 
-        //Results
-        TextArea results = new TextArea();
-        results.setPrefColumnCount(30);
-        results.setPrefRowCount(400);
                                                                         //Bottom Panel
 
         Label accountLabel = new Label("Account number: ");
@@ -223,6 +238,11 @@ public class WelcomeScreen extends Application
         frame.setRight(textFieldsPanel);
 
         return new Scene(frame, 400, 200);
+    }
+
+    private void clearResults()
+    {
+        results.setText("");
     }
 
     public Button getAccessAccount()
