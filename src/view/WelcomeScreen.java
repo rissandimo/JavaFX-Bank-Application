@@ -13,9 +13,9 @@ import javafx.stage.Stage;
 
 public class WelcomeScreen extends Application
 {
-    private Button accessAccount, createAccount, deleteAccount;
+    public Button accessAccount, createAccount, deleteAccount;
     private TextField textFirstName, textLastName, textSocial;
-    private Stage window;
+    public Stage window;
 
     public static void main(String[] args)
     {
