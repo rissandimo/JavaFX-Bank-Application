@@ -3,10 +3,9 @@ package controller;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import model.BankConnection;
+import view.WelcomeScreen;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
+import java.sql.*;
 
 public class DeleteClientAccount implements EventHandler<ActionEvent>
 {
@@ -14,6 +13,7 @@ public class DeleteClientAccount implements EventHandler<ActionEvent>
     private Connection bankConnection;
     private PreparedStatement preparedStatement;
     private int acccount_number;
+    private WelcomeScreen view;
 
     public static void main(String[] args)
     {
@@ -23,12 +23,14 @@ public class DeleteClientAccount implements EventHandler<ActionEvent>
     public DeleteClientAccount()
     {
         System.out.println("DeleteClientAccount()");
+        bankConnection = BankConnection.createConnection();
+       // this.view = new WelcomeScreen();
     }
 
     public DeleteClientAccount(int account_number)
     {
         this.acccount_number = account_number;
-        bankConnection = new BankConnection().createConnection();
+        bankConnection = BankConnection.createConnection();
     }
 
     private void removeClient(int account_number) throws SQLException
@@ -90,6 +92,36 @@ public class DeleteClientAccount implements EventHandler<ActionEvent>
 
         preparedStatement.execute();
 
+    }
+
+
+    public void displayClients()
+    {
+        try
+        {
+            Statement statement = bankConnection.createStatement();
+
+            String clientStatement = "SELECT first_name, last_name, account_number FROM clients";
+
+            ResultSet resultSet = statement.executeQuery(clientStatement);
+
+            //   clearResults();
+
+            WelcomeScreen.results.appendText("List of clients in bank, please select one and click submit \n \n");
+
+            while(resultSet.next())
+            {
+                WelcomeScreen.results.appendText(resultSet.getString(1) + ", " +
+                        resultSet.getString(2) + "-" +
+                        "Account #: " +
+                        resultSet.getString(3) + "\n");
+            }
+
+        }
+        catch(SQLException e)
+        {
+            e.printStackTrace();
+        }
     }
 
 
