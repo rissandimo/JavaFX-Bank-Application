@@ -12,6 +12,7 @@ import javafx.scene.layout.*;
 import javafx.stage.Stage;
 import model.BankConnection;
 
+import javax.swing.*;
 import java.sql.*;
 
 public class WelcomeScreen extends Application
@@ -192,7 +193,7 @@ public class WelcomeScreen extends Application
 
         //Button
         Button submit = new Button("Submit");
-        submit.setOnAction( e -> new DeleteClientAccount(Integer.parseInt(accountTextField.getText())));
+        submit.setOnAction( e -> deleteAccount(accountTextField.getText() ));
 
         HBox bottomPanel = new HBox();
         bottomPanel.setAlignment(Pos.BASELINE_CENTER);
@@ -206,6 +207,20 @@ public class WelcomeScreen extends Application
         frame.setBottom(bottomPanel);
 
         return new Scene(frame, 600, 400);
+    }
+
+    private void deleteAccount(String account_number)
+    {
+        try
+        {
+             int accountNumber = Integer.parseInt(account_number);
+             new DeleteClientAccount(accountNumber);
+        }
+        catch(NumberFormatException e)
+        {
+            JOptionPane.showMessageDialog(null, "Incorrect account number");
+        }
+        
     }
 
 
