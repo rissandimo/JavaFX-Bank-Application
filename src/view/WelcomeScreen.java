@@ -220,39 +220,7 @@ public class WelcomeScreen extends Application
         {
             JOptionPane.showMessageDialog(null, "Incorrect account number");
         }
-        
-    }
 
-
-    public Scene old_getDeleteAccountScene()
-    {
-        VBox labels = new VBox(10);
-        labels.setPadding(new Insets(5, 0, 0, 10));
-        HBox menu = getButtonsLayout();
-
-        Label labelFirstName = new Label("First Name: ");
-        Label labelLastName = new Label("Last Name: ");
-        Label labelAccount = new Label("Account: ");
-
-        labels.getChildren().addAll(labelFirstName, labelLastName, labelAccount);
-
-        VBox textFieldsPanel = new VBox(10);
-        textFieldsPanel.setPadding(new Insets(0, 10, 0, 0));
-
-
-        TextField textFirstName = new TextField();
-        TextField textLastName = new TextField();
-        TextField textAccount = new TextField();
-
-        textFieldsPanel.getChildren().addAll(textFirstName, textLastName, textAccount);
-
-        BorderPane frame = new BorderPane();
-
-        frame.setTop(menu);
-        frame.setLeft(labels);
-        frame.setRight(textFieldsPanel);
-
-        return new Scene(frame, 400, 200);
     }
 
     private void clearResults()
