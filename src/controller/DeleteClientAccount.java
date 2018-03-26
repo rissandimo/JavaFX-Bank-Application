@@ -31,6 +31,12 @@ public class DeleteClientAccount implements EventHandler<ActionEvent>
     {
         this.acccount_number = account_number;
         bankConnection = BankConnection.createConnection();
+
+        try
+        {
+        removeClient(account_number);
+
+        }catch(SQLException e) {e.printStackTrace();}
     }
 
     private void removeClient(int account_number) throws SQLException
