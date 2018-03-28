@@ -23,6 +23,7 @@ public class WelcomeScreen extends Application
     public static TextArea results;
     private Connection bankConnection;
     private DeleteClientAccount deleteAccountController;
+    TextField acctNumText;
 
     public WelcomeScreen()
     {
@@ -110,9 +111,10 @@ public class WelcomeScreen extends Application
         logIn.setPadding(new Insets(5, 5, 5, 5));
 
         Label acctNumLabel = new Label("Account Number");
-        TextField acctNumText = new TextField();
+        acctNumText = new TextField();
         acctNumText.setMaxWidth(200);
         Button submit = new Button("Submit");
+        submit.setOnAction( e -> accessAccount());
 
         logIn.getChildren().addAll(acctNumLabel, acctNumText, submit);
 
@@ -123,6 +125,65 @@ public class WelcomeScreen extends Application
         frame.setCenter(logIn);
 
         return new Scene(frame, 400, 200);
+    }
+
+    private void accessAccount()
+    {
+        checkClientInfo();
+        boolean accountExists = doesAccountExist();
+
+        if(accountExists) new AccessAccountView(Integer.parseInt(acctNumText.getText()));
+    }
+
+    private boolean doesAccountExist()
+    {
+
+        boolean accountExists = false;
+        try
+        {
+            Statement query = bankConnection.createStatement();
+
+            String sqlQuery = "SELECT first_name, last_name, account_number FROM clients";
+
+            ResultSet resultSet = query.executeQuery(sqlQuery);
+
+            while(resultSet.next())
+            {
+
+                //account number from database
+                String accountNumberDatabase = resultSet.getString(3);
+                String accountFromInput = acctNumText.getText();
+
+                if(accountNumberDatabase.equals(accountFromInput))
+                {
+                    accountExists = true;
+                    System.out.println("Account found for: " + resultSet.getString(1) + " " + resultSet.getString(2));
+                    break;
+                }
+                else
+                    accountExists = false;
+            }
+        }
+        catch(SQLException e) { e.printStackTrace(); }
+        return  accountExists;
+    }
+
+
+    private void checkClientInfo()
+    {
+        String accountNumber = acctNumText.getText();
+        int accountNumberInteger = Integer.parseInt(accountNumber);
+
+        boolean accountExists = doesAccountExist();
+        if (accountExists)
+        {
+            window.close(); // close the frame
+            new AccessAccountView(accountNumberInteger);
+        }
+        else
+        {
+            JOptionPane.showMessageDialog(null, "No account found for: " + accountNumberInteger);
+        }
     }
 
     public Scene getCreateAccountScene()
