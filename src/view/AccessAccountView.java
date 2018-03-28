@@ -1,7 +1,6 @@
 package view;
 
 import javafx.application.Application;
-import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -9,20 +8,37 @@ import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
-import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
 public class AccessAccountView extends Application
 {
 
-    TextArea results;
+    private TextArea results;
+    private Stage window;
+    private int accountNumber;
+
+    AccessAccountView(int accountNumber)
+    {
+        System.out.println("AccessAccountView()");
+        this.accountNumber = accountNumber;
+       // createFrame();
+    }
 
     public static void main(String[] args)
     {
         launch(args);
+       // new AccessAccountView(1); // testing purposes
     }
 
     public void start(Stage window)
+    {
+        System.out.println("start()");
+        this.window = window;
+        createFrame(window);
+    }
+
+
+    private void createFrame(Stage window)
     {
         Scene displayScreen = getDisplayScreenScene();
 
