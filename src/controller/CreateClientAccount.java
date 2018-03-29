@@ -10,53 +10,35 @@ import java.sql.SQLException;
 
 public class CreateClientAccount
 {
-
     private String firstName, lastName, social;
-    WelcomeScreen view;
+    private WelcomeScreen view;
 
-    private Connection bankConnection;
-    private int accountnumber;
-
-/*    public static void main(String[] args)
-    {
-        new CreateClientAccount("John", "Smith", "123456789");
-    }*/
+    private int accountNumber;
 
     public CreateClientAccount(String firstName, String lastName, String social)
     {
+        Connection bankConnection = BankConnection.createConnection();
 
-        this.bankConnection = new BankConnection().createConnection();
-
-        this.view = view;
-        this.accountnumber = getBiggestAccountNumber(bankConnection);
-        this.accountnumber++; // increment account number for next client
-
-        System.out.println("connection established");
+        this.accountNumber = getBiggestAccountNumber(bankConnection);
+        this.accountNumber++; // increment account number for next client
 
         this.firstName = firstName;
         this.lastName = lastName;
         this.social = social;
 
-        addClientToDatabase(accountnumber, bankConnection);
-
-        // add info to other tables
-
-        //show the main screen
-
+        addClientToDatabase(accountNumber, bankConnection);
     }
 
         private void addClientToDatabase(int accountNumber, Connection connection)
         {
         addClientInfo(firstName, lastName, social, connection);
         addCheckingInfo(connection, accountNumber, 0.0, social);
-
         }
 
     private void addClientInfo(String firstName, String lastName, String social, Connection bankConnection)
     {
         try
         {
-
             String createClientStatement = "INSERT INTO clients (first_name, last_name, social, account_number) values (?, ?, ?, ?)";
 
             try (PreparedStatement preparedStatementClient = bankConnection.prepareStatement(createClientStatement))
@@ -64,7 +46,7 @@ public class CreateClientAccount
                 preparedStatementClient.setString(1, firstName);
                 preparedStatementClient.setString(2, lastName);
                 preparedStatementClient.setString(3, social);
-                preparedStatementClient.setInt(4, accountnumber);
+                preparedStatementClient.setInt(4, accountNumber);
 
                 preparedStatementClient.execute();
                 System.out.println("client info added");
@@ -100,7 +82,6 @@ public class CreateClientAccount
 
     private int getBiggestAccountNumber(Connection bankConnection)
     {
-        System.out.println("getBiggestAccountNumber()");
 
         int largestAccountNumber = 0;
 
@@ -111,23 +92,19 @@ public class CreateClientAccount
             PreparedStatement preparedStatement = bankConnection.prepareStatement(largestAcctNum);
 
 
-            ResultSet resultlargestAcctNum = preparedStatement.executeQuery();
+            ResultSet resultLargestAcctNum = preparedStatement.executeQuery();
 
 
-            while(resultlargestAcctNum.next())
+            while(resultLargestAcctNum.next())
             {
-                largestAccountNumber = resultlargestAcctNum.getInt(1);
+                largestAccountNumber = resultLargestAcctNum.getInt(1);
                 System.out.println("Largest account# found: " + largestAccountNumber);
                 return largestAccountNumber;
             }
 
         }
-        catch(SQLException e)
-        {
-            e.printStackTrace();
-        }
+        catch(SQLException e) { e.printStackTrace(); }
 
         return largestAccountNumber;
     }
-
 }
