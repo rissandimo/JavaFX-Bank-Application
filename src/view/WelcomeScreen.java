@@ -3,31 +3,31 @@ package view;
 import controller.CreateClientAccount;
 import controller.DeleteClientAccount;
 import controller.MenuAccountListener;
+import model.BankConnection;
+
 import javafx.application.Application;
-import javafx.geometry.Insets;
-import javafx.geometry.Pos;
+import javafx.geometry.*;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.*;
 import javafx.stage.Stage;
-import model.BankConnection;
 
 import javax.swing.*;
+
 import java.sql.*;
 
 public class WelcomeScreen extends Application
 {
     public Button accessAccount, createAccount, deleteAccount;
-    private TextField textFirstName, textLastName, textSocial;
-    public Stage window;
-    public static TextArea results;
     private Connection bankConnection;
     private DeleteClientAccount deleteAccountController;
-    TextField acctNumText;
+    private Stage window;
+    private TextField acctNumText, textFirstName, textLastName, textSocial;
+    public static TextArea results;
 
     public WelcomeScreen()
     {
-        this.bankConnection = new BankConnection().createConnection();
+        this.bankConnection = BankConnection.createConnection();
         this.deleteAccountController = new DeleteClientAccount();
 
         //Results
@@ -42,45 +42,24 @@ public class WelcomeScreen extends Application
     }
 
 
-    public void start(Stage primaryStage) throws Exception
+    public void start(Stage primaryStage)
     {
-        System.out.println("start()");
         window = primaryStage;
         window.setTitle("Bank");
 
-        HBox buttonsLayout = getButtonsLayout();
+        HBox buttonsMenuLayout = getButtonsLayout();
 
         BorderPane frame = new BorderPane();
 
-        frame.setTop(buttonsLayout);
+        frame.setTop(buttonsMenuLayout);
 
         Scene scene = new Scene(frame, 400, 200);
         window.setScene(scene);
         window.show();
-
-        // load accounts
-       // displayClients();
-
-    }
-
-    public TextField getTextFirstName()
-    {
-        return textFirstName;
-    }
-
-    public TextField getTextLastName()
-    {
-        return textLastName;
-    }
-
-    public TextField getTextSocial()
-    {
-        return textSocial;
     }
 
     private HBox getButtonsLayout()
     {
-        //Buttons Layout
         HBox buttonsLayout = new HBox(10);
         buttonsLayout.setAlignment(Pos.BASELINE_CENTER);
 
@@ -92,6 +71,14 @@ public class WelcomeScreen extends Application
         createAccount.setOnAction(new MenuAccountListener(this));
         deleteAccount.setOnAction(new MenuAccountListener(this));
 
+/*
+
+        //Buttons don't show up on the panel
+        Button accessAccount = createButtonWithActionListener("Access Account");
+        Button createAccount = createButtonWithActionListener("Create Account");
+        Button deleteAccount = createButtonWithActionListener("Delete Account");
+*/
+
 
         buttonsLayout.getChildren().addAll(accessAccount, createAccount, deleteAccount);
         buttonsLayout.setPadding(new Insets(5, 5, 5, 5));
@@ -99,30 +86,40 @@ public class WelcomeScreen extends Application
         return buttonsLayout;
     }
 
+    private Button createButtonWithActionListener(String nameOfButton)
+    {
+        Button button = new Button(nameOfButton);
+        button.setOnAction(new MenuAccountListener(this));
+
+        return button;
+    }
+
 
     public Scene getAccessAccountScene()
     {
         //Menu
-        HBox menu = getButtonsLayout();
+        HBox accessAccountButtonLayout = getButtonsLayout();
 
-        //Log in
-        VBox logIn = new VBox(10);
-        logIn.setAlignment(Pos.BASELINE_CENTER);
-        logIn.setPadding(new Insets(5, 5, 5, 5));
+        //Login layout
+        VBox loginLayout = new VBox(10);
+        loginLayout.setAlignment(Pos.BASELINE_CENTER);
+        loginLayout.setPadding(new Insets(5, 5, 5, 5));
 
+        //Label and text
         Label acctNumLabel = new Label("Account Number");
         acctNumText = new TextField();
         acctNumText.setMaxWidth(200);
+
+        //Button
         Button submit = new Button("Submit");
         submit.setOnAction( e -> accessAccount());
 
-        logIn.getChildren().addAll(acctNumLabel, acctNumText, submit);
+        loginLayout.getChildren().addAll(acctNumLabel, acctNumText, submit);
 
-        //frame
         BorderPane frame = new BorderPane();
 
-        frame.setTop(menu);
-        frame.setCenter(logIn);
+        frame.setTop(accessAccountButtonLayout);
+        frame.setCenter(loginLayout);
 
         return new Scene(frame, 400, 200);
     }
@@ -130,9 +127,25 @@ public class WelcomeScreen extends Application
     private void accessAccount()
     {
         checkClientInfo();
-        boolean accountExists = doesAccountExist();
 
-        if(accountExists) new AccessAccountView(Integer.parseInt(acctNumText.getText()));
+        if(doesAccountExist()) new AccessAccountView(Integer.parseInt(acctNumText.getText()));
+    }
+
+    private void checkClientInfo()
+    {
+        String accountNumber = acctNumText.getText();
+        int accountNumberInteger = Integer.parseInt(accountNumber);
+
+        boolean accountExists = doesAccountExist();
+        if (accountExists)
+        {
+            window.close(); // close the frame
+            new AccessAccountView(accountNumberInteger);
+        }
+        else
+        {
+            JOptionPane.showMessageDialog(null, "No account found for: " + accountNumberInteger);
+        }
     }
 
     private boolean doesAccountExist()
@@ -169,22 +182,7 @@ public class WelcomeScreen extends Application
     }
 
 
-    private void checkClientInfo()
-    {
-        String accountNumber = acctNumText.getText();
-        int accountNumberInteger = Integer.parseInt(accountNumber);
 
-        boolean accountExists = doesAccountExist();
-        if (accountExists)
-        {
-            window.close(); // close the frame
-            new AccessAccountView(accountNumberInteger);
-        }
-        else
-        {
-            JOptionPane.showMessageDialog(null, "No account found for: " + accountNumberInteger);
-        }
-    }
 
     public Scene getCreateAccountScene()
     {
@@ -226,7 +224,7 @@ public class WelcomeScreen extends Application
         return new Scene(frame, 400, 200);
     }
 
-    public void createAccount()
+    private void createAccount()
     {
         new CreateClientAccount(textFirstName.getText(), textLastName.getText(), textSocial.getText());
     }
