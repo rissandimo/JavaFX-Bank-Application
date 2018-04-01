@@ -58,19 +58,23 @@ public class WelcomeScreen extends Application
         HBox buttonsLayout = new HBox(10);
         buttonsLayout.setAlignment(Pos.BASELINE_CENTER);
 
-        accessAccount = new Button("Access Account");
-        createAccount = new Button("Create Account");
-        deleteAccount = new Button("Delete Account");
-
-        accessAccount.setOnAction(new MenuAccountListener(this));
-        createAccount.setOnAction(new MenuAccountListener(this));
-        deleteAccount.setOnAction(new MenuAccountListener(this));
-
+        accessAccount = createButton("Access Account");
+        createAccount = createButton("Create Account");
+        deleteAccount = createButton("Delete Account");
 
         buttonsLayout.getChildren().addAll(accessAccount, createAccount, deleteAccount);
         buttonsLayout.setPadding(new Insets(5, 5, 5, 5));
 
         return buttonsLayout;
+    }
+
+    private Button createButton(String buttonName)
+    {
+        Button button = new Button(buttonName);
+
+        button.setOnAction(new MenuAccountListener(this));
+
+        return button;
     }
 
 
