@@ -17,22 +17,20 @@ public class AccessAccountView extends Application
     private Stage window;
     private int accountNumber;
 
-    AccessAccountView(int accountNumber)
+    public AccessAccountView(int accountNumber)
     {
         System.out.println("AccessAccountView()");
         this.accountNumber = accountNumber;
-       // createFrame();
     }
 
     public static void main(String[] args)
     {
         launch(args);
-       // new AccessAccountView(1); // testing purposes
     }
 
     public void start(Stage window)
     {
-        System.out.println("start()");
+        System.out.println("AccessAccountView - start()");
         this.window = window;
         createFrame(window);
     }
@@ -40,6 +38,7 @@ public class AccessAccountView extends Application
 
     private void createFrame(Stage window)
     {
+        System.out.println("createFrame()");
         Scene displayScreen = getDisplayScreenScene();
 
         window.setScene(displayScreen);
