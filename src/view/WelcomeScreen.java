@@ -1,6 +1,5 @@
 package view;
 
-import controller.CreateClientAccount;
 import controller.DeleteClientAccount;
 import controller.MenuAccountListener;
 import javafx.application.Application;
@@ -19,15 +18,15 @@ public class WelcomeScreen extends Application
 {
     public Button accessAccount, createAccount, deleteAccount;
     private TextField textFirstName, textLastName, textSocial;
-    public Stage window;
+    private Stage window;
     public static TextArea results;
     private Connection bankConnection;
     private DeleteClientAccount deleteAccountController;
-    TextField acctNumText;
+    private TextField acctNumText;
 
     public WelcomeScreen()
     {
-        this.bankConnection = new BankConnection().createConnection();
+        this.bankConnection = BankConnection.createConnection();
         this.deleteAccountController = new DeleteClientAccount();
 
         //Results
@@ -57,21 +56,6 @@ public class WelcomeScreen extends Application
         Scene scene = new Scene(frame, 400, 200);
         window.setScene(scene);
         window.show();
-    }
-
-    public TextField getTextFirstName()
-    {
-        return textFirstName;
-    }
-
-    public TextField getTextLastName()
-    {
-        return textLastName;
-    }
-
-    public TextField getTextSocial()
-    {
-        return textSocial;
     }
 
     private HBox getButtonsLayout()
@@ -250,7 +234,7 @@ public class WelcomeScreen extends Application
 
         //Button
         Button submit = new Button("Submit");
-        submit.setOnAction( e -> deleteAccount(accountTextField.getText() ));
+        submit.setOnAction( e -> deleteAccount(Integer.parseInt(accountTextField.getText() )));
 
         HBox bottomPanel = new HBox();
         bottomPanel.setAlignment(Pos.BASELINE_CENTER);
@@ -266,23 +250,17 @@ public class WelcomeScreen extends Application
         return new Scene(frame, 600, 400);
     }
 
-    private void deleteAccount(String account_number)
+    private void deleteAccount(int account_number)
     {
         try
         {
-             int accountNumber = Integer.parseInt(account_number);
-             new DeleteClientAccount(accountNumber);
+             new DeleteClientAccount(account_number);
         }
         catch(NumberFormatException e)
         {
             JOptionPane.showMessageDialog(null, "Incorrect account number");
         }
 
-    }
-
-    private void clearResults()
-    {
-        results.setText("");
     }
 
     public Button getAccessAccount()
