@@ -57,10 +57,6 @@ public class WelcomeScreen extends Application
         Scene scene = new Scene(frame, 400, 200);
         window.setScene(scene);
         window.show();
-
-        // load accounts
-       // displayClients();
-
     }
 
     public TextField getTextFirstName()
@@ -150,11 +146,10 @@ public class WelcomeScreen extends Application
             while(resultSet.next())
             {
 
-                //account number from database
-                String accountNumberDatabase = resultSet.getString(3);
+                String accountNumberFromDatabase = resultSet.getString(3);
                 String accountFromInput = acctNumText.getText();
 
-                if(accountNumberDatabase.equals(accountFromInput))
+                if(accountNumberFromDatabase.equals(accountFromInput))
                 {
                     accountExists = true;
                     System.out.println("Account found for: " + resultSet.getString(1) + " " + resultSet.getString(2));
@@ -208,13 +203,13 @@ public class WelcomeScreen extends Application
         textFields.getChildren().addAll(textFirstName, textLastName, textSocial);
 
         Button submitButton = new Button("Submit");
+        submitButton.setOnAction( e -> createAccount());
 
         VBox buttonPanel = new VBox(10);
         buttonPanel.setPadding(new Insets(0,0,10,0));
         buttonPanel.setAlignment(Pos.BASELINE_CENTER);
         buttonPanel.getChildren().add(submitButton);
 
-        submitButton.setOnAction( e -> createAccount());
 
         BorderPane frame = new BorderPane();
 
@@ -226,9 +221,10 @@ public class WelcomeScreen extends Application
         return new Scene(frame, 400, 200);
     }
 
-    public void createAccount()
+    private void createAccount()
     {
-        new CreateClientAccount(textFirstName.getText(), textLastName.getText(), textSocial.getText());
+        if( !doesAccountExist() ) new AccessAccountView(Integer.parseInt(acctNumText.getText()));
+        else JOptionPane.showMessageDialog(null, "Account already exists");
     }
 
     public Scene getDeleteAccountScene()
