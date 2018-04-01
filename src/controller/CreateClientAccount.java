@@ -1,8 +1,7 @@
 package controller;
 
 import model.BankConnection;
-import view.WelcomeScreen;
-
+import view.AccessAccountView;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -12,37 +11,23 @@ public class CreateClientAccount
 {
 
     private String firstName, lastName, social;
-    WelcomeScreen view;
 
-    private Connection bankConnection;
-    private int accountnumber;
-
-/*    public static void main(String[] args)
-    {
-        new CreateClientAccount("John", "Smith", "123456789");
-    }*/
+    private int accountNumber;
 
     public CreateClientAccount(String firstName, String lastName, String social)
     {
 
-        this.bankConnection = new BankConnection().createConnection();
+        Connection bankConnection = BankConnection.createConnection();
+        this.accountNumber = getBiggestAccountNumber(bankConnection);
+        this.accountNumber++; // increment account number for next client
 
-        this.view = view;
-        this.accountnumber = getBiggestAccountNumber(bankConnection);
-        this.accountnumber++; // increment account number for next client
-
-        System.out.println("connection established");
+        System.out.println("CreateClientAccount - connection established");
 
         this.firstName = firstName;
         this.lastName = lastName;
         this.social = social;
 
-        addClientToDatabase(accountnumber, bankConnection);
-
-        // add info to other tables
-
-        //show the main screen
-
+        addClientToDatabase(accountNumber, bankConnection);
     }
 
         private void addClientToDatabase(int accountNumber, Connection connection)
@@ -50,6 +35,7 @@ public class CreateClientAccount
         addClientInfo(firstName, lastName, social, connection);
         addCheckingInfo(connection, accountNumber, 0.0, social);
 
+        new AccessAccountView(accountNumber);
         }
 
     private void addClientInfo(String firstName, String lastName, String social, Connection bankConnection)
@@ -64,7 +50,7 @@ public class CreateClientAccount
                 preparedStatementClient.setString(1, firstName);
                 preparedStatementClient.setString(2, lastName);
                 preparedStatementClient.setString(3, social);
-                preparedStatementClient.setInt(4, accountnumber);
+                preparedStatementClient.setInt(4, accountNumber);
 
                 preparedStatementClient.execute();
                 System.out.println("client info added");
