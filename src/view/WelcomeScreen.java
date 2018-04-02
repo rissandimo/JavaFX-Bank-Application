@@ -1,8 +1,8 @@
 package view;
 
-import controller.CreateClientAccount;
+import controller.CreateClientController;
 import controller.DeleteClientAccount;
-import controller.MenuAccountListener;
+import controller.WelcomeScreenController;
 import model.BankConnection;
 
 import javafx.application.Application;
@@ -67,9 +67,9 @@ public class WelcomeScreen extends Application
         createAccount = new Button("Create Account");
         deleteAccount = new Button("Delete Account");
 
-        accessAccount.setOnAction(new MenuAccountListener(this));
-        createAccount.setOnAction(new MenuAccountListener(this));
-        deleteAccount.setOnAction(new MenuAccountListener(this));
+        accessAccount.setOnAction(new WelcomeScreenController(this));
+        createAccount.setOnAction(new WelcomeScreenController(this));
+        deleteAccount.setOnAction(new WelcomeScreenController(this));
 
 /*
 
@@ -89,7 +89,7 @@ public class WelcomeScreen extends Application
     private Button createButtonWithActionListener(String nameOfButton)
     {
         Button button = new Button(nameOfButton);
-        button.setOnAction(new MenuAccountListener(this));
+        button.setOnAction(new WelcomeScreenController(this));
 
         return button;
     }
@@ -112,7 +112,7 @@ public class WelcomeScreen extends Application
 
         //Button
         Button submit = new Button("Submit");
-        submit.setOnAction( e -> accessAccount());
+      //  submit.setOnAction( e -> accessAccount());
 
         loginLayout.getChildren().addAll(acctNumLabel, acctNumText, submit);
 
@@ -124,12 +124,12 @@ public class WelcomeScreen extends Application
         return new Scene(frame, 400, 200);
     }
 
-    private void accessAccount()
+/*    private void accessAccount()
     {
         checkClientInfo();
 
         if(doesAccountExist()) new AccessAccountView(Integer.parseInt(acctNumText.getText()));
-    }
+    }*/
 
     private void checkClientInfo()
     {
@@ -140,7 +140,7 @@ public class WelcomeScreen extends Application
         if (accountExists)
         {
             window.close(); // close the frame
-            new AccessAccountView(accountNumberInteger);
+        //    new AccessAccountView(accountNumberInteger);
         }
         else
         {
@@ -206,13 +206,13 @@ public class WelcomeScreen extends Application
         textFields.getChildren().addAll(textFirstName, textLastName, textSocial);
 
         Button submitButton = new Button("Submit");
+        submitButton.setOnAction( e -> createAccount());
 
         VBox buttonPanel = new VBox(10);
         buttonPanel.setPadding(new Insets(0,0,10,0));
         buttonPanel.setAlignment(Pos.BASELINE_CENTER);
         buttonPanel.getChildren().add(submitButton);
 
-        submitButton.setOnAction( e -> createAccount());
 
         BorderPane frame = new BorderPane();
 
@@ -226,7 +226,7 @@ public class WelcomeScreen extends Application
 
     private void createAccount()
     {
-        new CreateClientAccount(textFirstName.getText(), textLastName.getText(), textSocial.getText());
+        new CreateClientController(textFirstName.getText(), textLastName.getText(), textSocial.getText());
     }
 
     public Scene getDeleteAccountScene()
