@@ -12,8 +12,6 @@ public class DeleteClientAccount implements EventHandler<ActionEvent>
 
     private Connection bankConnection;
     private PreparedStatement preparedStatement;
-    private int acccount_number;
-    private WelcomeScreen view;
 
     public static void main(String[] args)
     {
@@ -24,12 +22,10 @@ public class DeleteClientAccount implements EventHandler<ActionEvent>
     {
         System.out.println("DeleteClientAccount()");
         bankConnection = BankConnection.createConnection();
-       // this.view = new WelcomeScreen();
     }
 
     public DeleteClientAccount(int account_number)
     {
-        this.acccount_number = account_number;
         bankConnection = BankConnection.createConnection();
 
         try
@@ -54,18 +50,7 @@ public class DeleteClientAccount implements EventHandler<ActionEvent>
 
     }
 
-    public void removeCheckingAccount(int account_number) throws SQLException
-    {
-        String removeClientCK_ACCT = "DELETE FROM checking_account where account_number = ?";
-
-        preparedStatement = bankConnection.prepareStatement(removeClientCK_ACCT);
-
-        preparedStatement.setInt(1, account_number);
-
-        preparedStatement.execute();
-    }
-
-    public void removeCheckingDeposit(int account_number) throws SQLException
+    private void removeCheckingDeposit(int account_number) throws SQLException
     {
         String removeClientCK_DEPOSIT = "DELETE FROM checking_deposit where account_number = ?";
 
@@ -76,7 +61,7 @@ public class DeleteClientAccount implements EventHandler<ActionEvent>
         preparedStatement.execute();
     }
 
-    public void removeCheckingWithdrawal(int account_number) throws SQLException
+    private void removeCheckingWithdrawal(int account_number) throws SQLException
     {
         String removeClientCK_WITHDRAWAL = "DELETE FROM checking_withdrawl where account_number = ?";
 
@@ -87,6 +72,18 @@ public class DeleteClientAccount implements EventHandler<ActionEvent>
         preparedStatement.execute();
 
     }
+
+    private void removeCheckingAccount(int account_number) throws SQLException
+    {
+        String removeClientCK_ACCT = "DELETE FROM checking_account where account_number = ?";
+
+        preparedStatement = bankConnection.prepareStatement(removeClientCK_ACCT);
+
+        preparedStatement.setInt(1, account_number);
+
+        preparedStatement.execute();
+    }
+
 
     private void removeClientFromDatabase(int account_number) throws SQLException
     {
@@ -111,7 +108,7 @@ public class DeleteClientAccount implements EventHandler<ActionEvent>
 
             ResultSet resultSet = statement.executeQuery(clientStatement);
 
-            //   clearResults();
+            clearResults();
 
             WelcomeScreen.results.appendText("List of clients in bank, please select one and click submit \n \n");
 
@@ -128,6 +125,11 @@ public class DeleteClientAccount implements EventHandler<ActionEvent>
         {
             e.printStackTrace();
         }
+    }
+
+    private void clearResults()
+    {
+        WelcomeScreen.results.setText("");
     }
 
 
