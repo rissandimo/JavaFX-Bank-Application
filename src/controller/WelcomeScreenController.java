@@ -4,11 +4,11 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import view.WelcomeScreen;
 
-public class MenuAccountListener implements EventHandler<ActionEvent>
+public class WelcomeScreenController implements EventHandler<ActionEvent>
 {
     WelcomeScreen view;
 
-    public MenuAccountListener(WelcomeScreen view)
+    public WelcomeScreenController(WelcomeScreen view)
     {
         this.view = view;
     }

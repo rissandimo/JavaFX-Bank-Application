@@ -1,33 +1,39 @@
 package view;
 
+import controller.CreateClientController;
 import controller.DeleteClientAccount;
-import controller.MenuAccountListener;
+import controller.WelcomeScreenController;
+import model.BankConnection;
+
 import javafx.application.Application;
-import javafx.geometry.Insets;
-import javafx.geometry.Pos;
+import javafx.geometry.*;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.*;
 import javafx.stage.Stage;
-import model.BankConnection;
 
 import javax.swing.*;
+
 import java.sql.*;
 
 public class WelcomeScreen extends Application
 {
     public Button accessAccount, createAccount, deleteAccount;
-    private TextField textFirstName, textLastName, textSocial;
-    private Stage window;
-    public static TextArea results;
     private Connection bankConnection;
     private DeleteClientAccount deleteAccountController;
-    private TextField acctNumText;
+    private Stage window;
+    private TextField acctNumText, textFirstName, textLastName, textSocial;
+    public static TextArea results;
 
     public WelcomeScreen()
     {
         this.bankConnection = BankConnection.createConnection();
         this.deleteAccountController = new DeleteClientAccount();
+
+        //Results
+        results = new TextArea();
+        results.setPrefColumnCount(30);
+        results.setPrefRowCount(400);
     }
 
     public static void main(String[] args)
@@ -36,17 +42,16 @@ public class WelcomeScreen extends Application
     }
 
 
-    public void start(Stage primaryStage) throws Exception
+    public void start(Stage primaryStage)
     {
-        System.out.println("start()");
         window = primaryStage;
         window.setTitle("Bank");
 
-        HBox buttonsLayout = getButtonsLayout();
+        HBox buttonsMenuLayout = getButtonsLayout();
 
         BorderPane frame = new BorderPane();
 
-        frame.setTop(buttonsLayout);
+        frame.setTop(buttonsMenuLayout);
 
         Scene scene = new Scene(frame, 400, 200);
         window.setScene(scene);
@@ -58,9 +63,22 @@ public class WelcomeScreen extends Application
         HBox buttonsLayout = new HBox(10);
         buttonsLayout.setAlignment(Pos.BASELINE_CENTER);
 
-        accessAccount = createButton("Access Account");
-        createAccount = createButton("Create Account");
-        deleteAccount = createButton("Delete Account");
+        accessAccount = new Button("Access Account");
+        createAccount = new Button("Create Account");
+        deleteAccount = new Button("Delete Account");
+
+        accessAccount.setOnAction(new WelcomeScreenController(this));
+        createAccount.setOnAction(new WelcomeScreenController(this));
+        deleteAccount.setOnAction(new WelcomeScreenController(this));
+
+/*
+
+        //Buttons don't show up on the panel
+        Button accessAccount = createButtonWithActionListener("Access Account");
+        Button createAccount = createButtonWithActionListener("Create Account");
+        Button deleteAccount = createButtonWithActionListener("Delete Account");
+*/
+
 
         buttonsLayout.getChildren().addAll(accessAccount, createAccount, deleteAccount);
         buttonsLayout.setPadding(new Insets(5, 5, 5, 5));
@@ -68,11 +86,10 @@ public class WelcomeScreen extends Application
         return buttonsLayout;
     }
 
-    private Button createButton(String buttonName)
+    private Button createButtonWithActionListener(String nameOfButton)
     {
-        Button button = new Button(buttonName);
-
-        button.setOnAction(new MenuAccountListener(this));
+        Button button = new Button(nameOfButton);
+        button.setOnAction(new WelcomeScreenController(this));
 
         return button;
     }
@@ -80,42 +97,60 @@ public class WelcomeScreen extends Application
 
     public Scene getAccessAccountScene()
     {
-        HBox menuPanel = getButtonsLayout();
-        VBox loginPanel = getLogin();
+        //Menu
+        HBox accessAccountButtonLayout = getButtonsLayout();
+
+        //Login layout
+        VBox loginLayout = new VBox(10);
+        loginLayout.setAlignment(Pos.BASELINE_CENTER);
+        loginLayout.setPadding(new Insets(5, 5, 5, 5));
+
+        //Label and text
+        Label acctNumLabel = new Label("Account Number");
+        acctNumText = new TextField();
+        acctNumText.setMaxWidth(200);
+
+        //Button
+        Button submit = new Button("Submit");
+      //  submit.setOnAction( e -> accessAccount());
+
+        loginLayout.getChildren().addAll(acctNumLabel, acctNumText, submit);
 
         BorderPane frame = new BorderPane();
-        frame.setTop(menuPanel);
-        frame.setCenter(loginPanel);
+
+        frame.setTop(accessAccountButtonLayout);
+        frame.setCenter(loginLayout);
 
         return new Scene(frame, 400, 200);
     }
 
-    private VBox getLogin()
-    {
-        VBox loginPanel = new VBox(10);
-        loginPanel.setAlignment(Pos.BASELINE_CENTER);
-        loginPanel.setPadding(new Insets(5, 5, 5, 5));
-
-        Label acctNumLabel = new Label("Account Number");
-        acctNumText = new TextField();
-        acctNumText.setMaxWidth(200);
-        Button submit = new Button("Submit");
-        submit.setOnAction( e -> accessAccount());
-
-        loginPanel.getChildren().addAll(acctNumLabel, acctNumText, submit);
-
-        return loginPanel;
-    }
-
-    private void accessAccount()
+/*    private void accessAccount()
     {
         checkClientInfo();
 
-        if(accountExists()) new AccessAccountView(Integer.parseInt(acctNumText.getText()));
+        if(doesAccountExist()) new AccessAccountView(Integer.parseInt(acctNumText.getText()));
+    }*/
+
+    private void checkClientInfo()
+    {
+        String accountNumber = acctNumText.getText();
+        int accountNumberInteger = Integer.parseInt(accountNumber);
+
+        boolean accountExists = doesAccountExist();
+        if (accountExists)
+        {
+            window.close(); // close the frame
+        //    new AccessAccountView(accountNumberInteger);
+        }
+        else
+        {
+            JOptionPane.showMessageDialog(null, "No account found for: " + accountNumberInteger);
+        }
     }
 
-    private boolean accountExists()
+    private boolean doesAccountExist()
     {
+
         boolean accountExists = false;
         try
         {
@@ -127,49 +162,29 @@ public class WelcomeScreen extends Application
 
             while(resultSet.next())
             {
-                String accountNumberFromDatabase = resultSet.getString(3);
+
+                //account number from database
+                String accountNumberDatabase = resultSet.getString(3);
                 String accountFromInput = acctNumText.getText();
-                accountExists = accountNumberFromDatabase.equals(accountFromInput);
+
+                if(accountNumberDatabase.equals(accountFromInput))
+                {
+                    accountExists = true;
+                    System.out.println("Account found for: " + resultSet.getString(1) + " " + resultSet.getString(2));
+                    break;
+                }
+                else
+                    accountExists = false;
             }
         }
         catch(SQLException e) { e.printStackTrace(); }
-        return accountExists;
+        return  accountExists;
     }
 
-    private void checkClientInfo()
-    {
-        int accountNumber = Integer.parseInt(acctNumText.getText());
 
-        if (accountExists())
-        {
-            window.close();
-            new AccessAccountView(accountNumber);
-        }
-        else
-        {
-            JOptionPane.showMessageDialog(null, "No account found for: " + accountNumber);
-        }
-    }
+
 
     public Scene getCreateAccountScene()
-    {
-        //Panels
-        HBox menu = getButtonsLayout();
-        VBox labels = getLabels();
-        VBox textFields = getTextFields();
-        VBox buttonPanel = getButtons();
-
-        //add panels to frame
-        BorderPane frame = new BorderPane();
-        frame.setTop(menu);
-        frame.setLeft(labels);
-        frame.setRight(textFields);
-        frame.setBottom(buttonPanel);
-
-        return new Scene(frame, 400, 200);
-    }
-
-    private VBox getLabels()
     {
         VBox labels = new VBox(10);
         labels.setPadding(new Insets(5, 0, 0, 10));
@@ -179,11 +194,8 @@ public class WelcomeScreen extends Application
 
         labels.getChildren().addAll(labelFirstName, labelLastName, labelSocial);
 
-        return labels;
-    }
+        HBox menu = getButtonsLayout();
 
-    private VBox getTextFields()
-    {
         VBox textFields = new VBox(10);
         textFields.setPadding(new Insets(0, 10, 0, 0));
 
@@ -193,81 +205,86 @@ public class WelcomeScreen extends Application
 
         textFields.getChildren().addAll(textFirstName, textLastName, textSocial);
 
-        return textFields;
-    }
-
-    private VBox getButtons()
-    {
-        VBox buttonPanel = new VBox(10);
-
         Button submitButton = new Button("Submit");
         submitButton.setOnAction( e -> createAccount());
 
+        VBox buttonPanel = new VBox(10);
         buttonPanel.setPadding(new Insets(0,0,10,0));
         buttonPanel.setAlignment(Pos.BASELINE_CENTER);
         buttonPanel.getChildren().add(submitButton);
 
-        return buttonPanel;
+
+        BorderPane frame = new BorderPane();
+
+        frame.setTop(menu);
+        frame.setLeft(labels);
+        frame.setRight(textFields);
+        frame.setBottom(buttonPanel);
+
+        return new Scene(frame, 400, 200);
     }
 
     private void createAccount()
     {
-        if( !accountExists() ) new AccessAccountView(Integer.parseInt(acctNumText.getText()));
-        else JOptionPane.showMessageDialog(null, "Account already exists");
+        new CreateClientController(textFirstName.getText(), textLastName.getText(), textSocial.getText());
     }
 
     public Scene getDeleteAccountScene()
     {
-        HBox bottomPanel = getBottomPanel();
-        HBox menuPanel = getMenu();
+
+        //Menu
+        VBox labels = new VBox(10);
+        labels.setPadding(new Insets(5, 0, 0, 10));
+        HBox menu = getButtonsLayout();
+
+        Button showAccountButton = new Button("Show Accounts");
+        showAccountButton.setOnAction(e -> deleteAccountController.displayClients());
+
+        menu.getChildren().add(showAccountButton); // add "show accounts button" to menu
+
+                                                                        //Bottom Panel
+
+        Label accountLabel = new Label("Account number: ");
+
+        // Text field
+        TextField accountTextField = new TextField();
+        accountTextField.setPrefColumnCount(10);
+
+        //Button
+        Button submit = new Button("Submit");
+        submit.setOnAction( e -> deleteAccount(accountTextField.getText() ));
+
+        HBox bottomPanel = new HBox();
+        bottomPanel.setAlignment(Pos.BASELINE_CENTER);
+        bottomPanel.getChildren().addAll(accountLabel, accountTextField, submit);
+
 
         BorderPane frame = new BorderPane();
-        frame.setTop(menuPanel);
+
+        frame.setTop(menu);
         frame.setCenter(results);
         frame.setBottom(bottomPanel);
 
         return new Scene(frame, 600, 400);
     }
 
-    private HBox getBottomPanel()
+    private void deleteAccount(String account_number)
     {
-        Label accountLabel = new Label("Account number: ");
-
-        //Results
-        results = new TextArea();
-        results.setPrefColumnCount(30);
-        results.setPrefRowCount(400);
-
-        // Text field
-        TextField accountTextField = new TextField();
-        accountTextField.setPrefColumnCount(10);
-
-        Button submit = new Button("Submit");
-        submit.setOnAction( e -> deleteAccount(Integer.parseInt(accountTextField.getText() )));
-
-        HBox bottomPanel = new HBox();
-        bottomPanel.setAlignment(Pos.BASELINE_CENTER);
-        bottomPanel.getChildren().addAll(accountLabel, accountTextField, submit);
-
-        return bottomPanel;
-    }
-
-    private HBox getMenu()
-    {
-        HBox menu = getButtonsLayout();
-
-        Button showAccountButton = new Button("Show Accounts");
-        showAccountButton.setOnAction(e -> deleteAccountController.displayClients());
-
-        menu.getChildren().add(showAccountButton);
-        return menu;
-    }
-
-    private void deleteAccount(int account_number)
-    {
-        try { new DeleteClientAccount(account_number); }
+        try
+        {
+             int accountNumber = Integer.parseInt(account_number);
+             new DeleteClientAccount(accountNumber);
+        }
         catch(NumberFormatException e)
-        {JOptionPane.showMessageDialog(null, "Incorrect account number"); }
+        {
+            JOptionPane.showMessageDialog(null, "Incorrect account number");
+        }
+
+    }
+
+    private void clearResults()
+    {
+        results.setText("");
     }
 
     public Button getAccessAccount()

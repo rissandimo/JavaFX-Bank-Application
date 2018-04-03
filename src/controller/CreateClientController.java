@@ -1,6 +1,7 @@
 package controller;
 
 import model.BankConnection;
+import view.AccessAccountView;
 import view.WelcomeScreen;
 
 import java.sql.Connection;
@@ -8,14 +9,14 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-public class CreateClientAccount
+public class CreateClientController
 {
     private String firstName, lastName, social;
     private WelcomeScreen view;
 
     private int accountNumber;
 
-    public CreateClientAccount(String firstName, String lastName, String social)
+    public CreateClientController(String firstName, String lastName, String social)
     {
         Connection bankConnection = BankConnection.createConnection();
 
@@ -33,6 +34,8 @@ public class CreateClientAccount
         {
         addClientInfo(firstName, lastName, social, connection);
         addCheckingInfo(connection, accountNumber, 0.0, social);
+
+        //new AccessAccountView(accountNumber);
         }
 
     private void addClientInfo(String firstName, String lastName, String social, Connection bankConnection)
