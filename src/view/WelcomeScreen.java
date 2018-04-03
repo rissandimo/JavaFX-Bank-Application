@@ -67,7 +67,6 @@ public class WelcomeScreen extends Application
          createAccount = createButton("Create Account");
          deleteAccount = createButton("Delete Account");
 
-
         buttonsLayout.getChildren().addAll(accessAccount, createAccount, deleteAccount);
         buttonsLayout.setPadding(new Insets(5, 5, 5, 5));
 
