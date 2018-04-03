@@ -63,21 +63,9 @@ public class WelcomeScreen extends Application
         HBox buttonsLayout = new HBox(10);
         buttonsLayout.setAlignment(Pos.BASELINE_CENTER);
 
-        accessAccount = new Button("Access Account");
-        createAccount = new Button("Create Account");
-        deleteAccount = new Button("Delete Account");
-
-        accessAccount.setOnAction(new WelcomeScreenController(this));
-        createAccount.setOnAction(new WelcomeScreenController(this));
-        deleteAccount.setOnAction(new WelcomeScreenController(this));
-
-/*
-
-        //Buttons don't show up on the panel
-        Button accessAccount = createButtonWithActionListener("Access Account");
-        Button createAccount = createButtonWithActionListener("Create Account");
-        Button deleteAccount = createButtonWithActionListener("Delete Account");
-*/
+         accessAccount = createButton("Access Account");
+         createAccount = createButton("Create Account");
+         deleteAccount = createButton("Delete Account");
 
 
         buttonsLayout.getChildren().addAll(accessAccount, createAccount, deleteAccount);
@@ -86,11 +74,10 @@ public class WelcomeScreen extends Application
         return buttonsLayout;
     }
 
-    private Button createButtonWithActionListener(String nameOfButton)
+    private Button createButton(String nameOfButton)
     {
         Button button = new Button(nameOfButton);
         button.setOnAction(new WelcomeScreenController(this));
-
         return button;
     }
 
@@ -112,7 +99,7 @@ public class WelcomeScreen extends Application
 
         //Button
         Button submit = new Button("Submit");
-      //  submit.setOnAction( e -> accessAccount());
+        //  submit.setOnAction( e -> accessAccount());
 
         loginLayout.getChildren().addAll(acctNumLabel, acctNumText, submit);
 
@@ -140,7 +127,7 @@ public class WelcomeScreen extends Application
         if (accountExists)
         {
             window.close(); // close the frame
-        //    new AccessAccountView(accountNumberInteger);
+            //    new AccessAccountView(accountNumberInteger);
         }
         else
         {
@@ -242,7 +229,7 @@ public class WelcomeScreen extends Application
 
         menu.getChildren().add(showAccountButton); // add "show accounts button" to menu
 
-                                                                        //Bottom Panel
+        //Bottom Panel
 
         Label accountLabel = new Label("Account number: ");
 
@@ -272,8 +259,8 @@ public class WelcomeScreen extends Application
     {
         try
         {
-             int accountNumber = Integer.parseInt(account_number);
-             new DeleteClientAccount(accountNumber);
+            int accountNumber = Integer.parseInt(account_number);
+            new DeleteClientAccount(accountNumber);
         }
         catch(NumberFormatException e)
         {
