@@ -2,15 +2,20 @@ package controller;
 
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
+import model.BankConnection;
 import view.WelcomeScreen;
+
+import java.sql.Connection;
 
 public class WelcomeScreenController implements EventHandler<ActionEvent>
 {
     WelcomeScreen view;
+    private Connection bankConnection;
 
     public WelcomeScreenController(WelcomeScreen view)
     {
         this.view = view;
+        this.bankConnection = BankConnection.createConnection();
     }
 
         public void handle(ActionEvent event)
