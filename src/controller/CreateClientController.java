@@ -4,20 +4,19 @@ package controller;
 import model.BankConnection;
 import view.WelcomeScreen;
 
-import javax.swing.*;
 import java.sql.*;
+import javax.swing.*;
 
 public class CreateClientController
 {
     private String firstName, lastName, social;
     private int accountNumber;
     private Connection bankConnection;
-
-
     private WelcomeScreen view;
 
     public CreateClientController(String firstName, String lastName, String social)
     {
+        System.out.println("CreateClientAccount()");
         this.view = new WelcomeScreen();
         this.bankConnection = BankConnection.createConnection();
         this.accountNumber = Utilities.getBiggestAccountNumber(bankConnection);
@@ -32,11 +31,12 @@ public class CreateClientController
 
         private void addClientToDatabase(int accountNumber, Connection connection)
         {
-           if(clientInfoValid())
+           System.out.println("addClientToDatabse()");
+           if(clientInfoValid() && (!accountExists() ))
            {
             addClientInfo(firstName, lastName, social, connection);
             addCheckingInfo(connection, accountNumber, 0.0, social);
-
+            //new AccessAccountView(accountNumber);
            }
         }
 
@@ -97,9 +97,7 @@ public class CreateClientController
         } catch (SQLException e) { e.printStackTrace(); }
     }
 
-
-
-    private boolean doesAccountExist()
+    private boolean accountExists()
     {
 
         boolean accountExists = false;
