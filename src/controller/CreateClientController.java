@@ -26,13 +26,13 @@ public class CreateClientController
         this.lastName = lastName;
         this.social = social;
 
-        addClientToDatabase(accountNumber, bankConnection);
+        addClientToDatabase(accountNumber, social, bankConnection);
     }
 
-        private void addClientToDatabase(int accountNumber, Connection connection)
+        private void addClientToDatabase(int accountNumber, String social, Connection connection)
         {
            System.out.println("addClientToDatabse()");
-           if(clientInfoValid() && (!accountExists() ))
+           if(clientInfoValid() && (!accountExists(social) ))
            {
             addClientInfo(firstName, lastName, social, connection);
             addCheckingInfo(connection, accountNumber, 0.0, social);
@@ -97,7 +97,7 @@ public class CreateClientController
         } catch (SQLException e) { e.printStackTrace(); }
     }
 
-    private boolean accountExists()
+    private boolean accountExists(String socialFromInput)
     {
 
         boolean accountExists = false;
@@ -105,18 +105,15 @@ public class CreateClientController
         {
             Statement query = bankConnection.createStatement();
 
-            String sqlQuery = "SELECT first_name, last_name, account_number FROM clients";
+            String sqlQuery = "SELECT social FROM clients";
 
             ResultSet resultSet = query.executeQuery(sqlQuery);
 
             while(resultSet.next())
             {
+                String socialFromDatabase = resultSet.getString(1);
 
-                //account number from database
-                int accountNumberDatabase = Integer.parseInt(resultSet.getString(3));
-                int accountFromInput = view.getAcctNum();
-
-                if(accountNumberDatabase == accountFromInput)
+                if(socialFromDatabase.equals(socialFromInput))
                 {
                     accountExists = true;
                     System.out.println("Account found for: " + resultSet.getString(1) + " " + resultSet.getString(2));
