@@ -28,7 +28,7 @@ public class WelcomeScreen extends Application
     public WelcomeScreen()
     {
         this.bankConnection = BankConnection.createConnection();
-        this.deleteAccountController = new DeleteClientAccount();
+        this.deleteAccountController = new DeleteClientAccount(3);
 
         //Results
         results = new TextArea();
@@ -110,66 +110,6 @@ public class WelcomeScreen extends Application
         return new Scene(frame, 400, 200);
     }
 
-/*    private void accessAccount()
-    {
-        checkClientInfo();
-
-        if(doesAccountExist()) new AccessAccountView(Integer.parseInt(acctNumText.getText()));
-    }*/
-
-    private void checkClientInfo()
-    {
-        String accountNumber = acctNumText.getText();
-        int accountNumberInteger = Integer.parseInt(accountNumber);
-
-        boolean accountExists = doesAccountExist();
-        if (accountExists)
-        {
-            window.close(); // close the frame
-            //    new AccessAccountView(accountNumberInteger);
-        }
-        else
-        {
-            JOptionPane.showMessageDialog(null, "No account found for: " + accountNumberInteger);
-        }
-    }
-
-    private boolean doesAccountExist()
-    {
-
-        boolean accountExists = false;
-        try
-        {
-            Statement query = bankConnection.createStatement();
-
-            String sqlQuery = "SELECT first_name, last_name, account_number FROM clients";
-
-            ResultSet resultSet = query.executeQuery(sqlQuery);
-
-            while(resultSet.next())
-            {
-
-                //account number from database
-                String accountNumberDatabase = resultSet.getString(3);
-                String accountFromInput = acctNumText.getText();
-
-                if(accountNumberDatabase.equals(accountFromInput))
-                {
-                    accountExists = true;
-                    System.out.println("Account found for: " + resultSet.getString(1) + " " + resultSet.getString(2));
-                    break;
-                }
-                else
-                    accountExists = false;
-            }
-        }
-        catch(SQLException e) { e.printStackTrace(); }
-        return  accountExists;
-    }
-
-
-
-
     public Scene getCreateAccountScene()
     {
         VBox labels = new VBox(10);
@@ -212,6 +152,7 @@ public class WelcomeScreen extends Application
 
     private void createAccount()
     {
+        window.close(); // close frame
         new CreateClientController(textFirstName.getText(), textLastName.getText(), textSocial.getText());
     }
 
@@ -268,10 +209,6 @@ public class WelcomeScreen extends Application
 
     }
 
-    private void clearResults()
-    {
-        results.setText("");
-    }
 
     public Button getAccessAccount()
     {
@@ -293,4 +230,28 @@ public class WelcomeScreen extends Application
         window.setScene(scene);
     }
 
+    public int getAcctNum()
+    {
+        return Integer.parseInt(acctNumText.getText());
+    }
+
+    public String getTextFirstName()
+    {
+        return textFirstName.getText();
+    }
+
+    public String getTextLastName()
+    {
+        return textLastName.getText();
+    }
+
+    public String getTextSocial()
+    {
+        return textSocial.getText();
+    }
+
+    public static TextArea getResults()
+    {
+        return results;
+    }
 }

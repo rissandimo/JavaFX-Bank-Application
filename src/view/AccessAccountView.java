@@ -24,17 +24,17 @@ public class AccessAccountView extends Application
     private int accountNumber;
     private Connection bankConnection;
 
-    public AccessAccountView()
+    public AccessAccountView(int accountNumber)
     {
+        System.out.println("AccessAccountView()");
         bankConnection = BankConnection.createConnection();
-        this.accountNumber = 1;
+        this.accountNumber = accountNumber;
     }
 
     public static void main(String[] args)
     {
         launch(args);
     }
-
     public void start(Stage window)
     {
         this.window = window;
