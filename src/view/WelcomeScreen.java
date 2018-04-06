@@ -36,11 +36,6 @@ public class WelcomeScreen extends Application
         results.setPrefRowCount(400);
     }
 
-    public static void main(String[] args)
-    {
-        launch(args);
-    }
-
 
     public void start(Stage primaryStage)
     {
@@ -132,7 +127,8 @@ public class WelcomeScreen extends Application
         textFields.getChildren().addAll(textFirstName, textLastName, textSocial);
 
         Button submitButton = new Button("Submit");
-        submitButton.setOnAction( e -> createAccount());
+        submitButton.setOnAction( e -> createAccount(
+                textFirstName.getText(), textLastName.getText(), textSocial.getText()));
 
         VBox buttonPanel = new VBox(10);
         buttonPanel.setPadding(new Insets(0,0,10,0));
@@ -150,10 +146,10 @@ public class WelcomeScreen extends Application
         return new Scene(frame, 400, 200);
     }
 
-    private void createAccount()
+    private void createAccount(String firstName, String lastname, String social)
     {
         window.close(); // close frame
-        new CreateClientController(textFirstName.getText(), textLastName.getText(), textSocial.getText());
+        new CreateClientController(firstName, lastname, social);
     }
 
     public Scene getDeleteAccountScene()
@@ -230,9 +226,9 @@ public class WelcomeScreen extends Application
         window.setScene(scene);
     }
 
-    public int getAcctNum()
+    public String getSocial()
     {
-        return Integer.parseInt(acctNumText.getText());
+        return getTextSocial();
     }
 
     public String getTextFirstName()
