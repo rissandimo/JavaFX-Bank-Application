@@ -229,17 +229,17 @@ public class WelcomeScreen extends Application
         }
     }
 
-    public Button getAccessAccount()
+    public Button getAccessAccountButton()
     {
         return accessAccount;
     }
 
-    public Button getCreateAccount()
+    public Button getCreateAccountButton()
     {
         return createAccount;
     }
 
-    public Button getDeleteAccount()
+    public Button getDeleteAccountButton()
     {
         return deleteAccount;
     }
