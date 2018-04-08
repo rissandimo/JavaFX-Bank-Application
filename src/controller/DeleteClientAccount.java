@@ -1,11 +1,10 @@
 package controller;
 
+import java.sql.*;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import model.BankConnection;
 import view.WelcomeScreen;
-
-import java.sql.*;
 
 public class DeleteClientAccount implements EventHandler<ActionEvent>
 {
@@ -22,7 +21,8 @@ public class DeleteClientAccount implements EventHandler<ActionEvent>
     {
         bankConnection = BankConnection.createConnection();
 
-        try { removeClient(account_number); } catch(SQLException e) {e.printStackTrace();}
+        try { removeClient(account_number); }
+        catch(SQLException e) {e.printStackTrace();}
     }
 
     private void removeClient(int account_number) throws SQLException
@@ -35,9 +35,6 @@ public class DeleteClientAccount implements EventHandler<ActionEvent>
         removeCheckingAccount(account_number);
 
         removeClientFromDatabase(account_number);
-
-        System.out.println("Client removed");
-
     }
 
     private void removeCheckingDeposit(int account_number) throws SQLException
@@ -74,7 +71,6 @@ public class DeleteClientAccount implements EventHandler<ActionEvent>
         preparedStatement.execute();
     }
 
-
     private void removeClientFromDatabase(int account_number) throws SQLException
     {
         String removeClient = "DELETE FROM clients where account_number = ?";
@@ -84,9 +80,7 @@ public class DeleteClientAccount implements EventHandler<ActionEvent>
         preparedStatement.setInt(1, account_number);
 
         preparedStatement.execute();
-
     }
-
 
     public void displayClients()
     {
@@ -100,7 +94,7 @@ public class DeleteClientAccount implements EventHandler<ActionEvent>
 
             clearResults();
 
-            WelcomeScreen.results.appendText("List of clients in bank, please select one and click submit \n \n");
+            WelcomeScreen.results.appendText("Enter account number to delete \n \n");
 
             while(resultSet.next())
             {
@@ -111,10 +105,7 @@ public class DeleteClientAccount implements EventHandler<ActionEvent>
             }
 
         }
-        catch(SQLException e)
-        {
-            e.printStackTrace();
-        }
+        catch(SQLException e) { e.printStackTrace(); }
     }
 
     private void clearResults()
