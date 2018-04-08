@@ -1,14 +1,5 @@
 package view;
 
-import javafx.application.Application;
-import javafx.geometry.Pos;
-import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.TextArea;
-import javafx.scene.control.TextField;
-import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.HBox;
-import javafx.stage.Stage;
 import model.BankConnection;
 
 import java.sql.Connection;
@@ -16,17 +7,22 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+import javafx.application.Application;
+import javafx.geometry.Pos;
+import javafx.scene.Scene;
+import javafx.scene.control.*;
+import javafx.scene.layout.*;
+import javafx.stage.Stage;
+
 public class AccessAccountView extends Application
 {
 
     private TextArea results;
-    private Stage window;
     private int accountNumber;
     private Connection bankConnection;
 
     public AccessAccountView(int accountNumber)
     {
-        System.out.println("AccessAccountView()");
         bankConnection = BankConnection.createConnection();
         this.accountNumber = accountNumber;
     }
@@ -37,12 +33,9 @@ public class AccessAccountView extends Application
     }
     public void start(Stage window)
     {
-        this.window = window;
-
-        Scene displayScreen = getDisplayScreenScene();
-
         results.appendText("Please make a selection \n");
 
+        Scene displayScreen = getDisplayScreenScene();
         window.setScene(displayScreen);
         window.show();
     }
@@ -53,19 +46,15 @@ public class AccessAccountView extends Application
 
         HBox buttonsPanel = createButtonsPanel();
 
-        //Text field
         TextField input = new TextField();
         input.setPrefColumnCount(10);
 
-        //Button
         Button submitButton = new Button("Submit");
 
-        // Text area
         results = new TextArea();
         results.setPrefColumnCount(40);
         results.setPrefRowCount(30);
 
-                                                        //Bottom Panel
         HBox bottomPanel = new HBox();
         bottomPanel.setAlignment(Pos.BASELINE_CENTER);
         bottomPanel.getChildren().addAll(input, submitButton);
@@ -78,7 +67,6 @@ public class AccessAccountView extends Application
 
     private HBox createButtonsPanel()
     {
-        //Buttons
         HBox buttonsPanel = new HBox();
         buttonsPanel.setAlignment(Pos.BASELINE_CENTER);
 
@@ -108,15 +96,10 @@ public class AccessAccountView extends Application
 
         ResultSet resultSet = preparedStatement.executeQuery();
 
-        while(resultSet.next())
-        {
-        results.appendText("Balance: " + resultSet.getDouble(1));
-        }
-
+        while(resultSet.next()) { results.appendText("Balance: " + resultSet.getDouble(1)); }
         resultSet.first();
 
         }
         catch(SQLException e) {e.printStackTrace(); }
     }
-
 }
