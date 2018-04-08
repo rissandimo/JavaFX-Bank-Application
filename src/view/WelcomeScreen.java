@@ -1,9 +1,6 @@
 package view;
 
-import controller.CreateClientController;
-import controller.DeleteClientAccount;
-import controller.WelcomeScreenController;
-import model.BankConnection;
+import controller.*;
 
 import javafx.application.Application;
 import javafx.geometry.*;
@@ -11,38 +8,30 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.*;
 import javafx.stage.Stage;
-
 import javax.swing.*;
 
-import java.sql.*;
 
 public class WelcomeScreen extends Application
 {
-    public Button accessAccount, createAccount, deleteAccount;
-    private Connection bankConnection;
+    private Button accessAccount, createAccount, deleteAccount;
     private DeleteClientAccount deleteAccountController;
     private Stage window;
-    private TextField acctNumText, textFirstName, textLastName, textSocial;
+    private TextField textFirstName;
+    private TextField textLastName;
+    private TextField textSocial;
     public static TextArea results;
 
     public WelcomeScreen()
     {
-        this.bankConnection = BankConnection.createConnection();
-        this.deleteAccountController = new DeleteClientAccount(3);
-
-        //Results
-        results = new TextArea();
-        results.setPrefColumnCount(30);
-        results.setPrefRowCount(400);
+        this.deleteAccountController = new DeleteClientAccount();
     }
-
 
     public void start(Stage primaryStage)
     {
         window = primaryStage;
         window.setTitle("Bank");
 
-        HBox buttonsMenuLayout = getButtonsLayout();
+        HBox buttonsMenuLayout = getCreateButtonsMenuPanel();
 
         BorderPane frame = new BorderPane();
 
@@ -53,19 +42,19 @@ public class WelcomeScreen extends Application
         window.show();
     }
 
-    private HBox getButtonsLayout()
+    private HBox getCreateButtonsMenuPanel()
     {
-        HBox buttonsLayout = new HBox(10);
-        buttonsLayout.setAlignment(Pos.BASELINE_CENTER);
+        HBox buttonsPanel = new HBox(10);
+        buttonsPanel.setAlignment(Pos.BASELINE_CENTER);
 
-         accessAccount = createButton("Access Account");
-         createAccount = createButton("Create Account");
-         deleteAccount = createButton("Delete Account");
+        accessAccount = createButton("Access Account");
+        createAccount = createButton("Create Account");
+        deleteAccount = createButton("Delete Account");
 
-        buttonsLayout.getChildren().addAll(accessAccount, createAccount, deleteAccount);
-        buttonsLayout.setPadding(new Insets(5, 5, 5, 5));
+        buttonsPanel.getChildren().addAll(accessAccount, createAccount, deleteAccount);
+        buttonsPanel.setPadding(new Insets(5, 5, 5, 5));
 
-        return buttonsLayout;
+        return buttonsPanel;
     }
 
     private Button createButton(String nameOfButton)
@@ -75,37 +64,62 @@ public class WelcomeScreen extends Application
         return button;
     }
 
-
     public Scene getAccessAccountScene()
     {
-        //Menu
-        HBox accessAccountButtonLayout = getButtonsLayout();
+        HBox buttonsPanel = getCreateButtonsMenuPanel();
 
-        //Login layout
-        VBox loginLayout = new VBox(10);
-        loginLayout.setAlignment(Pos.BASELINE_CENTER);
-        loginLayout.setPadding(new Insets(5, 5, 5, 5));
-
-        //Label and text
-        Label acctNumLabel = new Label("Account Number");
-        acctNumText = new TextField();
-        acctNumText.setMaxWidth(200);
-
-        //Button
-        Button submit = new Button("Submit");
-        //  submit.setOnAction( e -> accessAccount());
-
-        loginLayout.getChildren().addAll(acctNumLabel, acctNumText, submit);
+        VBox loginPanel = getLoginLayout();
 
         BorderPane frame = new BorderPane();
-
-        frame.setTop(accessAccountButtonLayout);
-        frame.setCenter(loginLayout);
+        frame.setTop(buttonsPanel);
+        frame.setCenter(loginPanel);
 
         return new Scene(frame, 400, 200);
     }
 
+    private VBox getLoginLayout()
+    {
+        VBox loginPanel = new VBox(10);
+        loginPanel.setAlignment(Pos.BASELINE_CENTER);
+        loginPanel.setPadding(new Insets(5, 5, 5, 5));
+
+        Label acctNumLabel = new Label("Account Number");
+        TextField acctNumText = new TextField();
+        acctNumText.setMaxWidth(200);
+
+        Button submit = new Button("Log In");
+        submit.setOnAction(e ->
+        {
+            window.close();
+            new AccessAccountView(Integer.parseInt(acctNumText.getText()));
+        });
+
+
+        loginPanel.getChildren().addAll(acctNumLabel, acctNumText, submit);
+
+        return loginPanel;
+    }
+
     public Scene getCreateAccountScene()
+    {
+        HBox menuButtonsPanel = getCreateButtonsMenuPanel();
+
+        VBox labelsPanel = getCreateLabelsPanel();
+
+        VBox textFieldsPanel = getCreateTextFieldsPanel();
+
+        VBox buttonPanel = getCreateButtonsPanel();
+
+        BorderPane frame = new BorderPane();
+        frame.setTop(menuButtonsPanel);
+        frame.setLeft(labelsPanel);
+        frame.setRight(textFieldsPanel);
+        frame.setBottom(buttonPanel);
+
+        return new Scene(frame, 400, 200);
+    }
+
+    private VBox getCreateLabelsPanel()
     {
         VBox labels = new VBox(10);
         labels.setPadding(new Insets(5, 0, 0, 10));
@@ -115,8 +129,11 @@ public class WelcomeScreen extends Application
 
         labels.getChildren().addAll(labelFirstName, labelLastName, labelSocial);
 
-        HBox menu = getButtonsLayout();
+        return labels;
+    }
 
+    private VBox getCreateTextFieldsPanel()
+    {
         VBox textFields = new VBox(10);
         textFields.setPadding(new Insets(0, 10, 0, 0));
 
@@ -126,69 +143,77 @@ public class WelcomeScreen extends Application
 
         textFields.getChildren().addAll(textFirstName, textLastName, textSocial);
 
+        return textFields;
+    }
+
+    private VBox getCreateButtonsPanel()
+    {
+        VBox buttonPanel = new VBox(10);
+
         Button submitButton = new Button("Submit");
-        submitButton.setOnAction( e -> createAccount(
+        submitButton.setOnAction( e -> createNewAccount(
                 textFirstName.getText(), textLastName.getText(), textSocial.getText()));
 
-        VBox buttonPanel = new VBox(10);
         buttonPanel.setPadding(new Insets(0,0,10,0));
         buttonPanel.setAlignment(Pos.BASELINE_CENTER);
         buttonPanel.getChildren().add(submitButton);
 
-
-        BorderPane frame = new BorderPane();
-
-        frame.setTop(menu);
-        frame.setLeft(labels);
-        frame.setRight(textFields);
-        frame.setBottom(buttonPanel);
-
-        return new Scene(frame, 400, 200);
+        return buttonPanel;
     }
 
-    private void createAccount(String firstName, String lastname, String social)
+    private void createNewAccount(String firstName, String lastname, String social)
     {
-        window.close(); // close frame
+        window.close();
         new CreateClientController(firstName, lastname, social);
     }
 
     public Scene getDeleteAccountScene()
     {
+        HBox buttonsLayout = getButtonsLayout();
 
-        //Menu
-        VBox labels = new VBox(10);
-        labels.setPadding(new Insets(5, 0, 0, 10));
-        HBox menu = getButtonsLayout();
-
-        Button showAccountButton = new Button("Show Accounts");
-        showAccountButton.setOnAction(e -> deleteAccountController.displayClients());
-
-        menu.getChildren().add(showAccountButton); // add "show accounts button" to menu
-
-        //Bottom Panel
-
-        Label accountLabel = new Label("Account number: ");
-
-        // Text field
-        TextField accountTextField = new TextField();
-        accountTextField.setPrefColumnCount(10);
-
-        //Button
-        Button submit = new Button("Submit");
-        submit.setOnAction( e -> deleteAccount(accountTextField.getText() ));
-
-        HBox bottomPanel = new HBox();
-        bottomPanel.setAlignment(Pos.BASELINE_CENTER);
-        bottomPanel.getChildren().addAll(accountLabel, accountTextField, submit);
-
+        HBox bottomPanel = getDeleteSceneBottomPanel();
 
         BorderPane frame = new BorderPane();
 
-        frame.setTop(menu);
+        frame.setTop(buttonsLayout);
         frame.setCenter(results);
         frame.setBottom(bottomPanel);
 
         return new Scene(frame, 600, 400);
+    }
+
+    private HBox getButtonsLayout()
+    {
+        HBox deleteSceneButtonLayout = getCreateButtonsMenuPanel();
+        VBox labels = new VBox(10);
+        labels.setPadding(new Insets(5, 0, 0, 10));
+
+        Button showAccountButton = new Button("Show Accounts");
+        showAccountButton.setOnAction(e -> deleteAccountController.displayClients());
+
+        deleteSceneButtonLayout.getChildren().add(showAccountButton); // add "show accounts button" to deleteSceneButtonLayout
+        return deleteSceneButtonLayout;
+    }
+
+    private HBox getDeleteSceneBottomPanel()
+    {
+        HBox bottomPanel = new HBox();
+        Label accountLabel = new Label("Account number: ");
+
+        TextField accountTextField = new TextField();
+        accountTextField.setPrefColumnCount(10);
+
+        Button submit = new Button("Submit");
+        submit.setOnAction( e -> deleteAccount(accountTextField.getText() ));
+
+        bottomPanel.setAlignment(Pos.BASELINE_CENTER);
+        bottomPanel.getChildren().addAll(accountLabel, accountTextField, submit);
+
+        results = new TextArea();
+        results.setPrefColumnCount(30);
+        results.setPrefRowCount(400);
+
+        return bottomPanel;
     }
 
     private void deleteAccount(String account_number)
@@ -202,9 +227,7 @@ public class WelcomeScreen extends Application
         {
             JOptionPane.showMessageDialog(null, "Incorrect account number");
         }
-
     }
-
 
     public Button getAccessAccount()
     {
@@ -224,30 +247,5 @@ public class WelcomeScreen extends Application
     public void setScene(Scene scene)
     {
         window.setScene(scene);
-    }
-
-    public String getSocial()
-    {
-        return getTextSocial();
-    }
-
-    public String getTextFirstName()
-    {
-        return textFirstName.getText();
-    }
-
-    public String getTextLastName()
-    {
-        return textLastName.getText();
-    }
-
-    public String getTextSocial()
-    {
-        return textSocial.getText();
-    }
-
-    public static TextArea getResults()
-    {
-        return results;
     }
 }
