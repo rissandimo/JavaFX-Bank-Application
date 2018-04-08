@@ -17,9 +17,7 @@ public class Utilities
 
             PreparedStatement preparedStatement = bankConnection.prepareStatement(largestAcctNum);
 
-
             ResultSet resultLargestAcctNum = preparedStatement.executeQuery();
-
 
             while(resultLargestAcctNum.next())
             {
