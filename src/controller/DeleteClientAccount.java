@@ -12,17 +12,16 @@ public class DeleteClientAccount implements EventHandler<ActionEvent>
     private Connection bankConnection;
     private PreparedStatement preparedStatement;
 
-    public static void main(String[] args)
-    {
-        new DeleteClientAccount(3);
-    }
-
+    //testing purposes
     public DeleteClientAccount(int account_number)
     {
-        bankConnection = BankConnection.createConnection();
-
         try { removeClient(account_number); }
         catch(SQLException e) {e.printStackTrace();}
+    }
+
+    public DeleteClientAccount()
+    {
+        bankConnection = BankConnection.createConnection();
     }
 
     private void removeClient(int account_number) throws SQLException
