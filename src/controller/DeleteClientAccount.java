@@ -15,24 +15,14 @@ public class DeleteClientAccount implements EventHandler<ActionEvent>
 
     public static void main(String[] args)
     {
-        new DeleteClientAccount();
-    }
-
-    public DeleteClientAccount()
-    {
-        System.out.println("DeleteClientAccount()");
-        bankConnection = BankConnection.createConnection();
+        new DeleteClientAccount(3);
     }
 
     public DeleteClientAccount(int account_number)
     {
         bankConnection = BankConnection.createConnection();
 
-        try
-        {
-        removeClient(account_number);
-
-        }catch(SQLException e) {e.printStackTrace();}
+        try { removeClient(account_number); } catch(SQLException e) {e.printStackTrace();}
     }
 
     private void removeClient(int account_number) throws SQLException
@@ -131,7 +121,6 @@ public class DeleteClientAccount implements EventHandler<ActionEvent>
     {
         WelcomeScreen.results.setText("");
     }
-
 
     @Override
     public void handle(ActionEvent event)
