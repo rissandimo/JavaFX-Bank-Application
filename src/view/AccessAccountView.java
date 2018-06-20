@@ -16,7 +16,6 @@ import javafx.stage.Stage;
 
 public class AccessAccountView extends Application
 {
-
     private TextArea results;
     private int accountNumber;
     private Connection bankConnection;
@@ -27,13 +26,8 @@ public class AccessAccountView extends Application
         this.accountNumber = accountNumber;
     }
 
-    public static void main(String[] args)
-    {
-        launch(args);
-    }
     public void start(Stage window)
     {
-        results.appendText("Please make a selection \n");
 
         Scene displayScreen = getDisplayScreenScene();
         window.setScene(displayScreen);

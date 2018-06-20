@@ -19,6 +19,7 @@ public class Utilities
 
             ResultSet resultLargestAcctNum = preparedStatement.executeQuery();
 
+            //noinspection LoopStatementThatDoesntLoop
             while(resultLargestAcctNum.next())
             {
                 largestAccountNumber = resultLargestAcctNum.getInt(1);

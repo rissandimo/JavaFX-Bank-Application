@@ -28,7 +28,7 @@ public class CreateClientController
            if(clientInfoValid() && (!accountExists(social) ))
            {
             addClientInfo(firstName, lastName, social, connection);
-            addCheckingInfo(connection, accountNumber, 0.0, social);
+            addCheckingInfo(connection, accountNumber, social);
            }
         }
 
@@ -73,7 +73,7 @@ public class CreateClientController
         }
         catch (SQLException e) { e.printStackTrace(); }}
 
-    private void addCheckingInfo(Connection bankConnection, int accountNumber, double balance, String social) {
+    private void addCheckingInfo(Connection bankConnection, int accountNumber, String social) {
         try {
             String checkingStatement = "INSERT INTO checking_account (account_number, account_balance, social) values(?,?,?)";
 
