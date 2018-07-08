@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<BorderPane xmlns:fx="http://javafx.com/fxml" fx:controller="controller.ViewAccountsController">
+
+    <top>
+        <MenuBar>
+            <Menu text="File" >
+                <MenuItem text="Close" />
+                <MenuItem text="Exit" />
+                <MenuItem text="Print" />
+            </Menu>
+
+            <Menu text="Accounts" >
+                <MenuItem text="transfer funds" />
+            </Menu>
+        </MenuBar>
+    </top>
+    <left>
+        <ListView>
+
+        </ListView>
+    </left>
+
+    <right>
+        <TextArea>
+
+        </TextArea>
+    </right>
+
+</BorderPane>
