@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.collections.*?>
+<?import java.lang.*?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<GridPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.ViewAccountsController">
+
+    <MenuBar GridPane.columnIndex="0" GridPane.rowIndex="0">
+        <Menu text="File" />
+        <Menu text="Transfer" />
+    </MenuBar>
+
+    <TableView prefHeight="99.0" prefWidth="620.0" GridPane.columnIndex="0" GridPane.rowIndex="1" GridPane.vgrow="ALWAYS">
+        <columns>
+            <TableColumn prefWidth="204.0" text=" Date" />
+            <TableColumn prefWidth="139.0" text="Description" />
+            <TableColumn minWidth="0.0" prefWidth="73.0" text="Type" />
+            <TableColumn prefWidth="91.0" text="Amount" />
+            <TableColumn prefWidth="92.0" text="Balance" />
+        </columns>
+    </TableView>
+
+    <HBox GridPane.columnIndex="0" GridPane.rowIndex="2">
+
+        <Label prefHeight="17.0" prefWidth="67.0" text="Description" GridPane.rowIndex="2" GridPane.columnIndex="1" />
+        <TextField  prefHeight="25.0" prefWidth="153.0" GridPane.rowIndex="2" GridPane.columnIndex="2"  />
+
+        <Label prefHeight="17.0" prefWidth="67.0" text="Amount" GridPane.columnIndex="3" GridPane.rowIndex="2" />
+        <TextField prefHeight="25.0" prefWidth="50.0" GridPane.columnIndex="4" GridPane.rowIndex="2" />
+
+        <ChoiceBox GridPane.columnIndex="5" GridPane.rowIndex="2">
+            <items>
+                <FXCollections fx:factory="observableArrayList">
+                    <String fx:value="Deposit" />
+                    <String fx:value="Withdrawal" />
+                    <String fx:value="Purchase" />
+                </FXCollections>
+            </items>
+        </ChoiceBox>
+
+        <Button text="Submit"  GridPane.rowIndex="2" GridPane.columnIndex="6"/>
+
+    </HBox>
+
+    <columnConstraints>
+        <ColumnConstraints />
+        <ColumnConstraints />
+    </columnConstraints>
+    <rowConstraints>
+        <RowConstraints />
+        <RowConstraints />
+        <RowConstraints />
+    </rowConstraints>
+
+
+</GridPane>
