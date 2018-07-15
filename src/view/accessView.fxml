@@ -2,48 +2,64 @@
 
 <?import javafx.collections.*?>
 <?import java.lang.*?>
-
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<GridPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.ViewAccountsController">
+<GridPane prefHeight="400.0" prefWidth="700.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.ViewAccountsController">
+   <children>
+   
+       <MenuBar GridPane.columnIndex="0" GridPane.rowIndex="0">
+      <menus>
+          <Menu text="File">
+             <items>
+                 <MenuItem text="Exit" />
+                 <MenuItem text="Print" />
+             </items>
+          </Menu>
+          <Menu text="Transfer">
+             <items>
+                 <MenuItem text="From/To" />
+                 <MenuItem text="To/From" />
+             </items>
+          </Menu>
+      </menus>
+       </MenuBar>
+   
+       <TableView prefHeight="350.0" prefWidth="761.0" GridPane.columnIndex="0" GridPane.rowIndex="1" GridPane.vgrow="ALWAYS">
+           <columns>
+               <TableColumn prefWidth="204.0" text=" Date" />
+               <TableColumn prefWidth="139.0" text="Description" />
+               <TableColumn minWidth="0.0" prefWidth="73.0" text="Type" />
+               <TableColumn prefWidth="91.0" text="Amount" />
+               <TableColumn prefWidth="92.0" text="Balance" />
+           </columns>
+       </TableView>
+   
+       <HBox GridPane.columnIndex="0" GridPane.rowIndex="2">
+      <children>
+      
+              <Label prefHeight="17.0" prefWidth="72.0" text="Description" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+              <TextField fx:id="descriptionField" prefHeight="25.0" prefWidth="278.0" GridPane.columnIndex="2" GridPane.rowIndex="2" />
+      
+              <Label prefHeight="17.0" prefWidth="55.0" text="Amount" GridPane.columnIndex="3" GridPane.rowIndex="2" />
+              <TextField fx:id="amountField" prefHeight="25.0" prefWidth="50.0" GridPane.columnIndex="4" GridPane.rowIndex="2" />
 
-    <MenuBar GridPane.columnIndex="0" GridPane.rowIndex="0">
-        <Menu text="File" />
-        <Menu text="Transfer" />
-    </MenuBar>
-
-    <TableView prefHeight="99.0" prefWidth="620.0" GridPane.columnIndex="0" GridPane.rowIndex="1" GridPane.vgrow="ALWAYS">
-        <columns>
-            <TableColumn prefWidth="204.0" text=" Date" />
-            <TableColumn prefWidth="139.0" text="Description" />
-            <TableColumn minWidth="0.0" prefWidth="73.0" text="Type" />
-            <TableColumn prefWidth="91.0" text="Amount" />
-            <TableColumn prefWidth="92.0" text="Balance" />
-        </columns>
-    </TableView>
-
-    <HBox GridPane.columnIndex="0" GridPane.rowIndex="2">
-
-        <Label prefHeight="17.0" prefWidth="67.0" text="Description" GridPane.rowIndex="2" GridPane.columnIndex="1" />
-        <TextField  prefHeight="25.0" prefWidth="153.0" GridPane.rowIndex="2" GridPane.columnIndex="2"  />
-
-        <Label prefHeight="17.0" prefWidth="67.0" text="Amount" GridPane.columnIndex="3" GridPane.rowIndex="2" />
-        <TextField prefHeight="25.0" prefWidth="50.0" GridPane.columnIndex="4" GridPane.rowIndex="2" />
-
-        <ChoiceBox GridPane.columnIndex="5" GridPane.rowIndex="2">
-            <items>
-                <FXCollections fx:factory="observableArrayList">
-                    <String fx:value="Deposit" />
-                    <String fx:value="Withdrawal" />
-                    <String fx:value="Purchase" />
-                </FXCollections>
-            </items>
-        </ChoiceBox>
-
-        <Button text="Submit"  GridPane.rowIndex="2" GridPane.columnIndex="6"/>
-
-    </HBox>
+              <Label prefHeight="17.0" prefWidth="38.0" text="Type" GridPane.columnIndex="5" GridPane.rowIndex="2" />
+              <ChoiceBox fx:id="typeChoice" prefHeight="25.0" prefWidth="85.0" GridPane.columnIndex="6" GridPane.rowIndex="2">
+                  <items>
+                      <FXCollections fx:factory="observableArrayList">
+                          <String fx:value="Deposit" />
+                          <String fx:value="Withdrawal" />
+                          <String fx:value="Purchase" />
+                      </FXCollections>
+                  </items>
+              </ChoiceBox>
+      
+              <Button minWidth="-Infinity" onAction="#newTransaction" prefHeight="25.0" prefWidth="133.0" text="Submit" GridPane.columnIndex="7" GridPane.rowIndex="2" />
+      </children>
+   
+       </HBox>
+   </children>
 
     <columnConstraints>
         <ColumnConstraints />
