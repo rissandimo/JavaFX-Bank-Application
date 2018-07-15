@@ -11,7 +11,7 @@ public class Client
         this.firstName = firstName;
         this.lastName = lastName;
         CheckingAccount checkingAccount = new CheckingAccount();
-        //this.checkingAccountNumber = checkingAccount.generateAccountNumber();
+
     }
 
     public String getFirstName()
