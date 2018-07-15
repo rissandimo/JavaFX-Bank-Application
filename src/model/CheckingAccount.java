@@ -1,5 +1,9 @@
 package model;
 
-public class CheckingAccount
+class CheckingAccount
 {
+    private long accountNumber;
+    private double balance;
+
+
 }
