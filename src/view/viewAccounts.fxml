@@ -26,7 +26,7 @@
       </menus>
        </MenuBar>
    
-       <TableView prefHeight="350.0" prefWidth="761.0" GridPane.columnIndex="0" GridPane.rowIndex="1" GridPane.vgrow="ALWAYS">
+       <TableView fx:id="tableView" prefHeight="350.0" prefWidth="761.0" GridPane.columnIndex="0" GridPane.rowIndex="1" GridPane.vgrow="ALWAYS">
            <columns>
                <TableColumn prefWidth="204.0" text=" Date" />
                <TableColumn prefWidth="139.0" text="Description" />
