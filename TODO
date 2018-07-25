@@ -1,4 +1,4 @@
-
+Make a class Savings Account
 Once client is created -> accessAccount view
 move results in WelcomeScreen constructor to getDeleteAccount scene
 when a client gets created, it gets added to the database but the GUI for AccessAccountView doesn't run
