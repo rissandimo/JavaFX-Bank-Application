@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<?import com.jfoenix.controls.JFXTextField?>
+<AnchorPane prefHeight="400.0" prefWidth="600.0" style="-fx-background-color: white;" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.MainViewController">
+   <children>
+   
+      <Label layoutX="110.0" layoutY="105.0" prefHeight="25.0" prefWidth="112.0" text="Account Number" />
+      <Label layoutX="110.0" layoutY="152.0" prefHeight="36.0" prefWidth="74.0" text="Password:" />
+         <Button layoutX="322.0" layoutY="284.0" onAction="#handleSubmit" prefHeight="36.0" prefWidth="74.0" text="Sign In" BorderPane.alignment="CENTER" />
+      <JFXTextField fx:id="accountNumberField" focusColor="blue" layoutX="273.0" layoutY="105.0" prefHeight="25.0" prefWidth="186.0" promptText="Account Number" />
+      <Button layoutX="166.0" layoutY="284.0" onAction="#handleSubmit" prefHeight="36.0" prefWidth="74.0" text="Register" />
+      <Hyperlink layoutX="257.0" layoutY="247.0" prefHeight="25.0" prefWidth="112.0" text="Ver en Español" />
+      <PasswordField fx:id="passwordField" layoutX="276.0" layoutY="158.0" prefHeight="25.0" prefWidth="186.0" />
+      <Hyperlink layoutX="239.0" layoutY="339.0" prefHeight="36.0" prefWidth="123.0" style="-fx-background-color: red;" text="Forgot Password?" textFill="#e10b0b" />
+   </children>
+
+</AnchorPane>
