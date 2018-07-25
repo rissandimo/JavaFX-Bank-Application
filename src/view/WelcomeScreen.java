@@ -3,7 +3,9 @@ package view;
 import controller.*;
 
 import javafx.application.Application;
+import javafx.fxml.FXMLLoader;
 import javafx.geometry.*;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.*;
@@ -15,7 +17,7 @@ public class WelcomeScreen extends Application
 {
     private Button accessAccount, createAccount, deleteAccount;
     private DeleteClientAccount deleteAccountController;
-    private Stage window;
+    public static Stage window;
     private TextField textFirstName;
     private TextField textLastName;
     private TextField textSocial;
@@ -26,8 +28,9 @@ public class WelcomeScreen extends Application
         this.deleteAccountController = new DeleteClientAccount();
     }
 
-    public void start(Stage primaryStage)
+    public void start(Stage primaryStage) throws Exception
     {
+        Parent root = FXMLLoader.load(getClass().getResource("viewAccounts.fxml"));
         window = primaryStage;
         window.setTitle("Bank");
 
@@ -37,7 +40,7 @@ public class WelcomeScreen extends Application
 
         frame.setTop(buttonsMenuLayout);
 
-        Scene scene = new Scene(frame, 400, 200);
+        Scene scene = new Scene(root, 700, 600);
         window.setScene(scene);
         window.show();
     }
