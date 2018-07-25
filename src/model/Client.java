@@ -4,13 +4,13 @@ public class Client
 {
     private String firstName;
     private String lastName;
-    private int checkingAccountNumber;
+    private CheckingAccount checkingAccount;
 
     public Client(String firstName, String lastName)
     {
         this.firstName = firstName;
         this.lastName = lastName;
-        CheckingAccount checkingAccount = new CheckingAccount();
+        checkingAccount = new CheckingAccount();
 
     }
 
@@ -22,5 +22,10 @@ public class Client
     public String getLastName()
     {
         return lastName;
+    }
+
+    public void printCheckingAccount()
+    {
+        ///
     }
 }
