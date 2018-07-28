@@ -16,9 +16,10 @@ public class MainViewController
     @FXML
     public void handleSubmit(ActionEvent event) throws IOException
     {
+        // TODO - if account exists()
         Parent root = FXMLLoader.load(getClass().getResource("../view/viewAccounts.fxml"));
         Stage currentStage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-        Scene scene = new Scene(root, 700,600);
+        Scene scene = new Scene(root, 700, 600);
         currentStage.setScene(scene);
         currentStage.show();
     }

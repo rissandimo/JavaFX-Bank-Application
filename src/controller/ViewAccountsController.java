@@ -30,9 +30,9 @@ public class ViewAccountsController
         String choice = (String) typeChoice.getValue();
 
         if(choice.equals("Deposit"))
-            System.out.println("deposit");
+            System.out.println("handleDeposit");
         else if(choice.equals("Withdrawal"))
-            System.out.println("withdrawal");
+            System.out.println("handleWithdrawal");
         else
             System.out.println("purchase");
     }
