@@ -6,19 +6,22 @@ import java.sql.SQLException;
 
 public class BankConnection
 {
-    public BankConnection()
-    {
-        System.out.println("BankConnection()");
-    }
+    private final static String CONNECTION = "jdbc:mysql://localhost::3306/bank";
+    private final static String USERNAME = "administrator";
+    private final static String PASSWORD  = "adminPassword";
 
     public static Connection createConnection()
     {
         Connection connection = null;
         try
         {
-            connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/bank", "root","");
+            connection = DriverManager.getConnection(CONNECTION, USERNAME,PASSWORD);
+            return connection;
         }
-        catch(SQLException sqlException) {sqlException.printStackTrace();}
-        return connection;
+        catch(SQLException sqlException)
+        {
+            sqlException.printStackTrace();
+        }
+        return null;
     }
 }
