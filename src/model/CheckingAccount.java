@@ -2,10 +2,15 @@ package model;
 
 import javafx.fxml.FXML;
 
+import java.util.Date;
+
 class CheckingAccount
 {
-    private long accountNumber;
-    private double balance;
+    private double      accountNumber;
+    private double      balance;
+    private double      transactionAmount;
+    private Date        transactionDate;
+    private String      transactionType;
 
     @FXML
     private void handleDeposit(double amountToDeposit)
