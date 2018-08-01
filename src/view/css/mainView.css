@@ -1,5 +1,10 @@
-.button
+.jfx-button
 {
-    -fx-border-radius: 15px;
+    -fx-background-color: #03A9F4;
+    -fx-text-fill: white;
 }
 
+.jfx-button:hover
+{
+    -fx-background-color: #43A047;
+}
