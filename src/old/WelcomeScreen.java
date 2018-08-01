@@ -12,7 +12,6 @@ import javafx.scene.layout.*;
 import javafx.stage.Stage;
 import javax.swing.*;
 
-
 public class WelcomeScreen extends Application
 {
     private Button accessAccount, createAccount, deleteAccount;
@@ -167,7 +166,7 @@ public class WelcomeScreen extends Application
     private void createNewAccount(String firstName, String lastname, String social)
     {
         window.close();
-        new CreateClientController(firstName, lastname, social);
+     //   new CreateClientController(firstName, lastname, social);
     }
 
     public Scene getDeleteAccountScene()

@@ -22,7 +22,7 @@ public class AccessAccountView extends Application
 
     public AccessAccountView(int accountNumber)
     {
-        bankConnection = BankConnection.createConnection();
+        //bankConnection = BankConnection.createConnection();
         this.accountNumber = accountNumber;
     }
 
@@ -65,10 +65,10 @@ public class AccessAccountView extends Application
         buttonsPanel.setAlignment(Pos.BASELINE_CENTER);
 
         Button depositButton = new Button("Deposit");
-        depositButton.setOnAction( e -> results.appendText("Enter an amount to deposit \n"));
+        depositButton.setOnAction( e -> results.appendText("Enter an amount to handleDeposit \n"));
 
         Button withdrawalButton = new Button("Withdrawal");
-        withdrawalButton.setOnAction( e -> results.appendText("Enter an amount to withdrawal \n"));
+        withdrawalButton.setOnAction( e -> results.appendText("Enter an amount to handleWithdrawal \n"));
 
         Button displayBalance = new Button("Check Account");
         displayBalance.setOnAction( e -> showBalance());
