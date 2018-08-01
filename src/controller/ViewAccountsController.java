@@ -4,10 +4,18 @@ import javafx.fxml.FXML;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
+import model.BankConnection;
+
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 
 public class ViewAccountsController
 {
-    //private Connection bankConnection = BankConnection.createConnection();
+
+    public static final String CLIENT_TABLE = "checking_account";
+    public static final String SHOW_ACCOUNT_DETAILS_QUERY = "SELECT * FROM " + CLIENT_TABLE;
 
     @FXML
     private TextField descriptionField;
@@ -20,28 +28,6 @@ public class ViewAccountsController
 
     @FXML
     private TableView<String> tableView;
-
-
-    @FXML
-    public void newTransaction()
-    {
-     /*   String description = descriptionField.getText();
-        double amount = Double.parseDouble(amountField.getText());*/
-        String choice = (String) typeChoice.getValue();
-
-        if(choice.equals("Deposit"))
-            System.out.println("handleDeposit");
-        else if(choice.equals("Withdrawal"))
-            System.out.println("handleWithdrawal");
-        else
-            System.out.println("purchase");
-    }
-
-
-    public void initialize()
-    {
-        System.out.println("Controller started");
-    }
 
 
 }
