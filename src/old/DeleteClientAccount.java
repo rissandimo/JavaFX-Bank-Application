@@ -1,10 +1,9 @@
-package controller;
+package old;
 
 import java.sql.*;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
-import model.BankConnection;
-import view.WelcomeScreen;
+import old.WelcomeScreen;
 
 public class DeleteClientAccount implements EventHandler<ActionEvent>
 {
@@ -21,7 +20,7 @@ public class DeleteClientAccount implements EventHandler<ActionEvent>
 
     public DeleteClientAccount()
     {
-        bankConnection = BankConnection.createConnection();
+        //bankConnection = BankConnection.createConnection();
     }
 
     private void removeClient(int account_number) throws SQLException

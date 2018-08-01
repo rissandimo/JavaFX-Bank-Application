@@ -1,12 +1,6 @@
-package controller;
+package old;
 
-import model.BankConnection;
-import view.AccessAccountView;
-import view.WelcomeScreen;
-
-import java.sql.*;
-import javax.swing.*;
-
+/*
 public class CreateClientController
 {
     private String firstName, lastName, social;
@@ -122,3 +116,5 @@ public class CreateClientController
         return  accountExists;
     }
 }
+
+*/

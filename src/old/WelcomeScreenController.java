@@ -1,8 +1,8 @@
-package controller;
+package old;
 
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
-import view.WelcomeScreen;
+import old.WelcomeScreen;
 
 public class WelcomeScreenController implements EventHandler<ActionEvent>
 {
