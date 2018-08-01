@@ -1,14 +1,38 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
-<?import java.util.*?>
-<?import javafx.scene.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
+<?import com.jfoenix.controls.JFXButton?>
+<?import com.jfoenix.controls.JFXTextField?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Hyperlink?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.VBox?>
 
-<AnchorPane xmlns="http://javafx.com/javafx"
-            xmlns:fx="http://javafx.com/fxml"
-            fx:controller="$CONTROLLER_NAME$"
-            prefHeight="400.0" prefWidth="600.0">
-
+<AnchorPane prefHeight="336.0" prefWidth="600.0" stylesheets="@css/mainView.css" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.RegisterClientController">
+   <children>
+      <VBox layoutX="250.0" layoutY="100.0" prefHeight="400.0" prefWidth="600.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+         <children>
+            <Hyperlink text="Hyperlink" />
+            <JFXTextField fx:id="firstNameField" promptText="First Name">
+               <VBox.margin>
+                  <Insets left="15.0" right="15.0" top="100.0" />
+               </VBox.margin>
+            </JFXTextField>
+            <JFXTextField fx:id="lastNameField" promptText="Last Name">
+               <VBox.margin>
+                  <Insets left="15.0" right="15.0" top="30.0" />
+               </VBox.margin>
+            </JFXTextField>
+            <JFXTextField fx:id="socialSecurityField" promptText="Social Security Number">
+               <VBox.margin>
+                  <Insets left="15.0" right="15.0" top="30.0" />
+               </VBox.margin>
+            </JFXTextField>
+            <JFXButton onAction="#insertNewClient" prefHeight="77.0" prefWidth="205.0" text="Submit">
+               <VBox.margin>
+                  <Insets left="200.0" top="25.0" />
+               </VBox.margin>
+            </JFXButton>
+         </children>
+      </VBox>
+   </children>
 </AnchorPane>
