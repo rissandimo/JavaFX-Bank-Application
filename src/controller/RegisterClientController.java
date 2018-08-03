@@ -7,6 +7,8 @@ import javafx.scene.control.Alert;
 import model.BankConnection;
 
 import java.net.URL;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ResourceBundle;
 
 public class RegisterClientController implements Initializable
@@ -23,10 +25,30 @@ public class RegisterClientController implements Initializable
 
     private BankConnection bankConnection;
 
+    private static final String CLIENT_SOCIAL = "social";
+    private static final String CLIENT_TABLE = "clients";
+    private static final String CHECKING_ACCOUNT_TABLE = "checking_account";
+
     @Override
     public void initialize(URL location, ResourceBundle resources)
     {
         bankConnection = new BankConnection();
+    }
+
+    private void createCheckingAccount()
+    {
+        String social = socialSecurityField.getText();
+        String createCheckingAccount = "INSERT INTO " + CHECKING_ACCOUNT_TABLE + " (client_social, balance) values (" +
+                "'" + social + "', " + 0.0 + ")";
+
+        bankConnection.executeStatement(createCheckingAccount);
+    }
+
+    @FXML
+    private void createNewAccount()
+    {
+        insertNewClient();
+        createCheckingAccount();
     }
 
     @FXML
@@ -36,17 +58,19 @@ public class RegisterClientController implements Initializable
         String clientLastName = lastNameField.getText();
         String clientSocialSecurity = socialSecurityField.getText();
 
-
-
-        String createClientStatement = "INSERT INTO clients values ("  +
-                "'" + clientFirstName + "', '" + clientLastName + "', '" + clientSocialSecurity + "'" + ")";
-        if(bankConnection.executeCreateClientStatement(createClientStatement))
+        if(!doesClientExist(clientSocialSecurity)) // client doesn't exist
         {
-            Alert alert = new Alert(Alert.AlertType.INFORMATION);
-            alert.setTitle("Account successfully created");
-            alert.setHeaderText(null);
-            alert.setContentText(clientFirstName + " " + clientLastName + " added to Bank");
-            alert.showAndWait();
+            String createClientStatement = "INSERT INTO clients values ("  +
+                    "'" + clientFirstName + "', '" + clientLastName + "', '" + clientSocialSecurity + "'" + ")";
+
+            if(bankConnection.executeCreateClientStatement(createClientStatement)) // add client to db
+            {
+                Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                alert.setTitle("Account successfully created");
+                alert.setHeaderText(null);
+                alert.setContentText(clientFirstName + " " + clientLastName + " added to Bank");
+                alert.showAndWait();
+            }
         }
         else
         {
@@ -56,6 +80,23 @@ public class RegisterClientController implements Initializable
             alert.setContentText("Client " + clientFirstName + " " + clientLastName + " exists.");
             alert.showAndWait();
         }
+    }
+
+    private boolean doesClientExist(String newClientSocial)
+    {
+        String clientQuery = "SELECT " + CLIENT_SOCIAL + " FROM " + CLIENT_TABLE;
+        ResultSet clients = bankConnection.executeQuery(clientQuery);
+
+        try
+        {
+            while(clients.next())
+            {
+                if(clients.getString("social").equals(newClientSocial))
+                    return true;
+            }
+        }
+        catch(SQLException e) {e.printStackTrace(); }
+        return false;
     }
 
 
