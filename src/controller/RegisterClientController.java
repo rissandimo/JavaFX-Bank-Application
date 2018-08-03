@@ -35,7 +35,7 @@ public class RegisterClientController implements Initializable
         bankConnection = new BankConnection();
     }
 
-    private void createCheckingAccount()
+    private void initClientCheckingAccount()
     {
         String social = socialSecurityField.getText();
         String createCheckingAccount = "INSERT INTO " + CHECKING_ACCOUNT_TABLE + " (client_social, balance) values (" +
@@ -48,7 +48,7 @@ public class RegisterClientController implements Initializable
     private void createNewAccount()
     {
         insertNewClient();
-        createCheckingAccount();
+        initClientCheckingAccount();
     }
 
     @FXML
