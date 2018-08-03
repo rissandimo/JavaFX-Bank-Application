@@ -36,7 +36,7 @@ public class MainViewController implements Initializable
     }
 
     @FXML
-    private void handleRegisterNewClient(ActionEvent event) throws IOException
+    private void handleMakeNewAccount(ActionEvent event) throws IOException
     {
         // TODO - if account exists()
         Parent root = FXMLLoader.load(getClass().getResource("../view/registerClient.fxml"));
@@ -45,59 +45,5 @@ public class MainViewController implements Initializable
         currentStage.setScene(scene);
         currentStage.show();
     }
-
-
-    @FXML
-    private void handleSignIn(ActionEvent event)
-    {
-        int accountNumber = Integer.parseInt(accountNumberField.getText());
-        String password = passwordField.getText();
-
-        if(accountNumber == 0 || password.isEmpty())
-        {
-            Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setHeaderText(null);
-            alert.setTitle("Invalid fields");
-            alert.setContentText("Account number and/or password field are empty");
-            alert.showAndWait();
-        }
-
-    }
-
-
-
-/*    @FXML
-    public void handleSignIn(ActionEvent event) throws IOException
-    {
-        int accountNumber = Integer.parseInt(accountNumberField.getText());
-        String password = passwordField.getText();
-        if(clientCredentialsCorrect(accountNumber, password))
-        {
-            changeScene(event);
-        }
-    }*/
-
-/*    private boolean clientCredentialsCorrect(int accountNumber, String password)
-    {
-        try
-        {
-            PreparedStatement preparedStatement = bankConnection.prepareStatement(CLIENT_QUERY);
-            preparedStatement.setInt(1, accountNumber);
-            preparedStatement.setString(2, password);
-            ResultSet clientResultSet = preparedStatement.executeQuery();
-
-            while(clientResultSet.next())
-            {
-                if(clientResultSet.getInt(1) == accountNumber)
-                    if(clientResultSet.getString(2).equals(passwordField))
-                        return true;
-            }
-        }
-        catch(SQLException e) {e.printStackTrace(); }
-        return false;
-    }*/
-
-
-
 
 }
