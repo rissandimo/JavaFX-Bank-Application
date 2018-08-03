@@ -4,6 +4,11 @@ import java.sql.*;
 
 public class BankConnection
 {
+    //DB - TABLES
+    private static final String CHECKING_ACCOUNT_TABLE = "checking_account";
+    private static final String CLIENT_TABLE = "clients";
+    private static final String TRANSACTIONS_TABLE = "transactions";
+
     private final static String CONNECTION_URL = "jdbc:mysql://localhost:3306/bank";
     private static Statement statement = null;
     private Connection connection = null;
@@ -16,14 +21,15 @@ public class BankConnection
         createConnection();
         setUpClientTable();
         setupCheckingAcctTable();
+        setupTransactionsTable();
     }
 
-    public void createConnection()
+    private void createConnection()
     {
         try
         {
             connection = DriverManager.getConnection(CONNECTION_URL, USERNAME,PASSWORD);
-            System.out.println("Connection successfull");
+            System.out.println("Connection successful");
         }
         catch(SQLException e)
         {
@@ -35,8 +41,7 @@ public class BankConnection
 
     private void setupCheckingAcctTable()
     {
-        String tableName = "checking_account";
-        String createClientTableQuery = "CREATE TABLE IF NOT EXISTS " + tableName + " ( " +
+        String createClientTableQuery = "CREATE TABLE IF NOT EXISTS " + CHECKING_ACCOUNT_TABLE + " ( " +
            " account_number INT NOT NULL AUTO_INCREMENT PRIMARY KEY , " +
            " balance DOUBLE NOT NULL, " +
            " client_social VARCHAR(9) NOT NULL," +
@@ -57,8 +62,8 @@ public class BankConnection
 
     private void setUpClientTable()
     {
-        String tableName = "clients";
-        String createClientTableQuery = "CREATE TABLE IF NOT EXISTS " + tableName + " ( " +
+
+        String createClientTableQuery = "CREATE TABLE IF NOT EXISTS " + CLIENT_TABLE + " ( " +
                 " first_name VARCHAR(15) NOT NULL, " +
                 " last_name VARCHAR(15) NOT NULL, " +
                 " social VARCHAR(9) NOT NULL PRIMARY KEY )";
@@ -71,6 +76,29 @@ public class BankConnection
         catch(SQLException e)
         {
             System.out.println("Unable to create client table");
+        }
+    }
+
+    private void setupTransactionsTable()
+    {
+        String createTransactionsTable = "CREATE TABLE IF NOT EXISTS " + TRANSACTIONS_TABLE + " (" +
+                "trans_id INT NULL AUTO_INCREMENT PRIMARY KEY, " +
+                "amount DOUBLE NOT NULL, " +
+                "trans_date DATE NOT NULL, " +
+                "trans_type VARCHAR(10) NOT NULL, " +
+                "description VARCHAR(100) NOT NULL, " +
+                "balance DOUBLE NOT NULL, " +
+                "chk_account_number INT NOT NULL, " +
+                "FOREIGN KEY (chk_account_number) REFERENCES checking_account(account_number)) ";
+
+        try
+        {
+        Statement statement = connection.createStatement();
+        statement.execute(createTransactionsTable);
+        }
+        catch(SQLException e)
+        {
+            e.printStackTrace();
         }
     }
 
@@ -117,7 +145,5 @@ public class BankConnection
             return null;
         }
     }
-
-
 
 }
