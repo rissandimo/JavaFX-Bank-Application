@@ -1,6 +1,5 @@
 package model;
 
-import javax.swing.*;
 import java.sql.*;
 
 public class BankConnection
@@ -15,7 +14,8 @@ public class BankConnection
     public BankConnection()
     {
         createConnection();
-        setupClientTable();
+        setUpClientTable();
+        setupCheckingAcctTable();
     }
 
     public void createConnection()
@@ -32,32 +32,41 @@ public class BankConnection
         }
     }
 
-    void createDatabase()
-    {
-        try
-        {
-            String createDatabaseStatement = "CREATE DATABASE IF NOT EXISTS bank";
-            Statement statement = connection.createStatement();
-            statement.execute(createDatabaseStatement);
-        }
-        catch(SQLException e)
-        {
-            e.printStackTrace();
-        }
-    }
 
-    void setupClientTable()
+    private void setupCheckingAcctTable()
     {
-        String tableName = "clients";
+        String tableName = "checking_account";
         String createClientTableQuery = "CREATE TABLE IF NOT EXISTS " + tableName + " ( " +
-           " first_name VARCHAR(15) NOT NULL, " +
-           " last_name VARCHAR(15) NOT NULL, " +
-           " social VARCHAR(9) NOT NULL	PRIMARY KEY )";
+           " account_number INT NOT NULL AUTO_INCREMENT PRIMARY KEY , " +
+           " balance DOUBLE NOT NULL, " +
+           " client_social VARCHAR(9) NOT NULL," +
+            "FOREIGN KEY (client_social) REFERENCES clients (social)" +
+                ")";
         //TODO - check if table exists already
         try
         {
         statement = connection.createStatement();
         statement.execute(createClientTableQuery);
+        }
+        catch(SQLException e)
+        {
+            System.out.println("Unable to create checking account table");
+            e.printStackTrace();
+        }
+    }
+
+    private void setUpClientTable()
+    {
+        String tableName = "clients";
+        String createClientTableQuery = "CREATE TABLE IF NOT EXISTS " + tableName + " ( " +
+                " first_name VARCHAR(15) NOT NULL, " +
+                " last_name VARCHAR(15) NOT NULL, " +
+                " social VARCHAR(9) NOT NULL PRIMARY KEY )";
+        //TODO - check if table exists already
+        try
+        {
+            statement = connection.createStatement();
+            statement.execute(createClientTableQuery);
         }
         catch(SQLException e)
         {
@@ -79,7 +88,20 @@ public class BankConnection
         }
     }
 
-    ResultSet executeQuery(String queryToExecute)
+    public void executeStatement(String statementToExecute)
+    {
+        try
+        {
+        Statement statement = connection.createStatement();
+        statement.execute(statementToExecute);
+        }
+        catch(SQLException e)
+        {
+            e.printStackTrace();
+        }
+    }
+
+    public ResultSet executeQuery(String queryToExecute)
     {
         ResultSet resultSet;
         try
@@ -95,5 +117,7 @@ public class BankConnection
             return null;
         }
     }
+
+
 
 }
