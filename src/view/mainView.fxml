@@ -6,8 +6,8 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.VBox?>
 
-<?import javafx.scene.layout.VBox?>
-<AnchorPane prefHeight="356.0" prefWidth="600.0" stylesheets="@css/mainView.css" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.MainViewController">
+<AnchorPane prefHeight="356.0" prefWidth="600.0" stylesheets="@css/mainView.css" xmlns="http://javafx.com/javafx/10.0.1"
+            xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.MainViewController">
    <children>
       <VBox prefHeight="320.0" prefWidth="600.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
@@ -27,7 +27,7 @@
                      <VBox.margin>
                         <Insets left="150.0" />
                      </VBox.margin></JFXButton>
-                  <JFXButton onAction="#handleRegisterNewClient" prefHeight="37.0" prefWidth="178.0" text="Make New Account">
+                  <JFXButton onAction="#handleMakeNewAccount" prefHeight="37.0" prefWidth="178.0" text="Make New Account">
                      <VBox.margin>
                         <Insets left="150.0" top="10.0" />
                      </VBox.margin></JFXButton>
