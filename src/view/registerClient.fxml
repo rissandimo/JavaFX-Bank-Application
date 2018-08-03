@@ -27,7 +27,7 @@
                   <Insets left="15.0" right="15.0" top="30.0" />
                </VBox.margin>
             </JFXTextField>
-            <JFXButton onAction="#insertNewClient" prefHeight="77.0" prefWidth="205.0" text="Submit">
+            <JFXButton onAction="#createNewAccount" prefHeight="77.0" prefWidth="205.0" text="Submit">
                <VBox.margin>
                   <Insets left="200.0" top="25.0" />
                </VBox.margin>
