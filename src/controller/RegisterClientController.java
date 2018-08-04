@@ -27,6 +27,7 @@ public class RegisterClientController implements Initializable
 
     private static final String CLIENT_SOCIAL = "social";
     private static final String CLIENT_TABLE = "clients";
+    private static final String TRANSACTIONS_TABLE = "transactions";
     private static final String CHECKING_ACCOUNT_TABLE = "checking_account";
 
     @Override
@@ -38,10 +39,10 @@ public class RegisterClientController implements Initializable
     private void initClientCheckingAccount()
     {
         String social = socialSecurityField.getText();
-        String createCheckingAccount = "INSERT INTO " + CHECKING_ACCOUNT_TABLE + " (client_social, balance) values (" +
+        String initCheckingAccount = "INSERT INTO " + CHECKING_ACCOUNT_TABLE + " (client_social, balance) values (" +
                 "'" + social + "', " + 0.0 + ")";
 
-        bankConnection.executeStatement(createCheckingAccount);
+        bankConnection.executeStatement(initCheckingAccount);
     }
 
     @FXML
@@ -49,7 +50,18 @@ public class RegisterClientController implements Initializable
     {
         insertNewClient();
         initClientCheckingAccount();
+        initTransaction();
     }
+
+    private void initTransaction()
+    {
+        // TODO - correspond chk_account_number to checking_acccount_T
+        String initTransactionStatement =  "INSERT INTO " + TRANSACTIONS_TABLE + "(amount, trans_date, trans_type, description) values" +
+            "(0.0, CURDATE(), 'open account', 'open checking')";
+
+        bankConnection.executeStatement(initTransactionStatement);
+    }
+
 
     @FXML
     private void insertNewClient()
