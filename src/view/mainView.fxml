@@ -6,8 +6,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.VBox?>
 
-<AnchorPane prefHeight="356.0" prefWidth="600.0" stylesheets="@css/mainView.css" xmlns="http://javafx.com/javafx/10.0.1"
-            xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.MainViewController">
+<AnchorPane prefHeight="356.0" prefWidth="600.0" stylesheets="@css/mainView.css" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.MainViewController">
    <children>
       <VBox prefHeight="320.0" prefWidth="600.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
@@ -23,7 +22,7 @@
             </JFXTextField>
             <VBox prefHeight="118.0" prefWidth="600.0">
                <children>
-                  <JFXButton prefHeight="181.0" prefWidth="300.0" text="Log In">
+                  <JFXButton onAction="#handleLogIn" prefHeight="181.0" prefWidth="300.0" text="Log In">
                      <VBox.margin>
                         <Insets left="150.0" />
                      </VBox.margin></JFXButton>
