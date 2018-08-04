@@ -46,4 +46,13 @@ public class MainViewController implements Initializable
         currentStage.show();
     }
 
+    @FXML
+    private void handleLogIn(ActionEvent actionEvent) throws IOException
+    {
+        Parent viewAccountRoot = FXMLLoader.load(getClass().getResource("../view/viewAccounts.fxml"));
+        Stage currentStage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
+        currentStage.setScene(new Scene(viewAccountRoot));
+        currentStage.show();
+    }
+
 }
