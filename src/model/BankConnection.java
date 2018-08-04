@@ -85,11 +85,11 @@ public class BankConnection
                 "trans_id INT NULL AUTO_INCREMENT PRIMARY KEY, " +
                 "amount DOUBLE NOT NULL, " +
                 "trans_date DATE NOT NULL, " +
-                "trans_type VARCHAR(10) NOT NULL, " +
+                "trans_type VARCHAR(30) NOT NULL, " +
                 "description VARCHAR(100) NOT NULL, " +
-                "balance DOUBLE NOT NULL, " +
-                "chk_account_number INT NOT NULL, " +
-                "FOREIGN KEY (chk_account_number) REFERENCES checking_account(account_number)) ";
+                "chk_account_number INT, " +
+                "FOREIGN KEY (chk_account_number) REFERENCES checking_account(account_number)" +
+                "ON DELETE CASCADE)";
 
         try
         {
