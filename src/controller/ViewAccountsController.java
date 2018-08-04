@@ -42,6 +42,9 @@ public class ViewAccountsController implements Initializable
     private TableColumn<Transaction, Double> balanceColumn;
 
     @FXML
+    private TableColumn<Transaction, Integer> transactionColumn;
+
+    @FXML
     private TextField descriptionField;
 
     @FXML
