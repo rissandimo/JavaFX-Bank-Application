@@ -88,6 +88,7 @@ public class BankConnection
                 "trans_type VARCHAR(30) NOT NULL, " +
                 "description VARCHAR(100) NOT NULL, " +
                 "chk_account_number INT, " +
+                "balance DOUBLE NOT NULL, " +
                 "FOREIGN KEY (chk_account_number) REFERENCES checking_account(account_number)" +
                 "ON DELETE CASCADE)";
 
