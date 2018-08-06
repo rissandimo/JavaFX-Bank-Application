@@ -55,11 +55,29 @@ public class RegisterClientController implements Initializable
 
     private void initTransaction()
     {
-        // TODO - correspond chk_account_number to checking_acccount_T
-        String initTransactionStatement =  "INSERT INTO " + TRANSACTIONS_TABLE + "(amount, trans_date, trans_type, description) values" +
-            "(0.0, CURDATE(), 'open account', 'open checking')";
+        System.out.println("social = " + socialSecurityField.getText());
 
-        bankConnection.executeStatement(initTransactionStatement);
+            ResultSet chkAcctNumResults = bankConnection.executeQuery("SELECT account_number from checking_account" +
+                    " join clients" +
+                    " where client_social = " + "'" + socialSecurityField.getText() + "'");
+            int checkingAccountNum = 0;
+            try
+            {
+                while(chkAcctNumResults.next())
+                {
+                    checkingAccountNum = chkAcctNumResults.getInt("account_number");
+                }
+            }
+            catch(SQLException e)
+            {
+                e.printStackTrace();
+            }
+
+            String initTransactionStatement =  "INSERT INTO " + TRANSACTIONS_TABLE + "(amount, trans_date, trans_type, description, balance, chk_account_number) values" +
+                    "(0.0, CURDATE(), 'open account', 'open checking', " + 0.0 + ", " + checkingAccountNum + ")";
+
+
+            bankConnection.executeStatement(initTransactionStatement);
     }
 
 
