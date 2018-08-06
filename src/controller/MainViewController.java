@@ -25,14 +25,14 @@ public class MainViewController implements Initializable
     @FXML
     private TextField passwordField;
 
-    private BankConnection bankConnection;
+    // private BankConnection bankConnection;
     public static final String CLIENT_TABLE = "clients";
     public static final String CLIENT_QUERY = "SELECT account_number, password FROM clients where account_number = ? and password = ?";
 
     @Override
     public void initialize(URL location, ResourceBundle resources)
     {
-        bankConnection = new BankConnection();
+      //  bankConnection = new BankConnection();
     }
 
     @FXML
@@ -41,7 +41,7 @@ public class MainViewController implements Initializable
         // TODO - if account exists()
         Parent root = FXMLLoader.load(getClass().getResource("../view/registerClient.fxml"));
         Stage currentStage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-        Scene scene = new Scene(root, 700, 600);
+        Scene scene = new Scene(root);
         currentStage.setScene(scene);
         currentStage.show();
     }
