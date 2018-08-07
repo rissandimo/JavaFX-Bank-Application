@@ -12,7 +12,9 @@ import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
+import javafx.scene.control.cell.PropertyValueFactory;
 import model.BankConnection;
+import model.Transaction;
 
 import java.net.URL;
 import java.sql.ResultSet;
@@ -58,35 +60,26 @@ public class ViewAccountsController implements Initializable
 
     private ObservableList<Transaction> transactionList = FXCollections.observableArrayList();
 
-    class Transaction
-    {
-        private SimpleObjectProperty<Date> date;
-        private SimpleStringProperty description;
-        private SimpleStringProperty type;
-        private SimpleDoubleProperty amount;
-        private SimpleDoubleProperty balance;
-        private SimpleIntegerProperty transactionID;
-
-        Transaction(Date date, String description, String type, double amount, double balance, int transactionId)
-        {
-            this.date = new SimpleObjectProperty<>();
-            this.description = new SimpleStringProperty(description);
-            this.type = new SimpleStringProperty(type);
-            this.amount = new SimpleDoubleProperty(amount);
-            this.balance = new SimpleDoubleProperty(balance);
-            this.transactionID = new SimpleIntegerProperty(transactionId);
-        }
-    }
-
     @Override
     public void initialize(URL location, ResourceBundle resources)
     {
+        initColumns();
         loadTransactions();
+    }
+
+    private void initColumns()
+    {
+        dateColumn.setCellValueFactory(new PropertyValueFactory<>("date"));
+        descriptionColumn.setCellValueFactory(new PropertyValueFactory<>("description"));
+        typeColumn.setCellValueFactory(new PropertyValueFactory<>("type"));
+        amountColumn.setCellValueFactory(new PropertyValueFactory<>("amount"));
+        balanceColumn.setCellValueFactory(new PropertyValueFactory<>("balance"));
+        transactionColumn.setCellValueFactory(new PropertyValueFactory<>("transactionID"));
     }
 
     private void loadTransactions()
     {
-        BankConnection bankConnection = new BankConnection();
+       BankConnection bankConnection = new BankConnection();
         ResultSet transactions = bankConnection.executeQuery(SHOW_ACCOUNT_DETAILS_QUERY);
 
         try
@@ -104,9 +97,14 @@ public class ViewAccountsController implements Initializable
 
                 transactionList.add(transaction);
 
-                tableView.getItems().setAll(transactionList);
             }
         }
-        catch(SQLException e) {e.printStackTrace(); }
+        catch(SQLException e)
+        {
+            e.printStackTrace();
+        }
+
+                tableView.getItems().setAll(transactionList);
+
     }
 }
