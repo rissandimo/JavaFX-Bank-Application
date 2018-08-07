@@ -2,7 +2,7 @@ package model;
 
 import java.sql.*;
 
-public class BankConnection
+public final class BankConnection
 {
     //DB - TABLES
     private static final String CHECKING_ACCOUNT_TABLE = "checking_account";
@@ -47,7 +47,7 @@ public class BankConnection
            " client_social VARCHAR(9) NOT NULL," +
             "FOREIGN KEY (client_social) REFERENCES clients (social)" +
                 ")";
-        //TODO - check if table exists already
+
         try
         {
         statement = connection.createStatement();
@@ -55,7 +55,7 @@ public class BankConnection
         }
         catch(SQLException e)
         {
-            System.out.println("Unable to create checking account table");
+            System.err.println("Unable to create checking account table");
             e.printStackTrace();
         }
     }
