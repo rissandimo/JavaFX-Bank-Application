@@ -9,22 +9,21 @@ import java.util.Date;
 
 public class Transaction
 {
-    private SimpleObjectProperty<Date> date;
-    private SimpleStringProperty description;
-    private SimpleStringProperty type;
-    private SimpleDoubleProperty amount;
-    private SimpleDoubleProperty balance;
     private SimpleIntegerProperty transactionID;
+    private SimpleDoubleProperty amount;
+    private SimpleObjectProperty<Date> date;
+    private SimpleStringProperty type;
+    private SimpleStringProperty description;
+    private SimpleDoubleProperty balance;
 
-    public Transaction(Date date, String description, String type, double amount, double balance, int transactionId)
+    public Transaction(int transactionId, double amount, Date date, String type, String description, double balance)
     {
-        this.date = new SimpleObjectProperty<>(date);
-        this.date = new SimpleObjectProperty<>();
-        this.description = new SimpleStringProperty(description);
-        this.type = new SimpleStringProperty(type);
-        this.amount = new SimpleDoubleProperty(amount);
-        this.balance = new SimpleDoubleProperty(balance);
         this.transactionID = new SimpleIntegerProperty(transactionId);
+        this.amount = new SimpleDoubleProperty(amount);
+        this.date = new SimpleObjectProperty<>(date);
+        this.type = new SimpleStringProperty(type);
+        this.description = new SimpleStringProperty(description);
+        this.balance = new SimpleDoubleProperty(balance);
     }
 
     public Date getDate()
