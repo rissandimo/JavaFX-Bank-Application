@@ -19,6 +19,7 @@ import model.Transaction;
 import java.net.URL;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.ResourceBundle;
 
@@ -26,7 +27,8 @@ public class ViewAccountsController implements Initializable
 {
 
     private static final String CLIENT_TABLE = "checking_account";
-    private static final String SHOW_ACCOUNT_DETAILS_QUERY = "SELECT * FROM " + "transactions";
+    private static final String SHOW_ACCOUNT_DETAILS_QUERY = "SELECT trans_id, amount, trans_date, trans_type," +
+            " description, balance FROM " + "transactions";
 
     @FXML
     private TableColumn<Transaction, Date> dateColumn;
@@ -82,9 +84,10 @@ public class ViewAccountsController implements Initializable
        BankConnection bankConnection = new BankConnection();
         ResultSet transactions = bankConnection.executeQuery(SHOW_ACCOUNT_DETAILS_QUERY);
 
+
         try
         {
-            while (transactions.next())
+            while (transactions != null && transactions.next())
             {
                 int transactionId = transactions.getInt("trans_id");
                 double amount = transactions.getDouble("amount");
@@ -93,7 +96,7 @@ public class ViewAccountsController implements Initializable
                 String description = transactions.getString("description");
                 double balance = transactions.getDouble("balance");
 
-                Transaction transaction = new Transaction(transDate, description, transactionType, amount, balance, transactionId);
+                Transaction transaction = new Transaction(transactionId, amount, transDate, transactionType, description, balance);
 
                 transactionList.add(transaction);
 
@@ -104,7 +107,7 @@ public class ViewAccountsController implements Initializable
             e.printStackTrace();
         }
 
-                tableView.getItems().setAll(transactionList);
+          tableView.getItems().setAll(transactionList);
 
     }
 }
