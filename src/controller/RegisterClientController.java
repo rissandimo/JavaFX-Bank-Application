@@ -63,9 +63,11 @@ public class RegisterClientController implements Initializable
             int checkingAccountNum = 0;
             try
             {
-                while(chkAcctNumResults.next())
-                {
-                    checkingAccountNum = chkAcctNumResults.getInt("account_number");
+                if (chkAcctNumResults != null) {
+                    while(chkAcctNumResults.next())
+                    {
+                        checkingAccountNum = chkAcctNumResults.getInt("account_number");
+                    }
                 }
             }
             catch(SQLException e)
@@ -119,10 +121,12 @@ public class RegisterClientController implements Initializable
 
         try
         {
-            while(clients.next())
-            {
-                if(clients.getString("social").equals(newClientSocial))
-                    return true;
+            if (clients != null) {
+                while(clients.next())
+                {
+                    if(clients.getString("social").equals(newClientSocial))
+                        return true;
+                }
             }
         }
         catch(SQLException e) {e.printStackTrace(); }
