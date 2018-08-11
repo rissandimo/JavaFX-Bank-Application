@@ -1,9 +1,5 @@
 package controller;
 
-import javafx.beans.property.SimpleDoubleProperty;
-import javafx.beans.property.SimpleIntegerProperty;
-import javafx.beans.property.SimpleObjectProperty;
-import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -19,16 +15,13 @@ import model.Transaction;
 import java.net.URL;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.ResourceBundle;
 
 public class ViewAccountsController implements Initializable
 {
 
-    private static final String CLIENT_TABLE = "checking_account";
-    private static final String SHOW_ACCOUNT_DETAILS_QUERY = "SELECT trans_id, amount, trans_date, trans_type," +
-            " description, balance FROM " + "transactions";
+    private int clientAccountNumber;
 
     @FXML
     private TableColumn<Transaction, Date> dateColumn;
@@ -66,7 +59,6 @@ public class ViewAccountsController implements Initializable
     public void initialize(URL location, ResourceBundle resources)
     {
         initColumns();
-        loadTransactions();
     }
 
     private void initColumns()
@@ -79,11 +71,13 @@ public class ViewAccountsController implements Initializable
         transactionColumn.setCellValueFactory(new PropertyValueFactory<>("transactionID"));
     }
 
-    private void loadTransactions()
+    private void loadTransactions(int clientAccountNumber)
     {
-       BankConnection bankConnection = new BankConnection();
-        ResultSet transactions = bankConnection.executeQuery(SHOW_ACCOUNT_DETAILS_QUERY);
+        String SHOW_ACCOUNT_DETAILS_QUERY = "SELECT trans_id, amount, trans_date, trans_type," +
+                " description, balance FROM " + "transactions where chk_account_number = ?";
 
+        BankConnection bankConnection = new BankConnection();
+        ResultSet transactions = bankConnection.executeClientQuery(SHOW_ACCOUNT_DETAILS_QUERY, clientAccountNumber);
 
         try
         {
@@ -107,7 +101,17 @@ public class ViewAccountsController implements Initializable
             e.printStackTrace();
         }
 
-          tableView.getItems().setAll(transactionList);
-
+        tableView.getItems().setAll(transactionList);
     }
+
+
+    public void setClientAccountNumber(int clientAccountNumber)
+    {
+        this.clientAccountNumber = clientAccountNumber;
+        loadTransactions(clientAccountNumber);
+    }
+
+
+
+
 }
