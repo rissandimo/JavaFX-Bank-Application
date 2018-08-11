@@ -7,10 +7,9 @@ import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Alert;
 import javafx.scene.control.TextField;
+import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
-import model.BankConnection;
 
 import java.io.IOException;
 import java.net.URL;
@@ -23,16 +22,16 @@ public class MainViewController implements Initializable
     private TextField accountNumberField;
 
     @FXML
-    private TextField passwordField;
+    private TextField firstNameField;
 
-    // private BankConnection bankConnection;
-    public static final String CLIENT_TABLE = "clients";
-    public static final String CLIENT_QUERY = "SELECT account_number, password FROM clients where account_number = ? and password = ?";
+    @FXML
+    private TextField lastNameField;
+
 
     @Override
     public void initialize(URL location, ResourceBundle resources)
     {
-      //  bankConnection = new BankConnection();
+
     }
 
     @FXML
@@ -42,6 +41,7 @@ public class MainViewController implements Initializable
         Parent root = FXMLLoader.load(getClass().getResource("../view/registerClient.fxml"));
         Stage currentStage = (Stage) ((Node) event.getSource()).getScene().getWindow();
         Scene scene = new Scene(root);
+        currentStage.setTitle("Make New Account");
         currentStage.setScene(scene);
         currentStage.show();
     }
@@ -49,10 +49,16 @@ public class MainViewController implements Initializable
     @FXML
     private void handleLogIn(ActionEvent actionEvent) throws IOException
     {
-        Parent viewAccountRoot = FXMLLoader.load(getClass().getResource("../view/viewAccounts.fxml"));
         Stage currentStage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
-        currentStage.setScene(new Scene(viewAccountRoot));
+
+        FXMLLoader loader = new FXMLLoader();
+        Pane root = loader.load(getClass().getResource("../view/viewAccounts.fxml").openStream());
+        ViewAccountsController viewAccountsController =  loader.getController();
+        viewAccountsController.setClientAccountNumber(Integer.parseInt(accountNumberField.getText()));
+        Scene scene = new Scene(root);
+        currentStage.setScene(scene);
         currentStage.show();
+
     }
 
 }
