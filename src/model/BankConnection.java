@@ -147,4 +147,23 @@ public final class BankConnection
         }
     }
 
+    public ResultSet executeClientQuery(String queryToExecute, int accountNumber)
+    {
+        System.out.println("executeClientQuery():  " + accountNumber);
+        ResultSet resultSet;
+        try
+        {
+            PreparedStatement preparedStatement = connection.prepareStatement(queryToExecute);
+            preparedStatement.setInt(1, accountNumber);
+            resultSet = preparedStatement.executeQuery();
+            return resultSet;
+        }
+        catch(SQLException e)
+        {
+            System.out.println("Unable to execute query");
+            e.printStackTrace();
+            return null;
+        }
+    }
+
 }
