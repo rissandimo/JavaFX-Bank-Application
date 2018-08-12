@@ -49,12 +49,15 @@ public class MainViewController implements Initializable
     @FXML
     private void handleLogIn(ActionEvent actionEvent) throws IOException
     {
+        String firstName = firstNameField.getText();
+        String lastName = lastNameField.getText();
+        int accountNumber = Integer.parseInt(accountNumberField.getText());
         Stage currentStage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
 
         FXMLLoader loader = new FXMLLoader();
         Pane root = loader.load(getClass().getResource("../view/viewAccounts.fxml").openStream());
         ViewAccountsController viewAccountsController =  loader.getController();
-        viewAccountsController.setClientAccountNumber(Integer.parseInt(accountNumberField.getText()));
+        viewAccountsController.setClientInfo(firstName, lastName, accountNumber);
         Scene scene = new Scene(root);
         currentStage.setScene(scene);
         currentStage.show();
