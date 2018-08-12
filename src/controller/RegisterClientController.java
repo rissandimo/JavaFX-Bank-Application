@@ -10,6 +10,8 @@ import java.net.URL;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ResourceBundle;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class RegisterClientController implements Initializable
 {
@@ -50,9 +52,11 @@ public class RegisterClientController implements Initializable
     @FXML
     private void createNewAccount()
     {
-        insertNewClient();
-        initClientCheckingAccount();
-        initTransaction();
+        if(insertNewClient())
+        {
+            initClientCheckingAccount();
+            initTransaction();
+        }
     }
 
     private void initTransaction()
@@ -84,12 +88,21 @@ public class RegisterClientController implements Initializable
 
 
     @FXML
-    private void insertNewClient()
+    private boolean insertNewClient()
     {
-        System.out.println("insert new client");
         String clientFirstName = firstNameField.getText();
         String clientLastName = lastNameField.getText();
         String clientSocialSecurity = socialSecurityField.getText();
+
+       if(!socialSecurityValid(clientSocialSecurity)) // not valid
+       {
+           Alert alert = new Alert(Alert.AlertType.ERROR);
+           alert.setTitle("Social security is invalid");
+           alert.setHeaderText(null);
+           alert.setContentText(null);
+           alert.showAndWait();
+           return false;
+       }
 
 
             if(!doesClientExist(
@@ -117,7 +130,14 @@ public class RegisterClientController implements Initializable
                 alert.setContentText("That social security number already exists.");
                 alert.showAndWait();
             }
+            return true;
+    }
 
+    private boolean socialSecurityValid(String social)
+    {
+        Pattern pattern = Pattern.compile("[0-9]", Pattern.CASE_INSENSITIVE);
+        Matcher matcher = pattern.matcher(social);
+        return matcher.find();
     }
 
     private boolean doesClientExist(
