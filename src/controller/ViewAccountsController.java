@@ -22,6 +22,8 @@ public class ViewAccountsController implements Initializable
 {
 
     private int clientAccountNumber;
+    private String firstName;
+    private String lastName;
 
     @FXML
     private TableColumn<Transaction, Date> dateColumn;
@@ -73,7 +75,8 @@ public class ViewAccountsController implements Initializable
 
     private void loadTransactions(int clientAccountNumber)
     {
-        String SHOW_ACCOUNT_DETAILS_QUERY = "SELECT trans_id, amount, trans_date, trans_type," +
+        String SHOW_ACCOUNT_DETAILS_QUERY =
+                "SELECT trans_id, amount, trans_date, trans_type," +
                 " description, balance FROM " + "transactions where chk_account_number = ?";
 
         BankConnection bankConnection = new BankConnection();
@@ -105,7 +108,7 @@ public class ViewAccountsController implements Initializable
     }
 
 
-    public void setClientAccountNumber(int clientAccountNumber)
+    public void setClientInfo(int clientAccountNumber)
     {
         this.clientAccountNumber = clientAccountNumber;
         loadTransactions(clientAccountNumber);
