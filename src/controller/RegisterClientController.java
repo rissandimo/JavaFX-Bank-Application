@@ -25,6 +25,8 @@ public class RegisterClientController implements Initializable
 
     private BankConnection bankConnection;
 
+    public static final String CLIENT_FIRST_NAME = "first_name";
+    public static final String CLIENT_LAST_NAME = "last_name";
     private static final String CLIENT_SOCIAL = "social";
     private static final String CLIENT_TABLE = "clients";
     private static final String TRANSACTIONS_TABLE = "transactions";
@@ -90,7 +92,10 @@ public class RegisterClientController implements Initializable
         String clientLastName = lastNameField.getText();
         String clientSocialSecurity = socialSecurityField.getText();
 
-        if(!doesClientExist(clientSocialSecurity)) // client doesn't exist
+        if(!doesClientExist(
+                clientFirstName,
+                clientLastName,
+                clientSocialSecurity)) // client doesn't exist
         {
             String createClientStatement = "INSERT INTO clients values ("  +
                     "'" + clientFirstName + "', '" + clientLastName + "', '" + clientSocialSecurity + "'" + ")";
@@ -114,9 +119,12 @@ public class RegisterClientController implements Initializable
         }
     }
 
-    private boolean doesClientExist(String newClientSocial)
+    private boolean doesClientExist(
+            String firstName,
+            String lastName,
+            String newClientSocial)
     {
-        String clientQuery = "SELECT " + CLIENT_SOCIAL + " FROM " + CLIENT_TABLE;
+        String clientQuery = "SELECT " + CLIENT_FIRST_NAME + ", " + CLIENT_LAST_NAME + ", " + CLIENT_SOCIAL + " FROM " + CLIENT_TABLE;
         ResultSet clients = bankConnection.executeQuery(clientQuery);
 
         try
@@ -124,12 +132,18 @@ public class RegisterClientController implements Initializable
             if (clients != null) {
                 while(clients.next())
                 {
-                    if(clients.getString("social").equals(newClientSocial))
-                        return true;
+                    if (clients.getString("firstName").equals(firstName))
+                        if(clients.getString("lastName").equals(lastName))
+                            if(clients.getString("social").equals(newClientSocial))
+                                return true;
                 }
             }
         }
-        catch(SQLException e) {e.printStackTrace(); }
+        catch(SQLException e)
+        {
+            System.out.println("doesClientExist() -> Error adding client");
+            e.printStackTrace();
+        }
         return false;
     }
 
