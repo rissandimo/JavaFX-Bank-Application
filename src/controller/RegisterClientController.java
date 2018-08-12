@@ -57,9 +57,7 @@ public class RegisterClientController implements Initializable
 
     private void initTransaction()
     {
-        System.out.println("social = " + socialSecurityField.getText());
-
-            ResultSet chkAcctNumResults = bankConnection.executeQuery("SELECT account_number from checking_account" +
+        ResultSet chkAcctNumResults = bankConnection.executeQuery("SELECT account_number from checking_account" +
                     " join clients" +
                     " where client_social = " + "'" + socialSecurityField.getText() + "'");
             int checkingAccountNum = 0;
@@ -88,35 +86,38 @@ public class RegisterClientController implements Initializable
     @FXML
     private void insertNewClient()
     {
+        System.out.println("insert new client");
         String clientFirstName = firstNameField.getText();
         String clientLastName = lastNameField.getText();
         String clientSocialSecurity = socialSecurityField.getText();
 
-        if(!doesClientExist(
-                clientFirstName,
-                clientLastName,
-                clientSocialSecurity)) // client doesn't exist
-        {
-            String createClientStatement = "INSERT INTO clients values ("  +
-                    "'" + clientFirstName + "', '" + clientLastName + "', '" + clientSocialSecurity + "'" + ")";
 
-            if(bankConnection.executeCreateClientStatement(createClientStatement)) // add client to db
+            if(!doesClientExist(
+                    clientFirstName,
+                    clientLastName,
+                    clientSocialSecurity)) // client doesn't exist
             {
-                Alert alert = new Alert(Alert.AlertType.INFORMATION);
-                alert.setTitle("Account successfully created");
+                String createClientStatement = "INSERT INTO clients values ("  +
+                        "'" + clientFirstName + "', '" + clientLastName + "', '" + clientSocialSecurity + "'" + ")";
+
+                if(bankConnection.executeCreateClientStatement(createClientStatement)) // add client to db
+                {
+                    Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                    alert.setTitle("Account successfully created");
+                    alert.setHeaderText(null);
+                    alert.setContentText(clientFirstName + " " + clientLastName + " added to Bank");
+                    alert.showAndWait();
+                }
+            }
+            else
+            {
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setTitle("Account error");
                 alert.setHeaderText(null);
-                alert.setContentText(clientFirstName + " " + clientLastName + " added to Bank");
+                alert.setContentText("That social security number already exists.");
                 alert.showAndWait();
             }
-        }
-        else
-        {
-            Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setTitle("Account error");
-            alert.setHeaderText(null);
-            alert.setContentText("Client " + clientFirstName + " " + clientLastName + " exists.");
-            alert.showAndWait();
-        }
+
     }
 
     private boolean doesClientExist(
@@ -129,15 +130,15 @@ public class RegisterClientController implements Initializable
 
         try
         {
-            if (clients != null) {
-                while(clients.next())
-                {
-                    if (clients.getString("firstName").equals(firstName))
-                        if(clients.getString("lastName").equals(lastName))
-                            if(clients.getString("social").equals(newClientSocial))
-                                return true;
+            while(clients.next())
+            if (clients.getString("first_name").equals(firstName)) {
+                if (clients.getString("last_name").equals(lastName)) {
+                    if (clients.getString("social").equals(newClientSocial)) {
+                        return true;
+                    }
                 }
             }
+
         }
         catch(SQLException e)
         {
@@ -146,6 +147,5 @@ public class RegisterClientController implements Initializable
         }
         return false;
     }
-
 
 }
