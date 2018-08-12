@@ -148,15 +148,13 @@ public final class BankConnection
     }
 
     //queries client info from db
-    public ResultSet executeClientQuery(String queryToExecute, int accountNumber, String firstName, String lastName)
+    public ResultSet executeClientQuery(String queryToExecute, int accountNumber)
     {
         ResultSet resultSet;
         try
         {
             PreparedStatement preparedStatement = connection.prepareStatement(queryToExecute);
             preparedStatement.setInt(1, accountNumber);
-            preparedStatement.setString(2, firstName);
-            preparedStatement.setString(3, lastName);
             resultSet = preparedStatement.executeQuery();
             return resultSet;
         }
