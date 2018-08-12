@@ -8,17 +8,15 @@ class CheckingAccount
 {
     private double      accountNumber;
     private double      balance;
-    private double      transactionAmount;
-    private Date        transactionDate;
-    private String      transactionType;
 
-    @FXML
-    private void handleDeposit(double amountToDeposit)
+    public double getAccountNumber()
     {
-        if (depositValid(amountToDeposit))
-        {
-            //add to balance from db
-        }
+        return accountNumber;
+    }
+
+    public double getBalance()
+    {
+        return balance;
     }
 
     private boolean depositValid(double amountToDeposit)
@@ -29,12 +27,6 @@ class CheckingAccount
             return true;
         }
         return false;
-    }
-
-    @FXML
-    private void showBalance()
-    {
-        // connect to db and query balance
     }
 
     @FXML
