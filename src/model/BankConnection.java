@@ -141,26 +141,28 @@ public final class BankConnection
         }
         catch(SQLException e)
         {
-            System.out.println("Unable to execute query");
+            System.out.println("Execute Query() ->Unable to execute query");
             e.printStackTrace();
             return null;
         }
     }
 
-    public ResultSet executeClientQuery(String queryToExecute, int accountNumber)
+    //queries client info from db
+    public ResultSet executeClientQuery(String queryToExecute, int accountNumber, String firstName, String lastName)
     {
-        System.out.println("executeClientQuery():  " + accountNumber);
         ResultSet resultSet;
         try
         {
             PreparedStatement preparedStatement = connection.prepareStatement(queryToExecute);
             preparedStatement.setInt(1, accountNumber);
+            preparedStatement.setString(2, firstName);
+            preparedStatement.setString(3, lastName);
             resultSet = preparedStatement.executeQuery();
             return resultSet;
         }
         catch(SQLException e)
         {
-            System.out.println("Unable to execute query");
+            System.out.println("executeClientQuery() -> Unable to execute query");
             e.printStackTrace();
             return null;
         }
