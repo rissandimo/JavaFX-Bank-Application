@@ -2,16 +2,22 @@ package controller;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.stage.Stage;
 import model.BankConnection;
 import model.Transaction;
 
+import java.io.IOException;
 import java.net.URL;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -105,6 +111,22 @@ public class ViewAccountsController implements Initializable
         }
 
         tableView.getItems().setAll(transactionList);
+    }
+
+    @FXML
+    private void handleNewTransaction(ActionEvent event)
+    {
+        try {
+            Parent addTransactionView = FXMLLoader.load(getClass().getResource("../view/addTransaction.fxml"));
+
+            Stage stage = new Stage();
+            stage.setTitle("Add New Transaction");
+            stage.setScene(new Scene(addTransactionView));
+            stage.show();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
 
