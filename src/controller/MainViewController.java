@@ -57,7 +57,7 @@ public class MainViewController implements Initializable
         FXMLLoader loader = new FXMLLoader();
         Pane root = loader.load(getClass().getResource("../view/viewAccounts.fxml").openStream());
         ViewAccountsController viewAccountsController =  loader.getController();
-        viewAccountsController.setClientInfo(firstName, lastName, accountNumber);
+        viewAccountsController.setClientInfo(accountNumber);
         Scene scene = new Scene(root);
         currentStage.setScene(scene);
         currentStage.show();
