@@ -9,7 +9,7 @@
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.RowConstraints?>
 
-<GridPane prefHeight="547.0" prefWidth="814.0" stylesheets="@css/mainView.css" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.ViewAccountsController">
+<GridPane prefHeight="547.0" prefWidth="814.0" stylesheets="@css/viewAccounts.css" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.ViewAccountsController">
    <children>
    
        <MenuBar prefHeight="25.0" prefWidth="817.0" GridPane.columnIndex="0" GridPane.rowIndex="0">
@@ -30,7 +30,7 @@
       </menus>
        </MenuBar>
    
-       <TableView fx:id="tableView" prefHeight="350.0" prefWidth="761.0" GridPane.columnIndex="0" GridPane.rowIndex="1" GridPane.vgrow="ALWAYS">
+       <TableView fx:id="tableView" prefHeight="350.0" prefWidth="761.0" stylesheets="@css/mainView.css" GridPane.columnIndex="0" GridPane.rowIndex="1" GridPane.vgrow="ALWAYS">
            <columns>
                <TableColumn fx:id="transactionColumn" prefWidth="70.0" text="Transaction #" />
                <TableColumn fx:id="dateColumn" prefWidth="204.0" text=" Date" />
