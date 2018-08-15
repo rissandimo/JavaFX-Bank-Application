@@ -2,16 +2,13 @@ package controller;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
-import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
 import model.BankConnection;
@@ -28,8 +25,6 @@ public class ViewAccountsController implements Initializable
 {
 
     private int clientAccountNumber;
-    private String firstName;
-    private String lastName;
 
     @FXML
     private TableColumn<Transaction, Date> dateColumn;
@@ -50,22 +45,16 @@ public class ViewAccountsController implements Initializable
     private TableColumn<Transaction, Integer> transactionColumn;
 
     @FXML
-    private TextField descriptionField;
-
-    @FXML
-    private TextField amountField;
-
-    @FXML
-    private ChoiceBox typeChoice;
-
-    @FXML
     private TableView<Transaction> tableView;
 
     private ObservableList<Transaction> transactionList = FXCollections.observableArrayList();
 
+    private BankConnection bankConnection;
+
     @Override
     public void initialize(URL location, ResourceBundle resources)
     {
+        bankConnection = BankConnection.getInstance();
         initColumns();
     }
 
@@ -85,7 +74,6 @@ public class ViewAccountsController implements Initializable
                 "SELECT trans_id, amount, trans_date, trans_type," +
                 " description, balance FROM " + "transactions where chk_account_number = ?";
 
-        BankConnection bankConnection = new BankConnection();
         ResultSet transactions = bankConnection.executeClientQuery(SHOW_ACCOUNT_DETAILS_QUERY, clientAccountNumber);
 
         try
@@ -103,6 +91,7 @@ public class ViewAccountsController implements Initializable
 
                 transactionList.add(transaction);
 
+                //TODO - reload table view after adding new transaction
             }
         }
         catch(SQLException e)
@@ -110,24 +99,30 @@ public class ViewAccountsController implements Initializable
             e.printStackTrace();
         }
 
-        tableView.getItems().setAll(transactionList);
     }
 
     @FXML
-    private void handleNewTransaction(ActionEvent event)
+    private void handleNewTransaction()
     {
         try {
-            Parent addTransactionView = FXMLLoader.load(getClass().getResource("../view/addTransaction.fxml"));
+
+            FXMLLoader fxmlLoader = new FXMLLoader();
+            Parent root = fxmlLoader.load(getClass().getResource("../view/addTransaction.fxml").openStream());
+            AddTransactionController addTransactionController = fxmlLoader.getController();
+            addTransactionController.setClientInfo(clientAccountNumber);
 
             Stage stage = new Stage();
             stage.setTitle("Add New Transaction");
-            stage.setScene(new Scene(addTransactionView));
+            stage.setScene(new Scene(root));
             stage.show();
+
+            tableView.getItems().setAll(transactionList); //update transaction list
 
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
+
 
 
     public void setClientInfo(int clientAccountNumber)
