@@ -97,9 +97,11 @@ public final class BankConnection
                 "trans_date DATE NOT NULL, " +
                 "trans_type VARCHAR(30) NOT NULL, " +
                 "description VARCHAR(100) NOT NULL, " +
-                "chk_account_number INT, " +
                 "balance DOUBLE NOT NULL, " +
-                "FOREIGN KEY (chk_account_number) REFERENCES checking_account(account_number)" +
+                "chk_account_number INT, " +
+                "client_social VARCHAR(9) NOT NULL, " + // new
+                "FOREIGN KEY (chk_account_number) REFERENCES checking_account(account_number)," + // new
+                "FOREIGN KEY (client_social) REFERENCES clients(social)" +
                 "ON DELETE CASCADE)";
 
         try
@@ -158,13 +160,15 @@ public final class BankConnection
     }
 
     //queries client info from db
-    public ResultSet executeClientQuery(String queryToExecute, int accountNumber)
+    public ResultSet executeClientQuery(String queryToExecute, int accountNumber, String firstName, String lastName)
     {
         ResultSet resultSet;
         try
         {
             PreparedStatement preparedStatement = connection.prepareStatement(queryToExecute);
             preparedStatement.setInt(1, accountNumber);
+            preparedStatement.setString(2, firstName);
+            preparedStatement.setString(3, lastName);
             resultSet = preparedStatement.executeQuery();
             return resultSet;
         }
