@@ -59,7 +59,7 @@ public class MainViewController implements Initializable
         Pane root = loader.load(getClass().getResource("../view/viewAccounts.fxml").openStream());
         ViewAccountsController viewAccountsController =  loader.getController();
         //set the data
-        viewAccountsController.setClientInfo(accountNumber);
+        viewAccountsController.setClientInfo(accountNumber, firstName, lastName);
         Scene scene = new Scene(root);
         //load the scene
         currentStage.setScene(scene);
