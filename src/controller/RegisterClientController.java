@@ -61,6 +61,7 @@ public class RegisterClientController implements Initializable
 
     private void initTransaction()
     {
+        String social = socialSecurityField.getText();
         ResultSet chkAcctNumResults = bankConnection.executeQuery("SELECT account_number from checking_account" +
                     " join clients" +
                     " where client_social = " + "'" + socialSecurityField.getText() + "'");
@@ -79,8 +80,8 @@ public class RegisterClientController implements Initializable
                 e.printStackTrace();
             }
 
-            String initTransactionStatement =  "INSERT INTO " + TRANSACTIONS_TABLE + "(amount, trans_date, trans_type, description, balance, chk_account_number) values" +
-                    "(0.0, CURDATE(), 'open account', 'open checking', " + 0.0 + ", " + checkingAccountNum + ")";
+            String initTransactionStatement =  "INSERT INTO " + TRANSACTIONS_TABLE + "(amount, trans_date, trans_type, description, balance, chk_account_number, client_social) values" +
+                    "(0.0, CURDATE(), 'open account', 'open checking', " + 0.0 + ", " + checkingAccountNum + ", " + social + ")";
 
 
             bankConnection.executeStatement(initTransactionStatement);
