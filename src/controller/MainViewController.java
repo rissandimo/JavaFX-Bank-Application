@@ -54,11 +54,14 @@ public class MainViewController implements Initializable
         int accountNumber = Integer.parseInt(accountNumberField.getText());
         Stage currentStage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
 
+        //get the controller
         FXMLLoader loader = new FXMLLoader();
         Pane root = loader.load(getClass().getResource("../view/viewAccounts.fxml").openStream());
         ViewAccountsController viewAccountsController =  loader.getController();
+        //set the data
         viewAccountsController.setClientInfo(accountNumber);
         Scene scene = new Scene(root);
+        //load the scene
         currentStage.setScene(scene);
         currentStage.show();
 
