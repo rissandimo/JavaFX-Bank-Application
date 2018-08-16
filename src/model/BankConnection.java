@@ -11,17 +11,28 @@ public final class BankConnection
 
     private final static String CONNECTION_URL = "jdbc:mysql://localhost:3306/bank";
     private static Statement statement = null;
+    private static BankConnection bankConnection;
     private Connection connection = null;
 
     private final static String USERNAME = "root";
     private final static String PASSWORD  = "";
 
-    public BankConnection()
+    private BankConnection()
     {
         createConnection();
         setUpClientTable();
         setupCheckingAcctTable();
         setupTransactionsTable();
+    }
+
+    public static BankConnection getInstance()
+    {
+        if(bankConnection == null)
+        {
+            bankConnection = new BankConnection();
+        }
+
+        return bankConnection;
     }
 
     private void createConnection()
@@ -33,8 +44,7 @@ public final class BankConnection
         }
         catch(SQLException e)
         {
-            System.out.println("Unable to create connection");
-            e.printStackTrace();
+            System.err.println("Unable to create connection");
         }
     }
 
