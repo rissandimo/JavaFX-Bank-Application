@@ -44,7 +44,7 @@ public class AddTransactionController implements Initializable
     @Override
     public void initialize(URL location, ResourceBundle resources)
     {
-        bankConnection = BankConnection.getInstance();
+        bankConnection = new BankConnection();
         transactionChoices.getItems().setAll(transactionTypes);
     }
 
