@@ -25,7 +25,8 @@ public class ViewAccountsController implements Initializable
 {
 
     private int clientAccountNumber;
-
+    private String clientFirstName;
+    private String clientLastName;
     @FXML
     private TableColumn<Transaction, Date> dateColumn;
 
@@ -54,7 +55,7 @@ public class ViewAccountsController implements Initializable
     @Override
     public void initialize(URL location, ResourceBundle resources)
     {
-        bankConnection = BankConnection.getInstance();
+        bankConnection = new BankConnection();
         initColumns();
     }
 
@@ -68,13 +69,19 @@ public class ViewAccountsController implements Initializable
         transactionColumn.setCellValueFactory(new PropertyValueFactory<>("transactionID"));
     }
 
-    private void loadTransactions(int clientAccountNumber)
+    private void loadTransactions(int clientAccountNumber, String firstName, String lastName)
     {
+        System.out.println("loadTransactions()");
         String SHOW_ACCOUNT_DETAILS_QUERY =
                 "SELECT trans_id, amount, trans_date, trans_type," +
-                " description, balance FROM " + "transactions where chk_account_number = ?";
+                        " description, balance FROM " + "transactions" +
+                        " join clients" +
+                    " on transactions.client_social = clients.social" +
+                   " where chk_account_number = ? AND" +
+                        " first_name = ? AND" +
+                        " last_name = ?";
 
-        ResultSet transactions = bankConnection.executeClientQuery(SHOW_ACCOUNT_DETAILS_QUERY, clientAccountNumber);
+        ResultSet transactions = bankConnection.executeClientQuery(SHOW_ACCOUNT_DETAILS_QUERY, clientAccountNumber, firstName, lastName);
 
         try
         {
@@ -93,13 +100,17 @@ public class ViewAccountsController implements Initializable
 
                 //TODO - reload table view after adding new transaction
             }
+
+
         }
         catch(SQLException e)
         {
             e.printStackTrace();
         }
 
+        tableView.setItems(transactionList);
     }
+
 
     @FXML
     private void handleNewTransaction()
@@ -125,10 +136,12 @@ public class ViewAccountsController implements Initializable
 
 
 
-    public void setClientInfo(int clientAccountNumber)
+    public void setClientInfo(int clientAccountNumber, String firstName, String lastName)
     {
         this.clientAccountNumber = clientAccountNumber;
-        loadTransactions(clientAccountNumber);
+        this.clientFirstName = firstName;
+        this.clientLastName = lastName;
+        loadTransactions(clientAccountNumber, firstName, lastName);
     }
 
 
