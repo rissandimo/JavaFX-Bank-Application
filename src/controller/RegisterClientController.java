@@ -37,7 +37,7 @@ public class RegisterClientController implements Initializable
     @Override
     public void initialize(URL location, ResourceBundle resources)
     {
-        bankConnection = BankConnection.getInstance();
+        bankConnection = new BankConnection();
     }
 
     private void initClientCheckingAccount()
