@@ -11,28 +11,17 @@ public final class BankConnection
 
     private final static String CONNECTION_URL = "jdbc:mysql://localhost:3306/bank";
     private static Statement statement = null;
-    private static BankConnection bankConnection;
     private Connection connection = null;
 
     private final static String USERNAME = "root";
     private final static String PASSWORD  = "";
 
-    private BankConnection()
+    public BankConnection()
     {
         createConnection();
         setUpClientTable();
         setupCheckingAcctTable();
         setupTransactionsTable();
-    }
-
-    public static BankConnection getInstance()
-    {
-        if(bankConnection == null)
-        {
-            bankConnection = new BankConnection();
-        }
-
-        return bankConnection;
     }
 
     private void createConnection()
@@ -97,11 +86,9 @@ public final class BankConnection
                 "trans_date DATE NOT NULL, " +
                 "trans_type VARCHAR(30) NOT NULL, " +
                 "description VARCHAR(100) NOT NULL, " +
-                "balance DOUBLE NOT NULL, " +
                 "chk_account_number INT, " +
-                "client_social VARCHAR(9) NOT NULL, " + // new
-                "FOREIGN KEY (chk_account_number) REFERENCES checking_account(account_number)," + // new
-                "FOREIGN KEY (client_social) REFERENCES clients(social)" +
+                "balance DOUBLE NOT NULL, " +
+                "FOREIGN KEY (chk_account_number) REFERENCES checking_account(account_number)" +
                 "ON DELETE CASCADE)";
 
         try
@@ -169,6 +156,7 @@ public final class BankConnection
             preparedStatement.setInt(1, accountNumber);
             preparedStatement.setString(2, firstName);
             preparedStatement.setString(3, lastName);
+            System.out.println("preparedStatement: " + preparedStatement);
             resultSet = preparedStatement.executeQuery();
             return resultSet;
         }
