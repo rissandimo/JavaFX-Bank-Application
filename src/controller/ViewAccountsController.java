@@ -43,9 +43,6 @@ public class ViewAccountsController implements Initializable
     private TableColumn<Transaction, Double> balanceColumn;
 
     @FXML
-    private TableColumn<Transaction, Integer> transactionColumn;
-
-    @FXML
     private TableView<Transaction> tableView;
 
     private ObservableList<Transaction> transactionList = FXCollections.observableArrayList();
@@ -66,15 +63,14 @@ public class ViewAccountsController implements Initializable
         typeColumn.setCellValueFactory(new PropertyValueFactory<>("type"));
         amountColumn.setCellValueFactory(new PropertyValueFactory<>("amount"));
         balanceColumn.setCellValueFactory(new PropertyValueFactory<>("balance"));
-        transactionColumn.setCellValueFactory(new PropertyValueFactory<>("transactionID"));
     }
 
     private void loadTransactions(int clientAccountNumber, String firstName, String lastName)
     {
         System.out.println("loadTransactions()");
         String SHOW_ACCOUNT_DETAILS_QUERY =
-                "SELECT trans_id, amount, trans_date, trans_type," +
-                        " description, balance FROM " + "transactions" +
+                "SELECT amount, trans_date, trans_type," +
+                        " description, balance, client_social FROM " + "transactions" +
                         " join clients" +
                     " on transactions.client_social = clients.social" +
                    " where chk_account_number = ? AND" +
@@ -87,14 +83,14 @@ public class ViewAccountsController implements Initializable
         {
             while (transactions != null && transactions.next())
             {
-                int transactionId = transactions.getInt("trans_id");
                 double amount = transactions.getDouble("amount");
                 Date transDate = transactions.getDate("trans_date");
                 String transactionType = transactions.getString("trans_type");
                 String description = transactions.getString("description");
                 double balance = transactions.getDouble("balance");
+                String social = transactions.getString("client_social");
 
-                Transaction transaction = new Transaction(transactionId, amount, transDate, transactionType, description, balance);
+                Transaction transaction = new Transaction(amount, transDate, transactionType, description, balance);
 
                 transactionList.add(transaction);
 
