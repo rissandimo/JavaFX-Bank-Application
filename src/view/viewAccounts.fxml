@@ -32,7 +32,6 @@
    
        <TableView fx:id="tableView" prefHeight="350.0" prefWidth="761.0" stylesheets="@css/mainView.css" GridPane.columnIndex="0" GridPane.rowIndex="1" GridPane.vgrow="ALWAYS">
            <columns>
-               <TableColumn fx:id="transactionColumn" prefWidth="70.0" text="Transaction #" />
                <TableColumn fx:id="dateColumn" prefWidth="204.0" text=" Date" />
                <TableColumn fx:id="descriptionColumn" prefWidth="139.0" text="Description" />
                <TableColumn fx:id="typeColumn" minWidth="0.0" prefWidth="73.0" text="Type" />
