@@ -67,15 +67,11 @@ public class ViewAccountsController implements Initializable
 
     private void loadTransactions(int clientAccountNumber, String firstName, String lastName)
     {
-        System.out.println("loadTransactions()");
-        String SHOW_ACCOUNT_DETAILS_QUERY =
-                "SELECT amount, trans_date, trans_type," +
-                        " description, balance, client_social FROM " + "transactions" +
-                        " join clients" +
-                    " on transactions.client_social = clients.social" +
-                   " where chk_account_number = ? AND" +
-                        " first_name = ? AND" +
-                        " last_name = ?";
+        String SHOW_ACCOUNT_DETAILS_QUERY =  "SELECT amount, trans_date, trans_type," +
+                " description, balance, client_social FROM " + "transactions" +
+                " where chk_account_number = ? AND" +
+                " first_name = ? AND" +
+                " last_name = ?";
 
         ResultSet transactions = bankConnection.executeClientQuery(SHOW_ACCOUNT_DETAILS_QUERY, clientAccountNumber, firstName, lastName);
 
