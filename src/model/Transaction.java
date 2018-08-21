@@ -9,16 +9,14 @@ import java.util.Date;
 
 public class Transaction
 {
-    private SimpleIntegerProperty transactionID;
     private SimpleDoubleProperty amount;
     private SimpleObjectProperty<Date> date;
     private SimpleStringProperty type;
     private SimpleStringProperty description;
     private SimpleDoubleProperty balance;
 
-    public Transaction(int transactionId, double amount, Date date, String type, String description, double balance)
+    public Transaction(double amount, Date date, String type, String description, double balance)
     {
-        this.transactionID = new SimpleIntegerProperty(transactionId);
         this.amount = new SimpleDoubleProperty(amount);
         this.date = new SimpleObjectProperty<>(date);
         this.type = new SimpleStringProperty(type);
@@ -101,18 +99,4 @@ public class Transaction
         this.balance.set(balance);
     }
 
-    public int getTransactionID()
-    {
-        return transactionID.get();
-    }
-
-    public SimpleIntegerProperty transactionIDProperty()
-    {
-        return transactionID;
-    }
-
-    public void setTransactionID(int transactionID)
-    {
-        this.transactionID.set(transactionID);
-    }
 }
