@@ -67,8 +67,11 @@ public class ViewAccountsController implements Initializable
 
     private void loadTransactions(int clientAccountNumber, String firstName, String lastName)
     {
+        // social is needed to join client table -> first name
         String SHOW_ACCOUNT_DETAILS_QUERY =  "SELECT amount, trans_date, trans_type," +
-                " description, balance, client_social FROM " + "transactions" +
+                " description, balance FROM " + "transactions" +
+                " join clients" +
+                " on transactions.client_social = clients.social" +
                 " where chk_account_number = ? AND" +
                 " first_name = ? AND" +
                 " last_name = ?";
@@ -84,7 +87,7 @@ public class ViewAccountsController implements Initializable
                 String transactionType = transactions.getString("trans_type");
                 String description = transactions.getString("description");
                 double balance = transactions.getDouble("balance");
-                String social = transactions.getString("client_social");
+               // String social = transactions.getString("client_social");
 
                 Transaction transaction = new Transaction(amount, transDate, transactionType, description, balance);
 
