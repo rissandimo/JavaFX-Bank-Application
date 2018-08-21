@@ -1,11 +1,18 @@
 package controller;
 
 import com.jfoenix.controls.JFXTextField;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Alert;
+import javafx.stage.Stage;
 import model.BankConnection;
 
+import java.io.IOException;
 import java.net.URL;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -33,6 +40,7 @@ public class RegisterClientController implements Initializable
     private static final String CLIENT_TABLE = "clients";
     private static final String TRANSACTIONS_TABLE = "transactions";
     private static final String CHECKING_ACCOUNT_TABLE = "checking_account";
+    private int checkingAccountNum = 0;
 
     @Override
     public void initialize(URL location, ResourceBundle resources)
@@ -50,22 +58,22 @@ public class RegisterClientController implements Initializable
     }
 
     @FXML
-    private void createNewAccount()
+    private void createNewAccount(ActionEvent event)
     {
         if(insertNewClient())
         {
             initClientCheckingAccount();
-            initTransaction();
+            initTransaction(event);
         }
     }
 
-    private void initTransaction()
+    private void initTransaction(ActionEvent event)
     {
         String social = socialSecurityField.getText();
         ResultSet chkAcctNumResults = bankConnection.executeQuery("SELECT account_number from checking_account" +
                     " join clients" +
                     " where client_social = " + "'" + socialSecurityField.getText() + "'");
-            int checkingAccountNum = 0;
+
             try
             {
                 if (chkAcctNumResults != null) {
@@ -80,11 +88,36 @@ public class RegisterClientController implements Initializable
                 e.printStackTrace();
             }
 
-            String initTransactionStatement =  "INSERT INTO " + TRANSACTIONS_TABLE + "(amount, trans_date, trans_type, description, balance, chk_account_number) values" +
-                    "(0.0, CURDATE(), 'open account', 'open checking', " + 0.0 + ", " + checkingAccountNum + ")";
+            String initTransactionStatement =  "INSERT INTO " + TRANSACTIONS_TABLE + "(amount, trans_date, trans_type, description, balance, chk_account_number, client_social) values" +
+                    "(0.0, CURDATE(), 'open account', 'open checking', " + 0.0 + ", " + checkingAccountNum + ", " + social + ")";
 
 
             bankConnection.executeStatement(initTransactionStatement);
+
+            loadViewAccounts(event);
+    }
+
+    private void loadViewAccounts(ActionEvent event)
+    {
+        System.out.println("loadViewAccounts()");
+        String firstName = firstNameField.getText();
+        String lastName = lastNameField.getText();
+
+        try
+        {
+            FXMLLoader fxmlLoader = new FXMLLoader();
+
+            Parent viewAccountsRoot = fxmlLoader.load((getClass().getResource("../view/viewAccounts.fxml").openStream())); // <- Parent
+            Stage currentStage = (Stage) ((Node)event.getSource()).getScene().getWindow();
+            ViewAccountsController viewAccountsController = fxmlLoader.getController();
+            viewAccountsController.setClientInfo(checkingAccountNum, firstName, lastName);
+            currentStage.setScene(new Scene(viewAccountsRoot));
+            currentStage.show();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
     }
 
 
