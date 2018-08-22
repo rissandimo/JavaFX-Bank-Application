@@ -52,7 +52,7 @@ public class ViewAccountsController implements Initializable
     @Override
     public void initialize(URL location, ResourceBundle resources)
     {
-        bankConnection = new BankConnection();
+        bankConnection = BankConnection.getInstance();
         initColumns();
     }
 

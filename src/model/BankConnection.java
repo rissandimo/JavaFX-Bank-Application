@@ -11,17 +11,27 @@ public final class BankConnection
 
     private final static String CONNECTION_URL = "jdbc:mysql://localhost:3306/bank";
     private static Statement statement = null;
-    private Connection connection = null;
+    private static Connection connection = null;
+    private static BankConnection bankConnection = null;
 
     private final static String USERNAME = "root";
     private final static String PASSWORD  = "";
 
-    public BankConnection()
+    private BankConnection()
     {
         createConnection();
         setUpClientTable();
         setupCheckingAcctTable();
         setupTransactionsTable();
+    }
+
+    public static BankConnection getInstance()
+    {
+        if(bankConnection == null)
+        {
+            bankConnection = new BankConnection();
+        }
+        return bankConnection;
     }
 
     private void createConnection()
