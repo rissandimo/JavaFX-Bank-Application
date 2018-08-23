@@ -98,7 +98,7 @@ public final class BankConnection
                 "description VARCHAR(100) NOT NULL, " +
                 "balance DOUBLE NOT NULL, " +
                 "chk_account_number INT, " +
-                "client_social VARCHAR(9) NOT NULL," +
+                "client_social VARCHAR(9)," +
                 "FOREIGN KEY (chk_account_number) REFERENCES checking_account(account_number), " +
                 "FOREIGN KEY (client_social) REFERENCES clients(social)" +
                 "ON DELETE CASCADE)";
