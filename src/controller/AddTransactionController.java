@@ -14,7 +14,6 @@ import javafx.scene.control.DatePicker;
 import javafx.stage.Stage;
 import model.BankConnection;
 
-import javax.swing.text.View;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -39,6 +38,7 @@ public class AddTransactionController implements Initializable
     private BankConnection bankConnection;
 
     private int clientAccountNumber;
+    private String social;
 
     private int getClientAccountNumber()
     {
@@ -52,41 +52,35 @@ public class AddTransactionController implements Initializable
         transactionChoices.getItems().setAll(transactionTypes);
     }
 
-    public void setClientInfo(int clientAccountNumber)
+    public void setClientInfo(int clientAccountNumber, String social)
     {
         this.clientAccountNumber = clientAccountNumber;
+        this.social = social;
+
     }
 
     @FXML
     private void handleSubmit(ActionEvent event)
     {
+        // text boxes
         System.out.println("client account number" + getClientAccountNumber());
         double amount = Double.parseDouble(amountField.getText());
         String description = descriptionField.getText();
         String transactionType = transactionChoices.getSelectionModel().getSelectedItem();
 
+
+        //Adding social for load transactions
         String addTransaction = "INSERT INTO " + "transactions" +
-                " (amount, trans_date, trans_type, description, balance, chk_account_number)" +
-                " values (" + amount +  ", " + "CURDATE()"  + ", '" + transactionType + "', '" +
-                description + "', " + 30.00 + ", " + clientAccountNumber + "" + ")";
+                " (amount, trans_date, trans_type, description, balance, chk_account_number, client_social)" +
+                " values (" + amount + ", " + "CURDATE()" + ", '" + transactionType + "', '" +
+                description + "', " + 30.00 + ", " + clientAccountNumber + ", " + social +  ")";
 
         bankConnection.executeStatement(addTransaction);
 
-        Stage currentStage = (Stage) ((Node)event.getSource()).getScene().getWindow();
+        Stage currentStage = (Stage) ((Node) event.getSource()).getScene().getWindow();
         currentStage.close();
 
-        //Get access to ViewAccountsController
-        //Clear table view
-        //Reload table view w/ new transaction
-
-        FXMLLoader fxmlLoader = new FXMLLoader();
-        try {
-            Parent viewAccountsRoot = fxmlLoader.load(getClass().getResource("../view/viewAccounts.fxml").openStream());
-            ViewAccountsController viewAccountsController = fxmlLoader.getController();
-
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
     }
+
 
 }

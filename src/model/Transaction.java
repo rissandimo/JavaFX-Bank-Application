@@ -15,13 +15,31 @@ public class Transaction
     private SimpleStringProperty description;
     private SimpleDoubleProperty balance;
 
-    public Transaction(double amount, Date date, String type, String description, double balance)
+    public String getSocial()
+    {
+        return social.get();
+    }
+
+    public SimpleStringProperty socialProperty()
+    {
+        return social;
+    }
+
+    public void setSocial(String social)
+    {
+        this.social.set(social);
+    }
+
+    private SimpleStringProperty social;
+
+    public Transaction(double amount, Date date, String type, String description, double balance, String social)
     {
         this.amount = new SimpleDoubleProperty(amount);
         this.date = new SimpleObjectProperty<>(date);
         this.type = new SimpleStringProperty(type);
         this.description = new SimpleStringProperty(description);
         this.balance = new SimpleDoubleProperty(balance);
+        this.social = new SimpleStringProperty(social);
     }
 
     public Date getDate()

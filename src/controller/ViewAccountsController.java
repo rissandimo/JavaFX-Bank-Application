@@ -25,8 +25,9 @@ public class ViewAccountsController implements Initializable
 {
 
     private int clientAccountNumber;
-    private String clientFirstName;
-    private String clientLastName;
+
+    private String social;
+
     @FXML
     private TableColumn<Transaction, Date> dateColumn;
 
@@ -65,33 +66,33 @@ public class ViewAccountsController implements Initializable
         balanceColumn.setCellValueFactory(new PropertyValueFactory<>("balance"));
     }
 
-    private void loadTransactions(int clientAccountNumber, String firstName, String lastName)
+    public void loadTransactions(int clientAccountNumber, String firstName, String lastName)
     {
-        // social is needed to join client table -> first name
+        // social is needed to join client table -> needed to retrieve first and last name for login
         String SHOW_ACCOUNT_DETAILS_QUERY =  "SELECT amount, trans_date, trans_type," +
-                " description, balance FROM " + "transactions" +
+                " description, balance, client_social FROM " + "transactions" +
                 " join clients" +
                 " on transactions.client_social = clients.social" +
                 " where chk_account_number = ? AND" +
                 " first_name = ? AND" +
                 " last_name = ?";
-
         ResultSet transactions = bankConnection.executeClientQuery(SHOW_ACCOUNT_DETAILS_QUERY, clientAccountNumber, firstName, lastName);
 
         try
         {
-            while (transactions != null && transactions.next())
+            while (transactions.next())
             {
                 double amount = transactions.getDouble("amount");
                 Date transDate = transactions.getDate("trans_date");
                 String transactionType = transactions.getString("trans_type");
                 String description = transactions.getString("description");
                 double balance = transactions.getDouble("balance");
-               // String social = transactions.getString("client_social");
+                social = transactions.getString("client_social");
 
-                Transaction transaction = new Transaction(amount, transDate, transactionType, description, balance);
+                Transaction transaction = new Transaction(amount, transDate, transactionType, description, balance, social);
 
                 transactionList.add(transaction);
+                System.out.println("transaction added");
 
                 //TODO - reload table view after adding new transaction
             }
@@ -115,7 +116,7 @@ public class ViewAccountsController implements Initializable
             FXMLLoader fxmlLoader = new FXMLLoader();
             Parent root = fxmlLoader.load(getClass().getResource("../view/addTransaction.fxml").openStream());
             AddTransactionController addTransactionController = fxmlLoader.getController();
-            addTransactionController.setClientInfo(clientAccountNumber);
+            addTransactionController.setClientInfo(clientAccountNumber, social);
 
             Stage stage = new Stage();
             stage.setTitle("Add New Transaction");
@@ -134,12 +135,7 @@ public class ViewAccountsController implements Initializable
     public void setClientInfo(int clientAccountNumber, String firstName, String lastName)
     {
         this.clientAccountNumber = clientAccountNumber;
-        this.clientFirstName = firstName;
-        this.clientLastName = lastName;
         loadTransactions(clientAccountNumber, firstName, lastName);
     }
-
-
-
 
 }
