@@ -5,13 +5,17 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
+import javafx.scene.Parent;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.DatePicker;
 import javafx.stage.Stage;
 import model.BankConnection;
 
+import javax.swing.text.View;
+import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
@@ -70,6 +74,19 @@ public class AddTransactionController implements Initializable
 
         Stage currentStage = (Stage) ((Node)event.getSource()).getScene().getWindow();
         currentStage.close();
+
+        //Get access to ViewAccountsController
+        //Clear table view
+        //Reload table view w/ new transaction
+
+        FXMLLoader fxmlLoader = new FXMLLoader();
+        try {
+            Parent viewAccountsRoot = fxmlLoader.load(getClass().getResource("../view/viewAccounts.fxml").openStream());
+            ViewAccountsController viewAccountsController = fxmlLoader.getController();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
 }
