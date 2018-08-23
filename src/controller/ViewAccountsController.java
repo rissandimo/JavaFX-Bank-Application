@@ -5,12 +5,9 @@ import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.stage.Stage;
+import javafx.scene.layout.GridPane;
 import model.BankConnection;
 import model.Transaction;
 
@@ -19,6 +16,7 @@ import java.net.URL;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Date;
+import java.util.Optional;
 import java.util.ResourceBundle;
 
 public class ViewAccountsController implements Initializable
@@ -27,6 +25,11 @@ public class ViewAccountsController implements Initializable
     private int clientAccountNumber;
 
     private String social;
+    private String firstName;
+    private String lastName;
+
+    @FXML
+    private GridPane viewAccountsWindow;
 
     @FXML
     private TableColumn<Transaction, Date> dateColumn;
@@ -97,7 +100,6 @@ public class ViewAccountsController implements Initializable
                 //TODO - reload table view after adding new transaction
             }
 
-
         }
         catch(SQLException e)
         {
@@ -111,30 +113,56 @@ public class ViewAccountsController implements Initializable
     @FXML
     private void handleNewTransaction()
     {
-        try {
 
-            FXMLLoader fxmlLoader = new FXMLLoader();
-            Parent root = fxmlLoader.load(getClass().getResource("../view/addTransaction.fxml").openStream());
+        //Set up dialog for new transaction
+        Dialog<ButtonType> dialogWindow = new Dialog<>();
+        dialogWindow.initOwner(viewAccountsWindow.getScene().getWindow());
+
+        //get access to controller
+        FXMLLoader fxmlLoader = new FXMLLoader();
+        fxmlLoader.setLocation(getClass().getResource("../view/addTransaction.fxml"));
+        try
+        {
+            dialogWindow.getDialogPane().setContent(fxmlLoader.load());
+        }
+        catch (IOException e)
+        {
+            System.out.println("Unable to load add transaction view");
+            e.printStackTrace();
+        }
+
+        //Set up dialog buttons
+        dialogWindow.getDialogPane().getButtonTypes().add(ButtonType.OK);
+        dialogWindow.getDialogPane().getButtonTypes().add(ButtonType.CANCEL);
+
+        //Check which button was chosen
+        Optional<ButtonType> choice = dialogWindow.showAndWait();
+        if(choice.isPresent() && choice.get() == ButtonType.OK) // -> AddTransactionController -> handleSubmit()
+        {
             AddTransactionController addTransactionController = fxmlLoader.getController();
             addTransactionController.setClientInfo(clientAccountNumber, social);
 
-            Stage stage = new Stage();
-            stage.setTitle("Add New Transaction");
-            stage.setScene(new Scene(root));
-            stage.show();
-
-            tableView.getItems().setAll(transactionList); //update transaction list
-
-        } catch (IOException e) {
-            e.printStackTrace();
+            reloadView();
+            loadTransactions(clientAccountNumber, firstName, lastName);
         }
+        else
+        {
+            System.out.println("Cancel pressed");
+        }
+
     }
 
-
+    private void reloadView()
+    {
+        tableView.getItems().clear();
+    }
 
     public void setClientInfo(int clientAccountNumber, String firstName, String lastName)
     {
         this.clientAccountNumber = clientAccountNumber;
+        this.firstName = firstName;
+        this.lastName = lastName;
+
         loadTransactions(clientAccountNumber, firstName, lastName);
     }
 
