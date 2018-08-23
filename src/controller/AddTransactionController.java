@@ -16,6 +16,7 @@ import model.BankConnection;
 
 import java.io.IOException;
 import java.net.URL;
+import java.time.LocalDate;
 import java.util.ResourceBundle;
 
 public class AddTransactionController implements Initializable
@@ -32,6 +33,7 @@ public class AddTransactionController implements Initializable
 
     @FXML
     private DatePicker datePicker;
+
 
     private ObservableList<String> transactionTypes = FXCollections.observableArrayList("Debt", "Deposit", "Withdrawal");
 
@@ -56,17 +58,19 @@ public class AddTransactionController implements Initializable
     {
         this.clientAccountNumber = clientAccountNumber;
         this.social = social;
+        handleSubmit();
 
     }
 
     @FXML
-    private void handleSubmit(ActionEvent event)
+    private void handleSubmit()
     {
         // text boxes
         System.out.println("client account number" + getClientAccountNumber());
         double amount = Double.parseDouble(amountField.getText());
         String description = descriptionField.getText();
         String transactionType = transactionChoices.getSelectionModel().getSelectedItem();
+        //LocalDate date = datePicker.getValue();
 
 
         //Adding social for load transactions
@@ -76,9 +80,6 @@ public class AddTransactionController implements Initializable
                 description + "', " + 30.00 + ", " + clientAccountNumber + ", " + social +  ")";
 
         bankConnection.executeStatement(addTransaction);
-
-        Stage currentStage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-        currentStage.close();
 
     }
 
