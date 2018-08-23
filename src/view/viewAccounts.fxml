@@ -9,7 +9,7 @@
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.RowConstraints?>
 
-<GridPane prefHeight="547.0" prefWidth="814.0" stylesheets="@css/viewAccounts.css" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.ViewAccountsController">
+<GridPane prefHeight="547.0" fx:id="viewAccountsWindow" prefWidth="814.0" stylesheets="@css/viewAccounts.css" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.ViewAccountsController">
    <children>
    
        <MenuBar prefHeight="25.0" prefWidth="817.0" GridPane.columnIndex="0" GridPane.rowIndex="0">
