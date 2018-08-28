@@ -9,22 +9,16 @@
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.RowConstraints?>
 
-<GridPane prefHeight="547.0" fx:id="viewAccountsWindow" prefWidth="814.0" stylesheets="@css/viewAccounts.css" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.ViewAccountsController">
+<GridPane fx:id="viewAccountsWindow" prefHeight="863.0" prefWidth="1184.0" stylesheets="@css/viewAccounts.css" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.ViewAccountsController">
    <children>
    
-       <MenuBar prefHeight="25.0" prefWidth="817.0" GridPane.columnIndex="0" GridPane.rowIndex="0">
+       <MenuBar maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="25.0" prefWidth="1185.0" GridPane.columnIndex="0" GridPane.rowIndex="0">
       <menus>
           <Menu text="File">
              <items>
                  <MenuItem onAction="#handleNewTransaction" text="New Transaction" />
                  <MenuItem text="Print" />
-                 <MenuItem text="Exit" />
-             </items>
-          </Menu>
-          <Menu text="Transfer">
-             <items>
-                 <MenuItem text="From/To" />
-                 <MenuItem text="To/From" />
+                 <MenuItem onAction="#handleClose" text="Exit" />
              </items>
           </Menu>
       </menus>
@@ -32,11 +26,11 @@
    
        <TableView fx:id="tableView" prefHeight="350.0" prefWidth="761.0" stylesheets="@css/mainView.css" GridPane.columnIndex="0" GridPane.rowIndex="1" GridPane.vgrow="ALWAYS">
            <columns>
-               <TableColumn fx:id="dateColumn" prefWidth="204.0" text=" Date" />
-               <TableColumn fx:id="descriptionColumn" prefWidth="139.0" text="Description" />
-               <TableColumn fx:id="typeColumn" minWidth="0.0" prefWidth="73.0" text="Type" />
-               <TableColumn fx:id="amountColumn" prefWidth="91.0" text="Amount" />
-               <TableColumn fx:id="balanceColumn" prefWidth="92.0" text="Balance" />
+               <TableColumn fx:id="dateColumn" minWidth="-Infinity" prefWidth="168.0" text=" Date" />
+               <TableColumn fx:id="descriptionColumn" minWidth="-Infinity" prefWidth="313.0" text="Description" />
+               <TableColumn fx:id="typeColumn" minWidth="0.0" prefWidth="153.0" text="Type" />
+               <TableColumn fx:id="amountColumn" prefWidth="316.0" text="Amount" />
+               <TableColumn fx:id="balanceColumn" prefWidth="161.0" text="Balance" />
            </columns>
          <columnResizePolicy>
             <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />

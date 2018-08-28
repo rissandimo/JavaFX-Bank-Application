@@ -26,7 +26,7 @@
                   <Insets left="40.0" top="15.0" />
                </VBox.margin>
             </ChoiceBox>
-            <DatePicker fx:id="datePicker" prefHeight="25.0" prefWidth="245.0">
+            <DatePicker fx:id="datePicker" prefHeight="25.0" prefWidth="245.0" visible="false">
                <VBox.margin>
                   <Insets left="40.0" top="10.0" />
                </VBox.margin>

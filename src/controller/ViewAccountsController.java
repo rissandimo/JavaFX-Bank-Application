@@ -8,6 +8,8 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.GridPane;
+import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 import model.BankConnection;
 import model.Transaction;
 
@@ -107,6 +109,13 @@ public class ViewAccountsController implements Initializable
         }
 
         tableView.setItems(transactionList);
+    }
+
+
+    @FXML
+    private void handleClose()
+    {
+        ((Stage)viewAccountsWindow.getScene().getWindow()).close();
     }
 
 
