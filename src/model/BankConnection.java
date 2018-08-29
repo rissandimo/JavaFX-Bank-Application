@@ -180,4 +180,22 @@ public final class BankConnection
         }
     }
 
+    public boolean deleteTransaction(Transaction transactionToDelete)
+    {
+        String deleteStatement = "DELETE FROM transactions where description = ?";
+        PreparedStatement preparedStatement;
+        try
+        {
+            preparedStatement = connection.prepareStatement(deleteStatement);
+            preparedStatement.setString(1, transactionToDelete.getDescription());
+            int rowsDeleted = preparedStatement.executeUpdate();
+            System.out.println("Rows deleted: " + rowsDeleted);
+            return true;
+        }
+        catch (SQLException e)
+        {
+            e.printStackTrace();
+            return false;
+        }
+    }
 }

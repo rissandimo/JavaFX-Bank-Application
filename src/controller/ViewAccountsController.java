@@ -9,7 +9,6 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
-import javafx.stage.StageStyle;
 import model.BankConnection;
 import model.Transaction;
 
@@ -158,6 +157,41 @@ public class ViewAccountsController implements Initializable
         {
             System.out.println("Cancel pressed");
         }
+
+    }
+
+    @FXML
+    private void handleTransactionDelete()
+    {
+        Transaction transactionToDelete = tableView.getSelectionModel().getSelectedItem();
+
+        //no transaction chosen
+        if(transactionToDelete == null)
+        {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setHeaderText("No transaction deleted");
+            alert.setContentText("Please choose a transaction to delete");
+            alert.showAndWait();
+            return;
+        }
+
+        Alert alertConfirmation = new Alert(Alert.AlertType.CONFIRMATION);
+        alertConfirmation.setHeaderText("Delete confirmation");
+        alertConfirmation.setContentText("Are you sure you want to delete the following transaction: ?");
+        alertConfirmation.setContentText(transactionToDelete.getDescription());
+
+        Optional<ButtonType> deleteTransaction = alertConfirmation.showAndWait();
+        if(deleteTransaction.isPresent() && deleteTransaction.get() == ButtonType.OK)
+        {
+            boolean deleteSuccessfull = BankConnection.getInstance().deleteTransaction(transactionToDelete);
+            if(deleteSuccessfull)
+            {
+                transactionList.remove(transactionToDelete);
+            }
+        }
+
+
+
 
     }
 
