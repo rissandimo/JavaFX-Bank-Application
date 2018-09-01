@@ -125,6 +125,7 @@ public class ViewAccountsController implements Initializable
         //Set up dialog for new transaction
         Dialog<ButtonType> dialogWindow = new Dialog<>();
         dialogWindow.initOwner(viewAccountsWindow.getScene().getWindow());
+        dialogWindow.setTitle("Add new transaction");
 
         //get access to controller
         FXMLLoader fxmlLoader = new FXMLLoader();
@@ -176,7 +177,7 @@ public class ViewAccountsController implements Initializable
         }
 
         Alert alertConfirmation = new Alert(Alert.AlertType.WARNING);
-        alertConfirmation.setHeaderText("Delete confirmation");
+        alertConfirmation.setHeaderText("Delete transaction confirmation");
         alertConfirmation.setContentText(
                 "Are you sure you want to delete the following transaction: ? \n" +
                 transactionToDelete.getDescription());

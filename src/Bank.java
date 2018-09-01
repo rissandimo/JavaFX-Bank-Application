@@ -14,7 +14,7 @@ public class Bank extends Application
         window = primaryStage;
         Parent root = FXMLLoader.load(getClass().getResource("view/mainView.fxml"));
         window.setScene(new Scene(root));
-        window.setTitle("Main Screen");
+        window.setTitle("Login Screen");
         window.show();
 
     }

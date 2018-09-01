@@ -82,6 +82,7 @@ public class MainViewController implements Initializable
                 Scene scene = new Scene(root);
                 //load the scene
                 currentStage.setScene(scene);
+                currentStage.setTitle("Transaction List");
                 currentStage.show();
             }
         }
