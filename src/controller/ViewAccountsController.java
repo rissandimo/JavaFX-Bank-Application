@@ -182,23 +182,30 @@ public class ViewAccountsController implements Initializable
                 "Are you sure you want to delete the following transaction: ? \n" +
                 transactionToDelete.getDescription());
 
+        ButtonType buttonTypeYes = new ButtonType("Yes");
+        ButtonType buttonTypeCancel = new ButtonType("Cancel");
+
+        alertConfirmation.getButtonTypes().setAll(buttonTypeYes, buttonTypeCancel);
         Optional<ButtonType> deleteTransaction = alertConfirmation.showAndWait();
-        if(deleteTransaction.isPresent() && deleteTransaction.get() == ButtonType.OK)
+        if(deleteTransaction.get() == buttonTypeYes)
         {
             boolean deleteSuccessfull = BankConnection.getInstance().deleteTransaction(transactionToDelete);
             if(deleteSuccessfull)
             {
                 transactionList.remove(transactionToDelete);
+                Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+                alert.setHeaderText("Deletion Successfull");
+                alert.setContentText(transactionToDelete.getDescription() + " -  has been deleted");
+                alert.showAndWait();
             }
         }
-        else
+        else if(deleteTransaction.get() == buttonTypeCancel)
         {
             Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
             alert.setHeaderText("Deletion cancelled");
             alert.setContentText(transactionToDelete.getDescription() + " -  has not been deleted");
             alert.showAndWait();
         }
-
 
 
 
