@@ -17,11 +17,15 @@
       <menus>
           <Menu text="File">
              <items>
-                 <MenuItem onAction="#handleNewTransaction" text="New Transaction" />
-                 <MenuItem text="Print" />
-                 <MenuItem onAction="#handleClose" text="Exit" />
+                 <MenuItem onAction="#handleClose" text="Close" />
              </items>
           </Menu>
+            <Menu mnemonicParsing="false" text="Account">
+              <items>
+                  <MenuItem mnemonicParsing="false" onAction="#handleTransactionDelete" text="Delete Transaction" />
+                 <MenuItem onAction="#handleNewTransaction" text="New Transaction" />
+              </items>
+            </Menu>
       </menus>
        </MenuBar>
    
