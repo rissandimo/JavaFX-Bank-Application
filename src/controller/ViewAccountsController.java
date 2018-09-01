@@ -175,10 +175,11 @@ public class ViewAccountsController implements Initializable
             return;
         }
 
-        Alert alertConfirmation = new Alert(Alert.AlertType.CONFIRMATION);
+        Alert alertConfirmation = new Alert(Alert.AlertType.WARNING);
         alertConfirmation.setHeaderText("Delete confirmation");
-        alertConfirmation.setContentText("Are you sure you want to delete the following transaction: ?");
-        alertConfirmation.setContentText(transactionToDelete.getDescription());
+        alertConfirmation.setContentText(
+                "Are you sure you want to delete the following transaction: ? \n" +
+                transactionToDelete.getDescription());
 
         Optional<ButtonType> deleteTransaction = alertConfirmation.showAndWait();
         if(deleteTransaction.isPresent() && deleteTransaction.get() == ButtonType.OK)
@@ -188,6 +189,13 @@ public class ViewAccountsController implements Initializable
             {
                 transactionList.remove(transactionToDelete);
             }
+        }
+        else
+        {
+            Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+            alert.setHeaderText("Deletion cancelled");
+            alert.setContentText(transactionToDelete.getDescription() + " -  has not been deleted");
+            alert.showAndWait();
         }
 
 
