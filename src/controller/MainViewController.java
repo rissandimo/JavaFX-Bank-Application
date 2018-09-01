@@ -7,6 +7,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
@@ -26,6 +27,8 @@ public class MainViewController implements Initializable
 
     @FXML
     private TextField lastNameField;
+
+    private boolean credentialsEntered = false;
 
 
     @Override
@@ -49,22 +52,46 @@ public class MainViewController implements Initializable
     @FXML
     private void handleLogIn(ActionEvent actionEvent) throws IOException
     {
-        String firstName = firstNameField.getText();
-        String lastName = lastNameField.getText();
-        int accountNumber = Integer.parseInt(accountNumberField.getText());
-        Stage currentStage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
+        String firstName, lastName, accountNumberS = "";
+        try
+        {
+             firstName = firstNameField.getText();
+             lastName = lastNameField.getText();
+             accountNumberS = accountNumberField.getText();
+            credentialsEntered = firstName.isEmpty() || lastName.isEmpty() || accountNumberS.isEmpty();
 
-        //get the controller
-        FXMLLoader loader = new FXMLLoader();
-        Pane root = loader.load(getClass().getResource("../view/viewAccounts.fxml").openStream());
-        ViewAccountsController viewAccountsController =  loader.getController();
-        //set the data
-        viewAccountsController.setClientInfo(accountNumber, firstName, lastName);
-        Scene scene = new Scene(root);
-        //load the scene
-        currentStage.setScene(scene);
-        currentStage.show();
+            if(!credentialsEntered)
+            {
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setHeaderText("Error - empty fields");
+                alert.setContentText("All fields must be entered");
+                alert.showAndWait();
 
+            }
+            else
+            {
+                int accountNumberI = Integer.parseInt(accountNumberField.getText());
+                Stage currentStage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
+
+                //get the controller
+                FXMLLoader loader = new FXMLLoader();
+                Pane root = loader.load(getClass().getResource("../view/viewAccounts.fxml").openStream());
+                ViewAccountsController viewAccountsController =  loader.getController();
+                //set the data
+                viewAccountsController.setClientInfo(accountNumberI, firstName, lastName);
+                Scene scene = new Scene(root);
+                //load the scene
+                currentStage.setScene(scene);
+                currentStage.show();
+            }
+        }
+        catch(NumberFormatException e)
+        {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setHeaderText("Error - empty fields");
+            alert.setContentText("All fields must be entered");
+            alert.showAndWait();
+        }
     }
 
 }
