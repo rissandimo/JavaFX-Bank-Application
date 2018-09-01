@@ -28,7 +28,7 @@ public class MainViewController implements Initializable
     @FXML
     private TextField lastNameField;
 
-    private boolean credentialsEntered = false;
+    private boolean credentialsNotEntered = false;
 
 
     @Override
@@ -58,9 +58,9 @@ public class MainViewController implements Initializable
              firstName = firstNameField.getText();
              lastName = lastNameField.getText();
              accountNumberS = accountNumberField.getText();
-            credentialsEntered = firstName.isEmpty() || lastName.isEmpty() || accountNumberS.isEmpty();
+            credentialsNotEntered = firstName.isEmpty() || lastName.isEmpty() || accountNumberS.isEmpty();
 
-            if(!credentialsEntered)
+            if(credentialsNotEntered)
             {
                 Alert alert = new Alert(Alert.AlertType.ERROR);
                 alert.setHeaderText("Error - empty fields");
