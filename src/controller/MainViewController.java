@@ -11,9 +11,12 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
+import model.BankConnection;
 
 import java.io.IOException;
 import java.net.URL;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ResourceBundle;
 
 public class MainViewController implements Initializable
@@ -28,13 +31,13 @@ public class MainViewController implements Initializable
     @FXML
     private TextField lastNameField;
 
-    private boolean credentialsNotEntered = false;
+    private BankConnection bankConnection;
 
 
     @Override
     public void initialize(URL location, ResourceBundle resources)
     {
-
+        bankConnection = BankConnection.getInstance();
     }
 
     @FXML
@@ -52,13 +55,14 @@ public class MainViewController implements Initializable
     @FXML
     private void handleLogIn(ActionEvent actionEvent) throws IOException
     {
-        String firstName, lastName, accountNumberS = "";
+        String firstNameEntered, lastNameEntered, accountNumberEnteredS;
         try
         {
-             firstName = firstNameField.getText();
-             lastName = lastNameField.getText();
-             accountNumberS = accountNumberField.getText();
-            credentialsNotEntered = firstName.isEmpty() || lastName.isEmpty() || accountNumberS.isEmpty();
+            firstNameEntered = firstNameField.getText();
+            lastNameEntered = lastNameField.getText();
+            accountNumberEnteredS = accountNumberField.getText();
+            int accountNumberEntered = Integer.parseInt(accountNumberField.getText());
+            boolean credentialsNotEntered = firstNameEntered.isEmpty() || lastNameEntered.isEmpty() || accountNumberEnteredS.isEmpty();
 
             if(credentialsNotEntered)
             {
@@ -70,19 +74,29 @@ public class MainViewController implements Initializable
             }
             else
             {
-                int accountNumberI = Integer.parseInt(accountNumberField.getText());
-                Stage currentStage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
+                if(validateLogin(firstNameEntered, lastNameEntered, accountNumberEntered))
+                {
+                    Stage currentStage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
 
-                //get the controller
-                FXMLLoader loader = new FXMLLoader();
-                Pane root = loader.load(getClass().getResource("../view/viewAccounts.fxml").openStream());
-                ViewAccountsController viewAccountsController =  loader.getController();
-                //set the data
-                viewAccountsController.setClientInfo(accountNumberI, firstName, lastName);
-                Scene scene = new Scene(root);
-                //load the scene
-                currentStage.setScene(scene);
-                currentStage.show();
+                    FXMLLoader loader = new FXMLLoader();
+                    Pane root = loader.load(getClass().getResource("../view/viewAccounts.fxml").openStream());
+                    ViewAccountsController viewAccountsController =  loader.getController();
+
+                    viewAccountsController.setClientInfo(accountNumberEntered, firstNameEntered, lastNameEntered);
+                    Scene scene = new Scene(root);
+
+                    currentStage.setScene(scene);
+                    currentStage.setTitle("Transaction List");
+                    currentStage.show();
+                }
+                else
+                {
+                    Alert alert = new Alert(Alert.AlertType.ERROR);
+                    alert.setHeaderText("Error - No account found");
+                    alert.setContentText("Client does not exists");
+                    alert.showAndWait();
+                }
+
             }
         }
         catch(NumberFormatException e)
@@ -92,6 +106,37 @@ public class MainViewController implements Initializable
             alert.setContentText("All fields must be entered");
             alert.showAndWait();
         }
+    }
+
+    private boolean validateLogin(String firstNameEntered, String lastNameEntered, int accountNumberEntered)
+    {
+        String accountQuery = "SELECT first_name, last_name, account_number from clients" +
+                " join checking_account" +
+                " where clients.social = checking_account.client_social";
+
+        ResultSet accountResults = bankConnection.executeQuery(accountQuery);
+        try
+        {
+            while(accountResults != null && accountResults.next())
+            {
+                String firstNameDB = accountResults.getString("first_name");
+                String lastNameDB = accountResults.getString("last_name");
+                int acctNumberDB = Integer.parseInt(accountResults.getString("account_number"));
+
+                if(firstNameEntered.equals(firstNameDB) &&
+                        lastNameEntered.equals(lastNameDB) &&
+                        accountNumberEntered == acctNumberDB)
+                {
+                    return true;
+                }
+            }
+        }
+        catch (SQLException e)
+        {
+            e.printStackTrace();
+        }
+
+        return false;
     }
 
 }
