@@ -13,17 +13,17 @@
 
             <JFXTextField fx:id="firstNameField" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="60.0" prefWidth="490.0" promptText="First Name" styleClass="text-fields">
                <VBox.margin>
-                  <Insets left="40.0" right="20.0" top="50.0" />
+                  <Insets left="50.0" top="10.0" />
                </VBox.margin>
             </JFXTextField>
       <JFXTextField fx:id="lastNameField" maxHeight="-Infinity" maxWidth="-Infinity" prefColumnCount="0" prefHeight="60.0" prefWidth="490.0" promptText="Last Name" styleClass="text-fields">
          <VBox.margin>
-            <Insets left="40.0" right="20.0" />
+            <Insets left="50.0" top="10.0" />
          </VBox.margin>
       </JFXTextField>
             <JFXTextField fx:id="accountNumberField" maxHeight="-Infinity" maxWidth="-Infinity" prefColumnCount="0" prefHeight="60.0" prefWidth="490.0" promptText="Account Number #" styleClass="text-fields">
                <VBox.margin>
-                  <Insets left="40.0" right="20.0" />
+                  <Insets left="50.0" top="10.0" />
                </VBox.margin>
             </JFXTextField>
             <HBox alignment="CENTER" prefHeight="13.0" prefWidth="600.0">
