@@ -1,55 +1,40 @@
-/*applied everywhere*/
-
+/*Color variables*/
 *
 {
-   -fx-primary-background : #2A2E37;
+    -fx-primary: #2A2E37;
     -fx-secondary: #FFFF8D;
-    buttonBorderColor: #0D47A1;
-    -fx-primaryText: #ffffff;
+    -fx-primarytext: #B2B2B2;
 }
 
-/* -> every button*/
-.button
-{
+.button{
     -fx-text-fill: -fx-primaryText;
-}
-
-/*This will set the color for the icons*/
-.glyph-icon
-{
-    -fx-fill: #FFFFFF;
 }
 
 .root
 {
-    -fx-background-color: -fx-primary-background;
-    -fx-text-fill: -fx-primaryText;
+    -fx-background-color: -fx-primary;
 }
 
 /*Login Screen*/
 
-.text-fields
-{
-    -fx-font-size: 13pt;
-    -fx-text-fill: #FFFFFF;
-    -jfx-focus-color: borderColor;
-}
-
 .login-button
 {
-    -fx-background-color: -fx-primary-background;
-    -fx-border-color: buttonBorderColor;
-    -fx-border-radius: 20px;
+    -fx-border-color: -fx-secondary;
     -fx-background-radius: 20px;
+    -fx-border-radius: 20px;
 }
 
 .login-button:hover
 {
-    -fx-background-color: #0D47A1;
-    -fx-border-color: buttonBorderColor;
-    -fx-border-radius: 20px;
-    -fx-background-radius: 20px;
-    -fx-text-fill: #FFFFFF;
+    -fx-border-color: -fx-secondary;
+    -fx-background-color: -fx-secondary;
+    -fx-text-fill: -fx-primary;
 }
 
+.text-field
+{
+    -fx-text-fill: -fx-primaryText;
+    -fx-font-size: 13pt;
+    -jfx-focus-color: -fx-secondary;
+}
 
