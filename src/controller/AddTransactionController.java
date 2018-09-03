@@ -16,6 +16,8 @@ import model.BankConnection;
 
 import java.io.IOException;
 import java.net.URL;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.ResourceBundle;
 
@@ -35,7 +37,7 @@ public class AddTransactionController implements Initializable
     private DatePicker datePicker;
 
 
-    private ObservableList<String> transactionTypes = FXCollections.observableArrayList("Debt", "Deposit", "Withdrawal");
+    private ObservableList<String> transactionTypes = FXCollections.observableArrayList("Transaction", "Deposit", "Withdrawal");
 
     private BankConnection bankConnection;
 
@@ -65,23 +67,69 @@ public class AddTransactionController implements Initializable
     @FXML
     private void handleSubmit()
     {
-        // text boxes
-        System.out.println("client account number" + getClientAccountNumber());
         double amount = Double.parseDouble(amountField.getText());
         String description = descriptionField.getText();
         String transactionType = transactionChoices.getSelectionModel().getSelectedItem();
-        //LocalDate date = datePicker.getValue();
 
+        double accountBalance = getAccountBalance(clientAccountNumber);
 
-        //Adding social for load transactions
-        String addTransaction = "INSERT INTO " + "transactions" +
-                " (amount, trans_date, trans_type, description, balance, chk_account_number, client_social)" +
-                " values (" + amount + ", " + "CURDATE()" + ", '" + transactionType + "', '" +
-                description + "', " + 30.00 + ", " + clientAccountNumber + ", " + social +  ")";
-
-        bankConnection.executeStatement(addTransaction);
+        switch(transactionType)
+        {
+            case "Transaction":
+                System.out.println("Transaction");
+                transaction(amount, description, accountBalance);
+                break;
+            case "Deposit":
+                deposit(accountBalance, amount);
+                System.out.println("Deposit");
+                break;
+            case "Withdrawal":
+                System.out.println("Withdrawal");
+                break;
+        }
 
     }
 
+    private double getAccountBalance(int clientAccountNumber)
+    {
+        String getAccountBalance = "SELECT balance from checking_account where account_number = " + clientAccountNumber;
+
+        ResultSet account = bankConnection.executeQuery(getAccountBalance);
+        double accountBalance = 0;
+
+        try
+        {
+            while(account.next())
+            {
+                accountBalance = account.getDouble("balance");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return accountBalance;
+    }
+
+    private void deposit(double accountBalance, double amount)
+    {
+        accountBalance += amount;
+        String updateChecking = "UPDATE checking_account set balance = " + accountBalance + " where account_number = " + clientAccountNumber;
+
+        bankConnection.executeStatement(updateChecking);
+    }
+
+    private void transaction(double amount, String description, double accountBalance)
+    {
+        accountBalance += amount;
+        String addTransaction = "INSERT INTO " + "transactions" +
+                " (amount, trans_date, trans_type, description, balance, chk_account_number, client_social)" +
+                " values (" + amount + ", " + "CURDATE()" + ", '" + "transaction" + "', '" +
+                description + "', " + accountBalance + ", " + clientAccountNumber + ", " + social +  ")";
+
+        String updateChecking = "UPDATE checking_account set balance = " + accountBalance + " where account_number = " + clientAccountNumber;
+
+
+        bankConnection.executeStatement(addTransaction);
+        bankConnection.executeStatement(updateChecking);
+    }
 
 }

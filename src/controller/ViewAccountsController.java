@@ -96,9 +96,6 @@ public class ViewAccountsController implements Initializable
                 Transaction transaction = new Transaction(amount, transDate, transactionType, description, balance, social);
 
                 transactionList.add(transaction);
-                System.out.println("transaction added");
-
-                //TODO - reload table view after adding new transaction
             }
 
         }
