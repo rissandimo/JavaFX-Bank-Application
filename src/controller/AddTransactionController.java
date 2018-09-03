@@ -9,6 +9,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.Parent;
+import javafx.scene.control.Alert;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.DatePicker;
 import javafx.stage.Stage;
@@ -76,15 +77,13 @@ public class AddTransactionController implements Initializable
         switch(transactionType)
         {
             case "Transaction":
-                System.out.println("Transaction");
                 transaction(amount, description, accountBalance);
                 break;
             case "Deposit":
                 deposit(accountBalance, amount);
-                System.out.println("Deposit");
                 break;
             case "Withdrawal":
-                System.out.println("Withdrawal");
+                withdrawal(accountBalance, amount);
                 break;
         }
 
@@ -115,6 +114,31 @@ public class AddTransactionController implements Initializable
         String updateChecking = "UPDATE checking_account set balance = " + accountBalance + " where account_number = " + clientAccountNumber;
 
         bankConnection.executeStatement(updateChecking);
+    }
+
+    private void withdrawal(double accountBalance, double amount)
+    {
+        if( (accountBalance - amount) < 0)
+        {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setHeaderText("Error - unsufficient funds");
+            alert.setContentText("You do not have sufficient funds!");
+            alert.showAndWait();
+        }
+        else if(amount > 500)
+        {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setHeaderText("Error - Limit exceeded");
+            alert.setContentText("Please choose an amount not greater than $500");
+            alert.showAndWait();
+        }
+        else
+        {
+            accountBalance -= amount;
+            String updateChecking = "UPDATE checking_account set balance = " + accountBalance + " where account_number = " + clientAccountNumber;
+            bankConnection.executeStatement(updateChecking);
+        }
+
     }
 
     private void transaction(double amount, String description, double accountBalance)
