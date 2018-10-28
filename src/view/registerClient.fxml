@@ -7,9 +7,9 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-<AnchorPane prefHeight="317.0" prefWidth="600.0" stylesheets="@../resources/stylesheet/stylesheet.css" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.RegisterClientController">
+<AnchorPane prefHeight="317.0" prefWidth="600.0" stylesheets="@stylesheet/stylesheet.css" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.RegisterClientController">
       <VBox layoutX="250.0" layoutY="100.0" prefHeight="400.0" prefWidth="600.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-            <JFXTextField fx:id="firstNameField" promptText="First Name" styleClass="text-fields" stylesheets="@../resources/stylesheet/stylesheet.css">
+            <JFXTextField fx:id="firstNameField" promptText="First Name" styleClass="text-fields" stylesheets="@stylesheet/stylesheet.css">
                <VBox.margin>
                   <Insets left="20.0" right="20.0" top="40.0" />
                </VBox.margin>

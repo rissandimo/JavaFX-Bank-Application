@@ -4,12 +4,12 @@
 <?import com.jfoenix.controls.JFXTextField?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane prefHeight="378.0" prefWidth="600.0" stylesheets="@../resources/stylesheet/stylesheet.css" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.MainViewController">
+<AnchorPane prefHeight="378.0" prefWidth="600.0" stylesheets="@stylesheet/stylesheet.css" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.MainViewController">
 
          <JFXTextField fx:id="firstNameField" layoutX="55.0" layoutY="14.0" maxHeight="-Infinity" maxWidth="-Infinity" prefColumnCount="0" prefHeight="60.0" prefWidth="490.0" promptText="First Name" styleClass="text-fields" />
    <JFXTextField fx:id="lastNameField" layoutX="55.0" layoutY="106.0" maxHeight="-Infinity" maxWidth="-Infinity" prefColumnCount="0" prefHeight="60.0" prefWidth="490.0" promptText="Last Name" styleClass="text-fields" />
          <JFXTextField fx:id="accountNumberField" layoutX="48.0" layoutY="205.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefColumnCount="0" prefHeight="60.0" prefWidth="490.0" promptText="Account Number #" styleClass="text-fields" />
 
-            <JFXButton layoutX="48.0" layoutY="295.0" minHeight="-Infinity" minWidth="-Infinity" onAction="#handleLogIn" prefHeight="60.0" prefWidth="240.0" styleClass="login-button" stylesheets="@../resources/stylesheet/stylesheet.css" text="Log In" />
-            <JFXButton layoutX="324.0" layoutY="295.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onAction="#handleMakeNewAccount" prefHeight="60.0" prefWidth="240.0" styleClass="login-button" stylesheets="@../resources/stylesheet/stylesheet.css" text="Make New Account" />
+            <JFXButton layoutX="48.0" layoutY="295.0" minHeight="-Infinity" minWidth="-Infinity" onAction="#handleLogIn" prefHeight="60.0" prefWidth="240.0" styleClass="login-button" stylesheets="@stylesheet/stylesheet.css" text="Log In" />
+            <JFXButton layoutX="324.0" layoutY="295.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onAction="#handleMakeNewAccount" prefHeight="60.0" prefWidth="240.0" styleClass="login-button" stylesheets="@stylesheet/stylesheet.css" text="Make New Account" />
 </AnchorPane>
