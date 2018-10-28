@@ -34,8 +34,8 @@ public class RegisterClientController implements Initializable
 
     private BankConnection bankConnection;
 
-    public static final String CLIENT_FIRST_NAME = "first_name";
-    public static final String CLIENT_LAST_NAME = "last_name";
+    private static final String CLIENT_FIRST_NAME = "first_name";
+    private static final String CLIENT_LAST_NAME = "last_name";
     private static final String CLIENT_SOCIAL = "social";
     private static final String CLIENT_TABLE = "clients";
     private static final String TRANSACTIONS_TABLE = "transactions";
