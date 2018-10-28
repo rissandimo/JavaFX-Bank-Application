@@ -70,7 +70,7 @@ public class ViewAccountsController implements Initializable
         balanceColumn.setCellValueFactory(new PropertyValueFactory<>("balance"));
     }
 
-    public void loadTransactions(int clientAccountNumber, String firstName, String lastName)
+    private void loadTransactions(int clientAccountNumber, String firstName, String lastName)
     {
         // social is needed to join client table -> needed to retrieve first and last name for login
         String SHOW_ACCOUNT_DETAILS_QUERY =  "SELECT amount, trans_date, trans_type," +
@@ -96,9 +96,6 @@ public class ViewAccountsController implements Initializable
                 Transaction transaction = new Transaction(amount, transDate, transactionType, description, balance, social);
 
                 transactionList.add(transaction);
-                System.out.println("transaction added");
-
-                //TODO - reload table view after adding new transaction
             }
 
         }
@@ -146,9 +143,10 @@ public class ViewAccountsController implements Initializable
 
         //Check which button was chosen
         Optional<ButtonType> choice = dialogWindow.showAndWait();
-        if(choice.isPresent() && choice.get() == ButtonType.OK) // -> AddTransactionController -> handleSubmit()
+        if(choice.isPresent() && choice.get() == ButtonType.OK)
         {
             AddTransactionController addTransactionController = fxmlLoader.getController();
+            // setClientInfo() -> handleSubmit() -> adds trans to db
             addTransactionController.setClientInfo(clientAccountNumber, social);
 
             reloadView();
@@ -187,7 +185,7 @@ public class ViewAccountsController implements Initializable
 
         alertConfirmation.getButtonTypes().setAll(buttonTypeYes, buttonTypeCancel);
         Optional<ButtonType> deleteTransaction = alertConfirmation.showAndWait();
-        if(deleteTransaction.get() == buttonTypeYes)
+        if(deleteTransaction.isPresent() && deleteTransaction.get() == buttonTypeYes)
         {
             boolean deleteSuccessfull = BankConnection.getInstance().deleteTransaction(transactionToDelete);
             if(deleteSuccessfull)
@@ -199,16 +197,13 @@ public class ViewAccountsController implements Initializable
                 alert.showAndWait();
             }
         }
-        else if(deleteTransaction.get() == buttonTypeCancel)
+        else if(deleteTransaction.isPresent() && deleteTransaction.get() == buttonTypeCancel)
         {
             Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
             alert.setHeaderText("Deletion cancelled");
             alert.setContentText(transactionToDelete.getDescription() + " -  has not been deleted");
             alert.showAndWait();
         }
-
-
-
     }
 
     private void reloadView()

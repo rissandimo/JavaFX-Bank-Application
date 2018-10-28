@@ -1,0 +1,40 @@
+/*Color variables*/
+*
+{
+    -fx-primary: #2A2E37;
+    -fx-secondary: #FFFF8D;
+    -fx-primarytext: #B2B2B2;
+}
+
+.button{
+    -fx-text-fill: -fx-primaryText;
+}
+
+.root
+{
+    -fx-background-color: -fx-primary;
+}
+
+/*Login Screen*/
+
+.login-button
+{
+    -fx-border-color: -fx-secondary;
+    -fx-background-radius: 20px;
+    -fx-border-radius: 20px;
+}
+
+.login-button:hover
+{
+    -fx-border-color: -fx-secondary;
+    -fx-background-color: -fx-secondary;
+    -fx-text-fill: -fx-primary;
+}
+
+.text-field
+{
+    -fx-text-fill: -fx-primaryText;
+    -fx-font-size: 13pt;
+    -jfx-focus-color: -fx-secondary;
+}
+

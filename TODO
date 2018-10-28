@@ -2,7 +2,9 @@ Create validate() for login - checks first name, last name, and social
 
 Fix stack trace when db is not active
 
+Transaction id = transaction id + client accountNumber -> primary key?
+
 ViewAccountsController.loadTransactions() - omit/replace parameters with concatenation
 ex. firstName = ? -> firstName = " + firstName
 
-Make a class Savings Account ?
+Make a class Savings Account ?git
