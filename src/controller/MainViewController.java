@@ -28,9 +28,6 @@ public class MainViewController implements Initializable
     @FXML
     private TextField lastNameField;
 
-    private boolean credentialsNotEntered = false;
-
-
     @Override
     public void initialize(URL location, ResourceBundle resources)
     {
@@ -58,7 +55,7 @@ public class MainViewController implements Initializable
              firstName = firstNameField.getText();
              lastName = lastNameField.getText();
              accountNumberS = accountNumberField.getText();
-            credentialsNotEntered = firstName.isEmpty() || lastName.isEmpty() || accountNumberS.isEmpty();
+            boolean credentialsNotEntered = firstName.isEmpty() || lastName.isEmpty() || accountNumberS.isEmpty();
 
             if(credentialsNotEntered)
             {
