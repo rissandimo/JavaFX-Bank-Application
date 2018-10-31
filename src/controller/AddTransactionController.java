@@ -3,23 +3,14 @@ package controller;
 import com.jfoenix.controls.JFXTextField;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.Node;
-import javafx.scene.Parent;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ChoiceBox;
-import javafx.scene.control.DatePicker;
-import javafx.stage.Stage;
 import model.BankConnection;
-
-import java.io.IOException;
 import java.net.URL;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.time.LocalDate;
 import java.util.ResourceBundle;
 
 public class AddTransactionController implements Initializable
@@ -34,21 +25,12 @@ public class AddTransactionController implements Initializable
     @FXML
     private ChoiceBox<String> transactionChoices = new ChoiceBox<>();
 
-    @FXML
-    private DatePicker datePicker;
-
-
     private ObservableList<String> transactionTypes = FXCollections.observableArrayList("Transaction", "Deposit", "Withdrawal");
 
     private BankConnection bankConnection;
 
     private int clientAccountNumber;
     private String social;
-
-    private int getClientAccountNumber()
-    {
-        return clientAccountNumber;
-    }
 
     @Override
     public void initialize(URL location, ResourceBundle resources)
@@ -77,7 +59,7 @@ public class AddTransactionController implements Initializable
         switch(transactionType)
         {
             case "Transaction":
-                transaction(amount, description, accountBalance);
+                transaction(amount, description, accountBalance, "transaction");
                 break;
             case "Deposit":
                 deposit(accountBalance, amount);
@@ -110,9 +92,21 @@ public class AddTransactionController implements Initializable
 
     private void deposit(double accountBalance, double amount)
     {
+        transaction(amount, "deposit", accountBalance, "credit");
+    }
+
+    private void transaction(double amount, String description, double accountBalance, String type)
+    {
         accountBalance += amount;
+        String addTransaction = "INSERT INTO " + "transactions" +
+                " (amount, trans_date, trans_type, description, balance, chk_account_number, client_social)" +
+                " values (" + amount + ", " + "CURDATE()" + ", '" + type + "', '" +
+                description + "', " + accountBalance + ", " + clientAccountNumber + ", " + social +  ")";
+
         String updateChecking = "UPDATE checking_account set balance = " + accountBalance + " where account_number = " + clientAccountNumber;
 
+
+        bankConnection.executeStatement(addTransaction);
         bankConnection.executeStatement(updateChecking);
     }
 
@@ -139,21 +133,6 @@ public class AddTransactionController implements Initializable
             bankConnection.executeStatement(updateChecking);
         }
 
-    }
-
-    private void transaction(double amount, String description, double accountBalance)
-    {
-        accountBalance += amount;
-        String addTransaction = "INSERT INTO " + "transactions" +
-                " (amount, trans_date, trans_type, description, balance, chk_account_number, client_social)" +
-                " values (" + amount + ", " + "CURDATE()" + ", '" + "transaction" + "', '" +
-                description + "', " + accountBalance + ", " + clientAccountNumber + ", " + social +  ")";
-
-        String updateChecking = "UPDATE checking_account set balance = " + accountBalance + " where account_number = " + clientAccountNumber;
-
-
-        bankConnection.executeStatement(addTransaction);
-        bankConnection.executeStatement(updateChecking);
     }
 
 }
