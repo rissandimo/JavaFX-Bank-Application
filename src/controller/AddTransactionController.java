@@ -97,17 +97,30 @@ public class AddTransactionController implements Initializable
 
     private void transaction(double amount, String description, double accountBalance, String type)
     {
-        accountBalance += amount;
+
         String addTransaction = "INSERT INTO " + "transactions" +
                 " (amount, trans_date, trans_type, description, balance, chk_account_number, client_social)" +
                 " values (" + amount + ", " + "CURDATE()" + ", '" + type + "', '" +
                 description + "', " + accountBalance + ", " + clientAccountNumber + ", " + social +  ")";
 
-        String updateChecking = "UPDATE checking_account set balance = " + accountBalance + " where account_number = " + clientAccountNumber;
+        //if withdrawal -> don't update balance
+        if(type.equals("withdrawal"))
+        {
+            String updateChecking = "UPDATE checking_account set balance = " + accountBalance + " where account_number = " + clientAccountNumber;
 
+            bankConnection.executeStatement(addTransaction);
+            bankConnection.executeStatement(updateChecking);
+        }
+        else
+        {
+            accountBalance += amount;
 
-        bankConnection.executeStatement(addTransaction);
-        bankConnection.executeStatement(updateChecking);
+            String updateChecking = "UPDATE checking_account set balance = " + accountBalance + " where account_number = " + clientAccountNumber;
+
+            bankConnection.executeStatement(addTransaction);
+            bankConnection.executeStatement(updateChecking);
+
+        }
     }
 
     private void withdrawal(double accountBalance, double amount)
@@ -129,8 +142,7 @@ public class AddTransactionController implements Initializable
         else
         {
             accountBalance -= amount;
-            String updateChecking = "UPDATE checking_account set balance = " + accountBalance + " where account_number = " + clientAccountNumber;
-            bankConnection.executeStatement(updateChecking);
+            transaction(amount, "debt", accountBalance, "withdrawal");
         }
 
     }
