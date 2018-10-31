@@ -99,7 +99,6 @@ public class RegisterClientController implements Initializable
 
     private void loadViewAccounts(ActionEvent event)
     {
-        System.out.println("loadViewAccounts()");
         String firstName = firstNameField.getText();
         String lastName = lastNameField.getText();
 
@@ -110,6 +109,7 @@ public class RegisterClientController implements Initializable
             Parent viewAccountsRoot = fxmlLoader.load((getClass().getResource("../view/viewAccounts.fxml").openStream())); // <- Parent
             Stage currentStage = (Stage) ((Node)event.getSource()).getScene().getWindow();
             ViewAccountsController viewAccountsController = fxmlLoader.getController();
+            currentStage.setTitle("Transaction List");
             viewAccountsController.setClientInfo(checkingAccountNum, firstName, lastName);
             currentStage.setScene(new Scene(viewAccountsRoot));
             currentStage.show();
@@ -196,7 +196,6 @@ public class RegisterClientController implements Initializable
         }
         catch(SQLException e)
         {
-            System.out.println("doesClientExist() -> Error adding client");
             e.printStackTrace();
         }
         return false;
