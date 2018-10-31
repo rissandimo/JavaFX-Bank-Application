@@ -16,7 +16,6 @@ public class Bank extends Application
         window.setScene(new Scene(root));
         window.setTitle("Login Screen");
         window.show();
-
     }
 
     public static void main(String[] args) { launch(args); }
