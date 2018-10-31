@@ -146,7 +146,6 @@ public class ViewAccountsController implements Initializable
         if(choice.isPresent() && choice.get() == ButtonType.OK)
         {
             AddTransactionController addTransactionController = fxmlLoader.getController();
-            // setClientInfo() -> handleSubmit() -> adds trans to db
             addTransactionController.setClientInfo(clientAccountNumber, social);
 
             reloadView();
