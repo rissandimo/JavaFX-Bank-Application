@@ -9,5 +9,7 @@
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="library" name="mysql-connector-java-5.1.42-bin" level="project" />
     <orderEntry type="library" name="jfoenix-8.0.4" level="project" />
+    <orderEntry type="library" name="fontawesomefx-fontawesome-4.7.0-5" level="project" />
+    <orderEntry type="library" name="fontawesomefx-commons-8.15" level="project" />
   </component>
 </module>
