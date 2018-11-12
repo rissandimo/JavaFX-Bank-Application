@@ -1,27 +1,17 @@
-/*Color variables*/
-*
-{
-    -fx-primary: #2A2E37;
-    -fx-secondary: #FFFF8D;
-    -fx-primarytext: #B2B2B2;
+.button{
+    -fx-border-radius: 5px;
+    -fx-border-color: whitesmoke;
+    -fx-text-fill: whitesmoke;
 }
 
-.button{
-    -fx-text-fill: -fx-primaryText;
+.login-label
+{
+    -fx-text-fill: whitesmoke;
 }
 
 .root
 {
-    -fx-background-color: -fx-primary;
-}
-
-/*Login Screen*/
-
-.login-button
-{
-    -fx-border-color: -fx-secondary;
-    -fx-background-radius: 20px;
-    -fx-border-radius: 20px;
+    -fx-background-color: #333333;
 }
 
 .login-button:hover
@@ -33,8 +23,6 @@
 
 .text-field
 {
-    -fx-text-fill: -fx-primaryText;
-    -fx-font-size: 13pt;
-    -jfx-focus-color: -fx-secondary;
+    -fx-text-fill: white;
 }
 
