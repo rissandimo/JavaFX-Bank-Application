@@ -14,13 +14,6 @@
     -fx-background-color: #333333;
 }
 
-.login-button:hover
-{
-    -fx-border-color: -fx-secondary;
-    -fx-background-color: -fx-secondary;
-    -fx-text-fill: -fx-primary;
-}
-
 .text-field
 {
     -fx-text-fill: white;
