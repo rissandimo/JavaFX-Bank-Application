@@ -7,26 +7,26 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-<AnchorPane prefHeight="317.0" prefWidth="600.0" stylesheets="@stylesheet/stylesheet.css" xmlns="http://javafx.com/javafx/8.0.191" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.RegisterClientController">
+<AnchorPane prefHeight="317.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.181" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.RegisterClientController">
       <VBox layoutX="250.0" layoutY="100.0" prefHeight="400.0" prefWidth="600.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-            <JFXTextField fx:id="firstNameField" promptText="First Name" styleClass="text-fields" stylesheets="@stylesheet/stylesheet.css">
+            <JFXTextField fx:id="firstNameField" promptText="First Name" >
                <VBox.margin>
                   <Insets left="20.0" right="20.0" top="40.0" />
                </VBox.margin>
             </JFXTextField>
-            <JFXTextField fx:id="lastNameField" promptText="Last Name" styleClass="text-fields">
+            <JFXTextField fx:id="lastNameField" promptText="Last Name" >
                <VBox.margin>
                   <Insets left="20.0" right="20.0" top="30.0" />
                </VBox.margin>
             </JFXTextField>
-            <JFXTextField fx:id="socialSecurityField" promptText="Social Security Number" styleClass="text-fields">
+            <JFXTextField fx:id="socialSecurityField" promptText="Social Security Number" >
                <VBox.margin>
                   <Insets left="20.0" right="20.0" top="30.0" />
                </VBox.margin>
             </JFXTextField>
       <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
          <children>
-                  <JFXButton onAction="#createNewAccount" prefHeight="60.0" prefWidth="240.0" styleClass="login-button" text="Submit" />
+                  <JFXButton onAction="#createNewAccount" prefHeight="60.0" prefWidth="240.0"  text="Submit" />
          </children>
       </HBox>
            </VBox>
