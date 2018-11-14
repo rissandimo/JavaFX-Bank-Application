@@ -3,20 +3,17 @@
 <?import com.jfoenix.controls.JFXTextField?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.ChoiceBox?>
-<?import javafx.scene.control.DatePicker?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.VBox?>
 
-<AnchorPane prefHeight="383.0" prefWidth="600.0" stylesheets="@stylesheet/stylesheet.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.AddTransactionController">
-   <children>
-      <VBox layoutX="-1.0" layoutY="-4.0" prefHeight="269.0" prefWidth="600.0" stylesheets="@stylesheet/stylesheet.css">
-         <children>
-            <JFXTextField fx:id="amountField" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="57.0" prefWidth="469.0" promptText="Amount">
+<AnchorPane prefHeight="383.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.AddTransactionController">
+      <VBox layoutX="-1.0" layoutY="-4.0" prefHeight="269.0" prefWidth="600.0">
+            <JFXTextField fx:id="amountField" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="57.0" prefWidth="469.0" promptText="Amount" >
                <VBox.margin>
                   <Insets left="40.0" right="20.0" top="50.0" />
                </VBox.margin>
             </JFXTextField>
-            <JFXTextField fx:id="descriptionField" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="57.0" prefWidth="469.0" promptText="Description">
+            <JFXTextField fx:id="descriptionField" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="57.0" prefWidth="469.0" promptText="Description" >
                <VBox.margin>
                   <Insets left="40.0" right="20.0" top="10.0" />
                </VBox.margin>
@@ -26,12 +23,5 @@
                   <Insets left="40.0" top="15.0" />
                </VBox.margin>
             </ChoiceBox>
-            <DatePicker fx:id="datePicker" prefHeight="25.0" prefWidth="245.0" visible="false">
-               <VBox.margin>
-                  <Insets left="40.0" top="10.0" />
-               </VBox.margin>
-            </DatePicker>
-         </children>
       </VBox>
-   </children>
 </AnchorPane>
