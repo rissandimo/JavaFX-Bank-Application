@@ -8,7 +8,6 @@ import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Alert;
 import javafx.stage.Stage;
 import model.BankConnection;
 import util.Error;
@@ -68,30 +67,36 @@ public class RegisterClientController implements Initializable
         }
     }
 
+    private void getAcctNumFromChkAcct(String social)
+    {
+        ResultSet chkAcctNumResults = bankConnection.executeQuery("SELECT account_number from checking_account" +
+                " join clients" +
+                " where client_social = " + "'" + social + "'");
+
+        try
+        {
+            if (chkAcctNumResults != null) {
+                while(chkAcctNumResults.next())
+                {
+                    checkingAccountNum = chkAcctNumResults.getInt("account_number");
+                }
+            }
+        }
+        catch(SQLException e)
+        {
+            e.printStackTrace();
+        }
+    }
+
     private void initTransaction(ActionEvent event)
     {
         String social = socialSecurityField.getText();
-        ResultSet chkAcctNumResults = bankConnection.executeQuery("SELECT account_number from checking_account" +
-                    " join clients" +
-                    " where client_social = " + "'" + socialSecurityField.getText() + "'");
 
-            try
-            {
-                if (chkAcctNumResults != null) {
-                    while(chkAcctNumResults.next())
-                    {
-                        checkingAccountNum = chkAcctNumResults.getInt("account_number");
-                    }
-                }
-            }
-            catch(SQLException e)
-            {
-                e.printStackTrace();
-            }
+        //get acct num for given social
+        getAcctNumFromChkAcct(social);
 
             String initTransactionStatement =  "INSERT INTO " + TRANSACTIONS_TABLE + "(amount, trans_date, trans_type, description, balance, chk_account_number, client_social) values" +
                     "(0.0, CURDATE(), 'open account', 'open checking', " + 0.0 + ", " + checkingAccountNum + ", " + social + ")";
-
 
             bankConnection.executeStatement(initTransactionStatement);
 
@@ -120,7 +125,6 @@ public class RegisterClientController implements Initializable
         }
 
     }
-
 
     @FXML
     private boolean insertNewClient()
