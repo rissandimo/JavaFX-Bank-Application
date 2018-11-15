@@ -1,13 +1,12 @@
 package controller;
 
 import com.jfoenix.controls.JFXTextField;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import model.BankConnection;
 import util.Error;
@@ -22,6 +21,9 @@ import java.util.regex.Pattern;
 
 public class RegisterClientController implements Initializable
 {
+
+    @FXML
+    private AnchorPane registerClientPane;
 
     @FXML
     private JFXTextField firstNameField;
@@ -48,7 +50,7 @@ public class RegisterClientController implements Initializable
         bankConnection = BankConnection.getInstance();
     }
 
-    private void initClientCheckingAccount()
+    private void initCheckingAccount()
     {
         String social = socialSecurityField.getText();
         String initCheckingAccount = "INSERT INTO " + CHECKING_ACCOUNT_TABLE + " (client_social, balance) values (" +
@@ -58,12 +60,12 @@ public class RegisterClientController implements Initializable
     }
 
     @FXML
-    private void createNewAccount(ActionEvent event)
+    private void createNewAccount()
     {
         if(insertNewClient())
         {
-            initClientCheckingAccount();
-            initTransaction(event);
+            initCheckingAccount();
+            initTransaction();
         }
     }
 
@@ -88,7 +90,7 @@ public class RegisterClientController implements Initializable
         }
     }
 
-    private void initTransaction(ActionEvent event)
+    private void initTransaction()
     {
         String social = socialSecurityField.getText();
 
@@ -100,10 +102,10 @@ public class RegisterClientController implements Initializable
 
             bankConnection.executeStatement(initTransactionStatement);
 
-            loadViewAccounts(event);
+            switchSceneToViewAccount();
     }
 
-    private void loadViewAccounts(ActionEvent event)
+    private void switchSceneToViewAccount()
     {
         String firstName = firstNameField.getText();
         String lastName = lastNameField.getText();
@@ -112,16 +114,16 @@ public class RegisterClientController implements Initializable
         {
             FXMLLoader fxmlLoader = new FXMLLoader();
 
-            Parent viewAccountsRoot = fxmlLoader.load((getClass().getResource("../view/viewAccounts.fxml").openStream())); // <- Parent
-            Stage currentStage = (Stage) ((Node)event.getSource()).getScene().getWindow();
+            Parent viewAccountScene = fxmlLoader.load((getClass().getResource("../view/viewAccounts.fxml").openStream()));
             ViewAccountsController viewAccountsController = fxmlLoader.getController();
+            Stage currentStage = (Stage) registerClientPane.getScene().getWindow();
             currentStage.setTitle("Transaction List");
             viewAccountsController.setClientInfo(checkingAccountNum, firstName, lastName);
-            currentStage.setScene(new Scene(viewAccountsRoot));
+            currentStage.setScene(new Scene(viewAccountScene));
             currentStage.show();
 
-        } catch (IOException e) {
-            e.printStackTrace();
+        }
+        catch (IOException e) { e.printStackTrace();
         }
 
     }
