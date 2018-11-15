@@ -9,6 +9,7 @@ import javafx.scene.Scene;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import model.BankConnection;
+import util.BankConnectionValidator;
 import util.Error;
 
 import java.io.IOException;
@@ -138,9 +139,8 @@ public class RegisterClientController implements Initializable
         String createClientStatement = "INSERT INTO clients values ("  +
                 "'" + clientFirstName + "', '" + clientLastName + "', '" + clientSocialSecurity + "'" + ")";
 
-       if(!socialSecurityValid(clientSocialSecurity)) // social not valid
+       if(!BankConnectionValidator.socialSecurityValid(clientSocialSecurity)) // social not valid
        {
-           Error.showError("Social security is invalid");
            return false;
        }
 
