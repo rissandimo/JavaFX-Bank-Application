@@ -1,16 +1,16 @@
 package controller;
 
 import com.jfoenix.controls.JFXTextField;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Alert;
+import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import model.BankConnection;
+import util.BankConnectionValidator;
+import util.Error;
 
 import java.io.IOException;
 import java.net.URL;
@@ -22,6 +22,9 @@ import java.util.regex.Pattern;
 
 public class RegisterClientController implements Initializable
 {
+
+    @FXML
+    private AnchorPane registerClientPane;
 
     @FXML
     private JFXTextField firstNameField;
@@ -48,7 +51,7 @@ public class RegisterClientController implements Initializable
         bankConnection = BankConnection.getInstance();
     }
 
-    private void initClientCheckingAccount()
+    private void initCheckingAccount()
     {
         String social = socialSecurityField.getText();
         String initCheckingAccount = "INSERT INTO " + CHECKING_ACCOUNT_TABLE + " (client_social, balance) values (" +
@@ -58,46 +61,52 @@ public class RegisterClientController implements Initializable
     }
 
     @FXML
-    private void createNewAccount(ActionEvent event)
+    private void createNewAccount()
     {
         if(insertNewClient())
         {
-            initClientCheckingAccount();
-            initTransaction(event);
+            initCheckingAccount();
+            initTransaction();
         }
     }
 
-    private void initTransaction(ActionEvent event)
+    private void getAcctNumFromChkAcct(String social)
     {
-        String social = socialSecurityField.getText();
         ResultSet chkAcctNumResults = bankConnection.executeQuery("SELECT account_number from checking_account" +
-                    " join clients" +
-                    " where client_social = " + "'" + socialSecurityField.getText() + "'");
+                " join clients" +
+                " where client_social = " + "'" + social + "'");
 
-            try
-            {
-                if (chkAcctNumResults != null) {
-                    while(chkAcctNumResults.next())
-                    {
-                        checkingAccountNum = chkAcctNumResults.getInt("account_number");
-                    }
+        try
+        {
+            if (chkAcctNumResults != null) {
+                while(chkAcctNumResults.next())
+                {
+                    checkingAccountNum = chkAcctNumResults.getInt("account_number");
                 }
             }
-            catch(SQLException e)
-            {
-                e.printStackTrace();
-            }
+        }
+        catch(SQLException e)
+        {
+            e.printStackTrace();
+        }
+    }
+
+    private void initTransaction()
+    {
+        String social = socialSecurityField.getText();
+
+        //get acct num for given social
+        getAcctNumFromChkAcct(social);
 
             String initTransactionStatement =  "INSERT INTO " + TRANSACTIONS_TABLE + "(amount, trans_date, trans_type, description, balance, chk_account_number, client_social) values" +
                     "(0.0, CURDATE(), 'open account', 'open checking', " + 0.0 + ", " + checkingAccountNum + ", " + social + ")";
 
-
             bankConnection.executeStatement(initTransactionStatement);
 
-            loadViewAccounts(event);
+            switchSceneToViewAccount();
     }
 
-    private void loadViewAccounts(ActionEvent event)
+    private void switchSceneToViewAccount()
     {
         String firstName = firstNameField.getText();
         String lastName = lastNameField.getText();
@@ -106,20 +115,19 @@ public class RegisterClientController implements Initializable
         {
             FXMLLoader fxmlLoader = new FXMLLoader();
 
-            Parent viewAccountsRoot = fxmlLoader.load((getClass().getResource("../view/viewAccounts.fxml").openStream())); // <- Parent
-            Stage currentStage = (Stage) ((Node)event.getSource()).getScene().getWindow();
+            Parent viewAccountScene = fxmlLoader.load((getClass().getResource("../view/viewAccounts.fxml").openStream()));
             ViewAccountsController viewAccountsController = fxmlLoader.getController();
+            Stage currentStage = (Stage) registerClientPane.getScene().getWindow();
             currentStage.setTitle("Transaction List");
             viewAccountsController.setClientInfo(checkingAccountNum, firstName, lastName);
-            currentStage.setScene(new Scene(viewAccountsRoot));
+            currentStage.setScene(new Scene(viewAccountScene));
             currentStage.show();
 
-        } catch (IOException e) {
-            e.printStackTrace();
+        }
+        catch (IOException e) { e.printStackTrace();
         }
 
     }
-
 
     @FXML
     private boolean insertNewClient()
@@ -128,45 +136,31 @@ public class RegisterClientController implements Initializable
         String clientLastName = lastNameField.getText();
         String clientSocialSecurity = socialSecurityField.getText();
 
-       if(!socialSecurityValid(clientSocialSecurity)) // not valid
+        String createClientStatement = "INSERT INTO clients values ("  +
+                "'" + clientFirstName + "', '" + clientLastName + "', '" + clientSocialSecurity + "'" + ")";
+
+       if(!BankConnectionValidator.socialSecurityValid(clientSocialSecurity)) // social not valid
        {
-           Alert alert = new Alert(Alert.AlertType.ERROR);
-           alert.setTitle("Social security is invalid");
-           alert.setHeaderText(null);
-           alert.setContentText(null);
-           alert.showAndWait();
            return false;
        }
 
-
-            if(!doesClientExist(
-                    clientFirstName,
-                    clientLastName,
-                    clientSocialSecurity)) // client doesn't exist
+        if(!doesClientExist(clientFirstName, clientLastName, clientSocialSecurity)) // client exist
+        {
+            if(bankConnection.executeCreateClientStatement(createClientStatement)) // add client to db
             {
-                String createClientStatement = "INSERT INTO clients values ("  +
-                        "'" + clientFirstName + "', '" + clientLastName + "', '" + clientSocialSecurity + "'" + ")";
+                Error.showClientSuccessfullMessage("Client added successfully",clientFirstName, clientLastName);
+            }
+        }
+        else
+        {
+            Error.showError("Account error", "That social security number already exists.");
+            return false;
+        }
 
-                if(bankConnection.executeCreateClientStatement(createClientStatement)) // add client to db
-                {
-                    Alert alert = new Alert(Alert.AlertType.INFORMATION);
-                    alert.setTitle("Account successfully created");
-                    alert.setHeaderText(null);
-                    alert.setContentText(clientFirstName + " " + clientLastName + " added to Bank");
-                    alert.showAndWait();
-                }
-            }
-            else
-            {
-                Alert alert = new Alert(Alert.AlertType.ERROR);
-                alert.setTitle("Account error");
-                alert.setHeaderText(null);
-                alert.setContentText("That social security number already exists.");
-                alert.showAndWait();
-            }
-            return true;
+       return true;
     }
 
+    //extract to class
     private boolean socialSecurityValid(String social)
     {
         Pattern pattern = Pattern.compile("[0-9]", Pattern.CASE_INSENSITIVE);
@@ -184,6 +178,7 @@ public class RegisterClientController implements Initializable
 
         try
         {
+            //check if client exists by full name and social
             while(clients.next())
             if (clients.getString("first_name").equals(firstName)) {
                 if (clients.getString("last_name").equals(lastName)) {
@@ -191,6 +186,10 @@ public class RegisterClientController implements Initializable
                         return true;
                     }
                 }
+            }//check if clients exists only by social
+            else if(clients.getString("social").equals(newClientSocial))
+            {
+                return true;
             }
 
         }
