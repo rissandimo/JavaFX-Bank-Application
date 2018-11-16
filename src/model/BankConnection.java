@@ -98,8 +98,8 @@ public final class BankConnection
                 "trans_type VARCHAR(30) NOT NULL, " +
                 "description VARCHAR(100) NOT NULL, " +
                 "balance DOUBLE NOT NULL, " +
-                "chk_account_number INT, " +
-                "client_social VARCHAR(9)," +
+                "chk_account_number INT NOT NULL, " +
+                "client_social VARCHAR(9) NOT NULL," +
                 "FOREIGN KEY (chk_account_number) REFERENCES checking_account(account_number)," +
                 "FOREIGN KEY (client_social) REFERENCES clients(social)" +
                 "ON DELETE CASCADE)";
@@ -169,7 +169,6 @@ public final class BankConnection
             preparedStatement.setInt(1, accountNumber);
             preparedStatement.setString(2, firstName);
             preparedStatement.setString(3, lastName);
-            System.out.println("preparedStatement: " + preparedStatement);
             resultSet = preparedStatement.executeQuery();
             return resultSet;
         }
