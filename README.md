@@ -3,5 +3,5 @@ This program allows the user to manage transactions - add and delete.
 All the information gets saved to MySQL on the localhost. 
 
 Libraries that I used:
-JFoenix - This was used to get a rich and modern look the the application.
+JFoenix - Used to get a rich and modern look the the application.
 
