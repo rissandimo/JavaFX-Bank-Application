@@ -95,6 +95,8 @@ public class AddTransactionController implements Initializable
         transaction(amount, "deposit", accountBalance, "credit");
     }
 
+    // use database transactions -> all transactions succeed or all fail
+    // create accounts table
     private void transaction(double amount, String description, double accountBalance, String type)
     {
 
@@ -108,6 +110,9 @@ public class AddTransactionController implements Initializable
         {
             String updateCheckingQuery = "UPDATE checking_account set balance = " + accountBalance + " where account_number = " + clientAccountNumber;
 
+            // both succeed or all fail - db transaction
+            // start a transaction and commit at end if everything goes ok
+            // if not all money goes back to original state
             bankConnection.executeStatement(addTransactionQuery);
             bankConnection.executeStatement(updateCheckingQuery);
         }

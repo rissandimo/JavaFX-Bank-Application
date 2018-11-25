@@ -136,6 +136,9 @@ public class RegisterClientController implements Initializable
         String clientLastName = lastNameField.getText();
         String clientSocialSecurity = socialSecurityField.getText();
 
+
+        //sql injection attack - can happen
+        //Use prepare statements instead
         String createClientStatement = "INSERT INTO clients values ("  +
                 "'" + clientFirstName + "', '" + clientLastName + "', '" + clientSocialSecurity + "'" + ")";
 
@@ -144,6 +147,8 @@ public class RegisterClientController implements Initializable
            return false;
        }
 
+       //create unique index on table - when using spring b/c of multithreading
+        // one user accessing this -> ok to do it this way
         if(!doesClientExist(clientFirstName, clientLastName, clientSocialSecurity)) // client exist
         {
             if(bankConnection.executeCreateClientStatement(createClientStatement)) // add client to db

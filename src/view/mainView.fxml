@@ -36,10 +36,11 @@
          <Font size="18.0" />
       </font></JFXButton>
 
-                                    <JFXButton layoutX="125.0" layoutY="379.0" minHeight="-Infinity" minWidth="-Infinity" onAction="#handleLogIn" prefHeight="60.0" prefWidth="240.0" stylesheets="@stylesheet.css" text="Log In">
+    <JFXButton layoutX="125.0" layoutY="379.0" minHeight="-Infinity" minWidth="-Infinity" onAction="#handleLogIn" prefHeight="60.0" prefWidth="240.0" stylesheets="@stylesheet.css" text="Log In">
       <font>
          <Font size="18.0" />
-      </font></JFXButton>
+      </font>
+    </JFXButton>
    <Label layoutX="336.0" layoutY="31.0" prefHeight="45.0" prefWidth="101.0" text="Log In" textFill="#3c58fa">
       <font>
          <Font size="30.0" />

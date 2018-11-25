@@ -15,7 +15,7 @@ public final class BankConnection
     private static BankConnection bankConnection = null;
 
     private final static String USERNAME = "root";
-    private final static String PASSWORD  = "";
+    private final static String PASSWORD = "";
 
     private BankConnection()
     {
@@ -38,10 +38,9 @@ public final class BankConnection
     {
         try
         {
-            connection = DriverManager.getConnection(CONNECTION_URL, USERNAME,PASSWORD);
+            connection = DriverManager.getConnection(CONNECTION_URL, USERNAME, PASSWORD);
             System.out.println("Connection successful");
-        }
-        catch(SQLException e)
+        } catch(SQLException e)
         {
             System.err.println("Unable to create connection");
         }
@@ -50,19 +49,13 @@ public final class BankConnection
 
     private void setupCheckingAcctTable()
     {
-        String createClientTableQuery = "CREATE TABLE IF NOT EXISTS " + CHECKING_ACCOUNT_TABLE + " ( " +
-           " account_number INT NOT NULL AUTO_INCREMENT PRIMARY KEY , " +
-           " balance DOUBLE NOT NULL, " +
-           " client_social VARCHAR(9) NOT NULL," +
-            "FOREIGN KEY (client_social) REFERENCES clients (social)" +
-                ")";
+        String createClientTableQuery = "CREATE TABLE IF NOT EXISTS " + CHECKING_ACCOUNT_TABLE + " ( " + " account_number INT NOT NULL AUTO_INCREMENT PRIMARY KEY , " + " balance DOUBLE NOT NULL, " + " client_social VARCHAR(9) NOT NULL," + "FOREIGN KEY (client_social) REFERENCES clients (social)" + ")";
 
         try
         {
-        statement = connection.createStatement();
-        statement.execute(createClientTableQuery);
-        }
-        catch(SQLException e)
+            statement = connection.createStatement();
+            statement.execute(createClientTableQuery);
+        } catch(SQLException e)
         {
             System.err.println("Unable to create checking account table");
             e.printStackTrace();
@@ -72,17 +65,13 @@ public final class BankConnection
     private void setUpClientTable()
     {
 
-        String createClientTableQuery = "CREATE TABLE IF NOT EXISTS " + CLIENT_TABLE + " ( " +
-                " first_name VARCHAR(15) NOT NULL, " +
-                " last_name VARCHAR(15) NOT NULL, " +
-                " social VARCHAR(9) NOT NULL PRIMARY KEY )";
+        String createClientTableQuery = "CREATE TABLE IF NOT EXISTS " + CLIENT_TABLE + " ( " + " first_name VARCHAR(15) NOT NULL, " + " last_name VARCHAR(15) NOT NULL, " + " social VARCHAR(9) NOT NULL PRIMARY KEY )";
         //TODO - check if table exists already
         try
         {
             statement = connection.createStatement();
             statement.execute(createClientTableQuery);
-        }
-        catch(SQLException e)
+        } catch(SQLException e)
         {
             System.out.println("Unable to create client table");
         }
@@ -90,26 +79,13 @@ public final class BankConnection
 
     private void setupTransactionsTable()
     {
-        String createTransactionsTable =
-                "CREATE TABLE IF NOT EXISTS " + TRANSACTIONS_TABLE + " (" +
-                "trans_id INT NULL AUTO_INCREMENT PRIMARY KEY, " +
-                "amount DOUBLE NOT NULL, " +
-                "trans_date DATE NOT NULL, " +
-                "trans_type VARCHAR(30) NOT NULL, " +
-                "description VARCHAR(100) NOT NULL, " +
-                "balance DOUBLE NOT NULL, " +
-                "chk_account_number INT NOT NULL, " +
-                "client_social VARCHAR(9) NOT NULL," +
-                "FOREIGN KEY (chk_account_number) REFERENCES checking_account(account_number)," +
-                "FOREIGN KEY (client_social) REFERENCES clients(social)" +
-                "ON DELETE CASCADE)";
+        String createTransactionsTable = "CREATE TABLE IF NOT EXISTS " + TRANSACTIONS_TABLE + " (" + "trans_id INT NULL AUTO_INCREMENT PRIMARY KEY, " + "amount DOUBLE NOT NULL, " + "trans_date DATE NOT NULL, " + "trans_type VARCHAR(30) NOT NULL, " + "description VARCHAR(100) NOT NULL, " + "balance DOUBLE NOT NULL, " + "chk_account_number INT NOT NULL, " + "client_social VARCHAR(9) NOT NULL," + "FOREIGN KEY (chk_account_number) REFERENCES checking_account(account_number)," + "FOREIGN KEY (client_social) REFERENCES clients(social)" + "ON DELETE CASCADE)";
 
         try
         {
-        Statement statement = connection.createStatement();
-        statement.execute(createTransactionsTable);
-        }
-        catch(SQLException e)
+            Statement statement = connection.createStatement();
+            statement.execute(createTransactionsTable);
+        } catch(SQLException e)
         {
             e.printStackTrace();
         }
@@ -122,26 +98,33 @@ public final class BankConnection
             Statement statementToExecute = connection.createStatement();
             statementToExecute.execute(statement);
             return true;
-        }
-        catch(SQLException e)
+        } catch(SQLException e)
         {
             return false;
         }
     }
 
+    /**
+     * Executes sql against the database.
+     * @param statementToExecute the sql statement.
+     */
     public void executeStatement(String statementToExecute)
     {
         try
         {
-        Statement statement = connection.createStatement();
-        statement.execute(statementToExecute);
-        }
-        catch(SQLException e)
+            Statement statement = connection.createStatement();
+            statement.execute(statementToExecute);
+        } catch(SQLException e)
         {
             e.printStackTrace();
         }
     }
 
+    /**
+     * Executes a select on the database
+     * @param queryToExecute the select statemetn
+     * @return the resultset
+     */
     public ResultSet executeQuery(String queryToExecute)
     {
         ResultSet resultSet;
@@ -150,8 +133,7 @@ public final class BankConnection
             Statement statement = connection.createStatement();
             resultSet = statement.executeQuery(queryToExecute);
             return resultSet;
-        }
-        catch(SQLException e)
+        } catch(SQLException e)
         {
             System.out.println("Execute Query() ->Unable to execute query");
             e.printStackTrace();
@@ -171,8 +153,7 @@ public final class BankConnection
             preparedStatement.setString(3, lastName);
             resultSet = preparedStatement.executeQuery();
             return resultSet;
-        }
-        catch(SQLException e)
+        } catch(SQLException e)
         {
             System.out.println("executeClientQuery() -> Unable to execute query");
             e.printStackTrace();
@@ -191,8 +172,7 @@ public final class BankConnection
             int rowsDeleted = preparedStatement.executeUpdate();
             System.out.println("Rows deleted: " + rowsDeleted);
             return true;
-        }
-        catch (SQLException e)
+        } catch(SQLException e)
         {
             e.printStackTrace();
             return false;
