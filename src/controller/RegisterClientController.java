@@ -153,7 +153,7 @@ public class RegisterClientController implements Initializable
         {
             if(bankConnection.executeCreateClientStatement(createClientStatement)) // add client to db
             {
-                Message.showClientSuccessfullMessage("Client added successfully",clientFirstName, clientLastName);
+                Message.showClientCreationSuccessMessage("Client added successfully",clientFirstName, clientLastName);
             }
         }
         else

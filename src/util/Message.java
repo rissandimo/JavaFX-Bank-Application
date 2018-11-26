@@ -29,7 +29,7 @@ public class Message
         return alert;
     }
 
-    public static void showClientSuccessfullMessage(String title, String firstName, String lastName)
+    public static void showClientCreationSuccessMessage(String title, String firstName, String lastName)
     {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle(title);

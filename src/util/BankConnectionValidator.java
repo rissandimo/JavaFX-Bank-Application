@@ -1,7 +1,5 @@
 package util;
 
-import javafx.scene.control.Alert;
-
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -30,18 +28,12 @@ public class BankConnectionValidator
     {
         if( (accountBalance - amount) < 0)
         {
-            Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setHeaderText("Message - unsufficient funds");
-            alert.setContentText("You do not have sufficient funds!");
-            alert.showAndWait();
+            Message.showMessage(Message.ERROR, "Message - insufficient funds", "You do not have sufficient funds!");
             return false;
         }
         else if(amount > 500)
         {
-            Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setHeaderText("Message - Limit exceeded");
-            alert.setContentText("Please choose an amount not greater than $500");
-            alert.showAndWait();
+            Message.showMessage(Message.ERROR, "Limit exceeded", "Please choose an amount up to $500");
             return false;
         }
         else

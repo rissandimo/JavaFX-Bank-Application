@@ -45,7 +45,6 @@ public class AddTransactionController implements Initializable
         this.clientAccountNumber = clientAccountNumber;
         this.social = social;
         handleSubmit();
-
     }
 
     @FXML

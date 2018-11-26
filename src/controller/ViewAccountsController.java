@@ -184,8 +184,8 @@ public class ViewAccountsController implements Initializable
         Optional<ButtonType> deleteTransaction = alertConfirmation.showAndWait();
         if(deleteTransaction.isPresent() && deleteTransaction.get() == buttonTypeYes)
         {
-            boolean deleteSuccessfull = BankConnection.getInstance().deleteTransaction(transactionToDelete);
-            if(deleteSuccessfull)
+            boolean deleteTransactionSuccessful = BankConnection.getInstance().deleteTransaction(transactionToDelete);
+            if(deleteTransactionSuccessful)
             {
                 transactionList.remove(transactionToDelete);
 
