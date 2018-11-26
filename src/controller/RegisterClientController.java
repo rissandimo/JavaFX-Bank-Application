@@ -10,7 +10,7 @@ import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import model.BankConnection;
 import util.BankConnectionValidator;
-import util.Error;
+import util.Message;
 
 import java.io.IOException;
 import java.net.URL;
@@ -153,12 +153,12 @@ public class RegisterClientController implements Initializable
         {
             if(bankConnection.executeCreateClientStatement(createClientStatement)) // add client to db
             {
-                Error.showClientSuccessfullMessage("Client added successfully",clientFirstName, clientLastName);
+                Message.showClientSuccessfullMessage("Client added successfully",clientFirstName, clientLastName);
             }
         }
         else
         {
-            Error.showError("Account error", "That social security number already exists.");
+            Message.showMessage(Message.ERROR, "Account error", "That social security number already exists.");
             return false;
         }
 

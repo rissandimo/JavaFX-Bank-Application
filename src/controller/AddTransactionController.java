@@ -5,9 +5,10 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Alert;
 import javafx.scene.control.ChoiceBox;
 import model.BankConnection;
+import util.BankConnectionValidator;
+
 import java.net.URL;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -59,13 +60,13 @@ public class AddTransactionController implements Initializable
         switch(transactionType)
         {
             case "Transaction":
-                transaction(amount, description, accountBalance, "transaction");
+                performTransaction(amount, description, accountBalance, "transaction");
                 break;
             case "Deposit":
-                deposit(accountBalance, amount);
+                performTransaction(amount, description, accountBalance, "credit");
                 break;
             case "Withdrawal":
-                withdrawal(accountBalance, amount);
+                performTransaction(amount, description, accountBalance, "debit");
                 break;
         }
 
@@ -90,66 +91,40 @@ public class AddTransactionController implements Initializable
         return accountBalance;
     }
 
-    private void deposit(double accountBalance, double amount)
-    {
-        transaction(amount, "deposit", accountBalance, "credit");
-    }
-
     // use database transactions -> all transactions succeed or all fail
     // create accounts table
-    private void transaction(double amount, String description, double accountBalance, String type)
+    private void performTransaction(double amount, String description, double accountBalance, String type)
     {
+        String addTransactionQuery = null;
+        String updateCheckingQuery = null;
 
-        String addTransactionQuery = "INSERT INTO " + "transactions" +
-                " (amount, trans_date, trans_type, description, balance, chk_account_number, client_social)" +
-                " values (" + amount + ", " + "CURDATE()" + ", '" + type + "', '" +
-                description + "', " + (accountBalance + amount) + ", " + clientAccountNumber + ", " + social +  ")";
-
-        //if withdrawal -> don't update balance
-        if(type.equals("withdrawal"))
+        if(type.equals("debit") || type.equals("transaction"))
         {
-            String updateCheckingQuery = "UPDATE checking_account set balance = " + accountBalance + " where account_number = " + clientAccountNumber;
+            if(BankConnectionValidator.withdrawalAmountValid(accountBalance, amount))
+            {
+                 addTransactionQuery = "INSERT INTO " + "transactions" +
+                        " (amount, trans_date, trans_type, description, balance, chk_account_number, client_social)" +
+                        " values (" + amount + ", " + "CURDATE()" + ", '" + type + "', '" +
+                        description + "', " + (accountBalance - amount) + ", " + clientAccountNumber + ", " + social +  ")";
 
-            // both succeed or all fail - db transaction
-            // start a transaction and commit at end if everything goes ok
+                updateCheckingQuery = "UPDATE checking_account set balance = " + (accountBalance - amount) + " where account_number = " + clientAccountNumber;
+            }
+        }
+        else
+        {
+            addTransactionQuery = "INSERT INTO " + "transactions" +
+                    " (amount, trans_date, trans_type, description, balance, chk_account_number, client_social)" +
+                    " values (" + amount + ", " + "CURDATE()" + ", '" + type + "', '" +
+                    description + "', " + (accountBalance + amount) + ", " + clientAccountNumber + ", " + social +  ")";
+
+            updateCheckingQuery = "UPDATE checking_account set balance = " + (accountBalance + amount) + " where account_number = " + clientAccountNumber;
+        }
+
+            // both succeed or all fail - db performTransaction
+            // start a performTransaction and commit at end if everything goes ok
             // if not all money goes back to original state
             bankConnection.executeStatement(addTransactionQuery);
             bankConnection.executeStatement(updateCheckingQuery);
         }
-        else
-        {
-            accountBalance += amount;
-
-            String updateCheckingQuery = "UPDATE checking_account set balance = " + accountBalance + " where account_number = " + clientAccountNumber;
-
-            bankConnection.executeStatement(addTransactionQuery);
-            bankConnection.executeStatement(updateCheckingQuery);
 
         }
-    }
-
-    private void withdrawal(double accountBalance, double amount)
-    {
-        if( (accountBalance - amount) < 0)
-        {
-            Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setHeaderText("Error - unsufficient funds");
-            alert.setContentText("You do not have sufficient funds!");
-            alert.showAndWait();
-        }
-        else if(amount > 500)
-        {
-            Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setHeaderText("Error - Limit exceeded");
-            alert.setContentText("Please choose an amount not greater than $500");
-            alert.showAndWait();
-        }
-        else
-        {
-            accountBalance -= amount;
-            transaction(amount, "debt", accountBalance, "withdrawal");
-        }
-
-    }
-
-}

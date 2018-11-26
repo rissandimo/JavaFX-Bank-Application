@@ -2,24 +2,31 @@ package util;
 
 import javafx.scene.control.Alert;
 
-public class Error
-{
-    public static void showError(String title)
-    {
-        Alert alert = new Alert(Alert.AlertType.ERROR);
-        alert.setTitle(title);
-        alert.setHeaderText(null);
-        alert.setContentText(null);
-        alert.showAndWait();
-    }
 
-    public static void showError(String title, String contextText)
+public class Message
+{
+
+    public static final Alert.AlertType ERROR = Alert.AlertType.ERROR;
+    public static final Alert.AlertType WARNING = Alert.AlertType.WARNING;
+    public static final Alert.AlertType CONFIRMATION = Alert.AlertType.CONFIRMATION;
+
+    public static void showMessage(Alert.AlertType alertType, String title, String contextText)
     {
-        Alert alert = new Alert(Alert.AlertType.ERROR);
+        Alert alert = new Alert(alertType);
         alert.setTitle(title);
         alert.setHeaderText(null);
         alert.setContentText(contextText);
         alert.showAndWait();
+    }
+
+    public static Alert showMessageAndReturnAlertReference(Alert.AlertType alertType, String title, String contextText)
+    {
+        Alert alert = new Alert(alertType);
+        alert.setTitle(title);
+        alert.setHeaderText(null);
+        alert.setContentText(contextText);
+        alert.showAndWait();
+        return alert;
     }
 
     public static void showClientSuccessfullMessage(String title, String firstName, String lastName)

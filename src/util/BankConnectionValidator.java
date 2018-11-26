@@ -1,5 +1,7 @@
 package util;
 
+import javafx.scene.control.Alert;
+
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -13,14 +15,39 @@ public class BankConnectionValidator
 
         if(!matcher.find())
         {
-            Error.showError("Error", "Social security number can only contain digits");
+            Message.showMessage(Message.ERROR, "Message", "Social security number can only contain digits");
             return false;
         }
         else if(social.length() != 9)
         {
-            Error.showError("Error", "Social security number must be 9 digits long");
+            Message.showMessage(Message.ERROR, "Message", "Social security number must be 9 digits long");
             return false;
         }
         return true;
+    }
+
+    public static boolean withdrawalAmountValid(double accountBalance, double amount)
+    {
+        if( (accountBalance - amount) < 0)
+        {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setHeaderText("Message - unsufficient funds");
+            alert.setContentText("You do not have sufficient funds!");
+            alert.showAndWait();
+            return false;
+        }
+        else if(amount > 500)
+        {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setHeaderText("Message - Limit exceeded");
+            alert.setContentText("Please choose an amount not greater than $500");
+            alert.showAndWait();
+            return false;
+        }
+        else
+        {
+            return true;
+        }
+
     }
 }

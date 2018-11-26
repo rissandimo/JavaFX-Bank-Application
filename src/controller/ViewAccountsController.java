@@ -11,6 +11,7 @@ import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 import model.BankConnection;
 import model.Transaction;
+import util.Message;
 
 import java.io.IOException;
 import java.net.URL;
@@ -166,18 +167,15 @@ public class ViewAccountsController implements Initializable
         //no transaction chosen
         if(transactionToDelete == null)
         {
-            Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setHeaderText("No transaction deleted");
-            alert.setContentText("Please choose a transaction to delete");
-            alert.showAndWait();
+            Message.showMessage(Message.ERROR, "No transaction deleted", "Please choose a transaction to delete");
             return;
         }
 
-        Alert alertConfirmation = new Alert(Alert.AlertType.WARNING);
-        alertConfirmation.setHeaderText("Delete transaction confirmation");
-        alertConfirmation.setContentText(
+        Alert alertConfirmation= Message.showMessageAndReturnAlertReference(
+                Message.WARNING,
+                "Delete transaction confirmation" ,
                 "Are you sure you want to delete the following transaction: ? \n" +
-                transactionToDelete.getDescription());
+                          transactionToDelete.getDescription());
 
         ButtonType buttonTypeYes = new ButtonType("Yes");
         ButtonType buttonTypeCancel = new ButtonType("Cancel");
@@ -190,18 +188,18 @@ public class ViewAccountsController implements Initializable
             if(deleteSuccessfull)
             {
                 transactionList.remove(transactionToDelete);
-                Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-                alert.setHeaderText("Deletion Successfull");
-                alert.setContentText(transactionToDelete.getDescription() + " -  has been deleted");
-                alert.showAndWait();
+
+                Message.showMessage(
+                        Message.CONFIRMATION,
+                        "Deletion Sucessfull",
+                        transactionToDelete.getDescription() + " -  has been deleted");
             }
         }
         else if(deleteTransaction.isPresent() && deleteTransaction.get() == buttonTypeCancel)
         {
-            Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-            alert.setHeaderText("Deletion cancelled");
-            alert.setContentText(transactionToDelete.getDescription() + " -  has not been deleted");
-            alert.showAndWait();
+            Message.showMessage(Message.CONFIRMATION,
+                    "Deletion cancelled",
+                    transactionToDelete.getDescription() + " -  has not been deleted");
         }
     }
 

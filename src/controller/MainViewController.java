@@ -67,7 +67,7 @@ public class MainViewController implements Initializable
             if(credentialsNotEntered)
             {
                 Alert alert = new Alert(Alert.AlertType.ERROR);
-                alert.setHeaderText("Error - empty fields");
+                alert.setHeaderText("Message - empty fields");
                 alert.setContentText("All fields must be entered");
                 alert.showAndWait();
 
@@ -92,7 +92,7 @@ public class MainViewController implements Initializable
                 else
                 {
                     Alert alert = new Alert(Alert.AlertType.ERROR);
-                    alert.setHeaderText("Error - No account found");
+                    alert.setHeaderText("Message - No account found");
                     alert.setContentText("Client does not exists");
                     alert.showAndWait();
                 }
@@ -102,7 +102,7 @@ public class MainViewController implements Initializable
         catch(NumberFormatException e)
         {
             Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setHeaderText("Error - empty fields");
+            alert.setHeaderText("Message - empty fields");
             alert.setContentText("All fields must be entered");
             alert.showAndWait();
         }
