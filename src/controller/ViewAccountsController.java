@@ -149,7 +149,7 @@ public class ViewAccountsController implements Initializable
             AddTransactionController addTransactionController = fxmlLoader.getController();
             addTransactionController.setClientInfo(clientAccountNumber, social);
 
-            reloadView();
+            clearTableView();
             loadTransactions(clientAccountNumber, firstName, lastName);
         }
         else
@@ -203,7 +203,7 @@ public class ViewAccountsController implements Initializable
         }
     }
 
-    private void reloadView()
+    private void clearTableView()
     {
         tableView.getItems().clear();
     }
