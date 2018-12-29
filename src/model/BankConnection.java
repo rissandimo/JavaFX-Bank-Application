@@ -4,16 +4,18 @@ import java.sql.*;
 
 public final class BankConnection
 {
-    //DB - TABLES
+    //TABLES
     private static final String CHECKING_ACCOUNT_TABLE = "checking_account";
     private static final String CLIENT_TABLE = "clients";
     private static final String TRANSACTIONS_TABLE = "transactions";
 
+    //CONNECTION
     private final static String CONNECTION_URL = "jdbc:mysql://localhost:3306/bank";
     private static Statement statement = null;
     private static Connection connection = null;
     private static BankConnection bankConnection = null;
 
+    //USER LOGIN
     private final static String USERNAME = "root";
     private final static String PASSWORD = "";
 
